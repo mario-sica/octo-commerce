@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
+import { MobileMenu } from "@/components/layout/mobile-menu";
 import { Button } from "@/components/ui/button";
 import { getNavigation } from "@/lib/data";
 
@@ -33,6 +34,8 @@ export function SiteHeader() {
             <Link href={header.cta.href}>{header.cta.label}</Link>
           </Button>
         </nav>
+
+        <MobileMenu links={header.links} cta={header.cta} />
       </div>
     </header>
   );
