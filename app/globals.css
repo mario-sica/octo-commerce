@@ -1,96 +1,346 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+/*
+ * Octopus — design tokens (single source of truth)
+ * Source: Octopus design file (Figma). Usage map and assumptions: docs/design/spec.md
+ * Rule: no hex / magic px values in components — use these tokens only.
+ */
 
+@import "tailwindcss";
+@import "tw-animate-css"; /* added by `shadcn init` */
+@import "shadcn/tailwind.css"; /* added by `shadcn init`: accordion keyframes, data-open/closed variants */
+
+/* No dark mode (spec, Assumption 6). Pinning `dark:` to a .dark class that is never set
+   keeps shadcn's dark: utilities off, instead of following prefers-color-scheme. */
 @custom-variant dark (&:is(.dark *));
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+/* ------------------------------------------------------------------ */
+/* 1. Primitives (raw Figma palette) — never use them in components     */
+/* ------------------------------------------------------------------ */
+:root {
+  --octo-red-400: #f23f45; /* Button/Primary/Background/Hover */
+  --octo-red-500: #de2027; /* Octopus Red */
+  --octo-red-600: #b1191e; /* Button/Primary/Background/Pressed */
+  --octo-red-700: #c2151b; /* Button/Primary/Stroke */
+
+  --octo-neutral-0: #ffffff;
+  --octo-neutral-50: #f9f9f9; /* Card/Background/Primary, FAQ/Background */
+  --octo-neutral-100: #f5f5f5; /* Disabled bg, Stroke/Light */
+  --octo-neutral-200: #e8e8e8; /* Button/Special/Stroke */
+  --octo-neutral-400: #b9b9b9; /* Disabled text/icon */
+  --octo-neutral-600: #575757; /* Text/Secondary */
+  --octo-neutral-700: #414141; /* Button/Ghost/Text/Light */
+  --octo-neutral-900: #1b1b1b; /* Text/Primary */
+
+  /* Figma focus ring #b1cbf7 is NOT used: 1.65:1 on white fails WCAG 1.4.11 (needs 3:1).
+     Focus uses Text/Primary instead (17:1), white on brand backgrounds (4.84:1). */
+
+  /* -------------------------------------------------------------- */
+  /* 2. Semantic — shadcn/ui names + Octopus extensions              */
+  /* -------------------------------------------------------------- */
+  --background: var(--octo-neutral-0);
+  --foreground: var(--octo-neutral-900);
+
+  --card: var(--octo-neutral-50);
+  --card-foreground: var(--octo-neutral-900);
+  --popover: var(--octo-neutral-0);
+  --popover-foreground: var(--octo-neutral-900);
+
+  --primary: var(--octo-red-500);
+  --primary-foreground: var(--octo-neutral-0);
+  /* Figma hover #f23f45 gives 3.77:1 with white text (AA needs 4.5:1) →
+     use the Figma stroke token #c2151b (6.15:1). See spec → Assumptions. */
+  --primary-hover: var(--octo-red-700);
+  --primary-pressed: var(--octo-red-600);
+  --primary-stroke: var(--octo-red-700);
+
+  /* "Special" in Figma: white button with border */
+  --secondary: var(--octo-neutral-0);
+  --secondary-foreground: var(--octo-neutral-900);
+  --secondary-hover: var(--octo-neutral-50);
+  --secondary-pressed: var(--octo-neutral-100);
+
+  --muted: var(--octo-neutral-100);
+  --muted-foreground: var(--octo-neutral-600);
+  --accent: var(--octo-neutral-50);
+  --accent-foreground: var(--octo-neutral-900);
+  --destructive: var(--octo-red-500); /* no error token in scope */
+
+  --subtle-foreground: var(--octo-neutral-700); /* navbar links */
+  --disabled: var(--octo-neutral-100);
+  --disabled-foreground: var(--octo-neutral-400);
+  --brand: var(--octo-red-500); /* logo, footer, category label */
+  --brand-foreground: var(--octo-neutral-0);
+
+  --border: var(--octo-neutral-200);
+  --border-light: var(--octo-neutral-100);
+  --input: var(--octo-neutral-200);
+  --ring: var(--octo-neutral-900);
+  --ring-inverse: var(--octo-neutral-0); /* focus on brand (red) backgrounds */
+
+  --navbar: rgb(255 255 255 / 0.85);
+  --swatch-stroke: rgb(0 0 0 / 0.08);
+
+  --radius: 1rem; /* shadcn base = Card (≈16px, estimated) */
+
+  /* -------------------------------------------------------------- */
+  /* Semantic spacing — every recurring layout value lives here once */
+  /* lg values ✅ read from Figma · base/md values ≈ from screenshots */
+  /* -------------------------------------------------------------- */
+  --gutter: 1rem; /* page side margin: 16 / 32 / 48 ✅ */
+
+  --section-sm: 2.5rem; /* 40 → 48 → 60   */
+  --section-md: 4rem; /* 64 → 96 → 120  */
+  --section-lg: 5rem; /* 80 → 120 → 180 */
+
+  --stack-xs: 1rem; /* 16 — title ↔ description in cards */
+  --stack-sm: 1.5rem; /* 24 → 32 — header block, card text ↔ image */
+  --stack-md: 1.5rem; /* 24 → 40 — Best sellers title ↔ carousel */
+  --stack-lg: 2rem; /* 32 → 48 — Explore title ↔ tiles */
+  --stack-xl: 2.5rem; /* 40 → 80 — section header ↔ cards, PDP columns */
+
+  --cards-gap: 1rem; /* 16 → 24 — between cards */
+
+  --card-sm: 1.5rem; /* 24 → 40 — small card, tile sides, bento */
+  --card-md: 2rem; /* 32 → 64 — medium card top, tile top */
+  --card-lg: 1.5rem; /* 24 → 80 — large card, medium card sides, carousel card */
 }
 
-:root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+@media (width >= 50.625rem) {
+  :root {
+    --gutter: 2rem;
+    --section-sm: 3rem;
+    --section-md: 6rem;
+    --section-lg: 7.5rem;
+    --stack-sm: 2rem;
+    --stack-md: 2rem;
+    --stack-lg: 2.5rem;
+    --stack-xl: 3.5rem;
+    --cards-gap: 1rem;
+    --card-sm: 2rem;
+    --card-md: 2.5rem;
+    --card-lg: 2.5rem;
+  }
+}
+@media (width >= 75rem) {
+  :root {
+    --gutter: 3rem;
+    --section-sm: 3.75rem;
+    --section-md: 7.5rem;
+    --section-lg: 11.25rem;
+    --stack-sm: 2rem;
+    --stack-md: 2.5rem;
+    --stack-lg: 3rem;
+    --stack-xl: 5rem;
+    --cards-gap: 1.5rem;
+    --card-sm: 2.5rem;
+    --card-md: 4rem;
+    --card-lg: 5rem;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* 3. Tailwind v4 theme — generates utilities (bg-primary, text-h1-l…)  */
+/* ------------------------------------------------------------------ */
+@theme inline {
+  /* Colours */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-pressed: var(--primary-pressed);
+  --color-primary-stroke: var(--primary-stroke);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-secondary-pressed: var(--secondary-pressed);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-subtle-foreground: var(--subtle-foreground);
+  --color-disabled: var(--disabled);
+  --color-disabled-foreground: var(--disabled-foreground);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-border: var(--border);
+  --color-border-light: var(--border-light);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-inverse: var(--ring-inverse);
+  --color-navbar: var(--navbar);
+  --color-swatch-stroke: var(--swatch-stroke);
+
+  /* Font — variable set by next/font/local (Satoshi Variable) */
+  --font-sans: var(--font-satoshi), ui-sans-serif, system-ui, sans-serif;
+
+  /* Radius */
+  --radius-card: var(--radius);
+  --radius-pill: 2rem; /* Button, Navbar = 32 */
+
+  /* Shadows and effects */
+  --shadow-navbar: 0 0 16px 8px rgb(0 0 0 / 0.08);
+  --blur-navbar: 64px;
+
+  /* Aspect ratio */
+  --aspect-banner: 2.4 / 1; /* 1600×667 */
+
+  /* Layout */
+  --container-content: 84rem; /* 1344 */
+  --spacing-gutter: var(--gutter);
+  --spacing-section-sm: var(--section-sm);
+  --spacing-section-md: var(--section-md);
+  --spacing-section-lg: var(--section-lg);
+  --spacing-stack-xs: var(--stack-xs);
+  --spacing-stack-sm: var(--stack-sm);
+  --spacing-stack-md: var(--stack-md);
+  --spacing-stack-lg: var(--stack-lg);
+  --spacing-stack-xl: var(--stack-xl);
+  --spacing-cards: var(--cards-gap);
+  --spacing-card-sm: var(--card-sm);
+  --spacing-card-md: var(--card-md);
+  --spacing-card-lg: var(--card-lg);
+}
+
+@theme {
+  /* Brief breakpoints: tablet 810, desktop 1200 (mobile-first) */
+  --breakpoint-*: initial;
+  --breakpoint-md: 50.625rem; /* 810 */
+  --breakpoint-lg: 75rem; /* 1200 */
+
+  /* Satoshi Variable weights */
+  --font-weight-book: 470;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  /* Typography — Figma text styles (L, M, S) */
+  --text-h1-l: 3.75rem;
+  --text-h1-l--line-height: 1.1;
+  --text-h1-l--font-weight: 700;
+  --text-h1-m: 3rem;
+  --text-h1-m--line-height: 1.1;
+  --text-h1-m--font-weight: 700;
+  --text-h1-s: 2.5rem;
+  --text-h1-s--line-height: 1.1;
+  --text-h1-s--font-weight: 700;
+
+  --text-h2-l: 2.75rem;
+  --text-h2-l--line-height: 1.1;
+  --text-h2-l--font-weight: 700;
+  --text-h2-m: 2.5rem;
+  --text-h2-m--line-height: 1.1;
+  --text-h2-m--font-weight: 700;
+  --text-h2-s: 2rem;
+  --text-h2-s--line-height: 1.1;
+  --text-h2-s--font-weight: 700;
+
+  --text-h3-l: 2rem;
+  --text-h3-l--line-height: 1.1;
+  --text-h3-l--font-weight: 700;
+  --text-h3-m: 1.75rem;
+  --text-h3-m--line-height: 1.1;
+  --text-h3-m--font-weight: 700;
+  --text-h3-s: 1.5rem;
+  --text-h3-s--line-height: 1.1;
+  --text-h3-s--font-weight: 700;
+
+  /* Figma "Auto" ≈ 1.35, measured on multi-line layers */
+  --text-subtitle-l: 1.5rem;
+  --text-subtitle-l--line-height: 1.35;
+  --text-subtitle-l--font-weight: 470;
+  --text-subtitle-m: 1.25rem;
+  --text-subtitle-m--line-height: 1.35;
+  --text-subtitle-m--font-weight: 470;
+  --text-subtitle-s: 1.125rem;
+  --text-subtitle-s--line-height: 1.35;
+  --text-subtitle-s--font-weight: 470;
+
+  /* Title / Body: weight via font-bold | font-book */
+  --text-title-lg: 1.5rem;
+  --text-title-lg--line-height: 1.35;
+  --text-title: 1.25rem;
+  --text-title--line-height: 1.35;
+  --text-body-lg: 1.125rem;
+  --text-body-lg--line-height: 1.35;
+  --text-body: 1rem;
+  --text-body--line-height: 1.35;
+
+  --text-cta: 1rem;
+  --text-cta--line-height: 1.1;
+  --text-cta--font-weight: 500;
+  --text-label: 0.875rem;
+  --text-label--line-height: 1.1;
+  --text-label-xs: 0.625rem;
+  --text-label-xs--line-height: 1.1;
+
+  /* Motion — scroll reveal (design-system Motion page) */
+  --animate-reveal: reveal 1.2s ease-out 0.1s both;
+  --animate-reveal-text: reveal-text 1.2s ease-out 0.1s both;
+
+  @keyframes reveal {
+    from {
+      opacity: 0;
+      transform: translateY(60px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes reveal-text {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes reveal {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes reveal-text {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+/* Solid icon variants (lucide has outline icons only).
+   Usage: <MapPin size={24} fill="currentColor" className="icon-solid" />
+   Works for MapPin, TriangleAlert, CircleAlert: their first SVG element is the
+   silhouette; the inner details (pin hole, "!") are redrawn in white. */
+@layer components {
+  .icon-solid > :not(:first-child) {
+    stroke: var(--color-white);
+    fill: var(--color-white);
+  }
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background font-sans text-foreground antialiased;
   }
-  html {
-    @apply font-sans;
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring;
   }
 }
