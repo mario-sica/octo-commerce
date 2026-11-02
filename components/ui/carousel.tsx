@@ -39,6 +39,21 @@ type CarouselContextProps = {
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null);
 
+const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+
+/** True when the user asks for reduced motion; follows changes to the setting. */
+function usePrefersReducedMotion() {
+  return React.useSyncExternalStore(
+    (onChange) => {
+      const query = window.matchMedia(REDUCED_MOTION);
+      query.addEventListener("change", onChange);
+      return () => query.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia(REDUCED_MOTION).matches,
+    () => false,
+  );
+}
+
 function useCarousel() {
   const context = React.useContext(CarouselContext);
 
@@ -98,19 +113,22 @@ function Carousel({
     () => 0,
   );
 
+  // Embla animates in JavaScript, so CSS can't stop it: jump instead when motion is reduced.
+  const reduceMotion = usePrefersReducedMotion();
+
   const scrollPrev = React.useCallback(() => {
-    api?.scrollPrev();
-  }, [api]);
+    api?.scrollPrev(reduceMotion);
+  }, [api, reduceMotion]);
 
   const scrollNext = React.useCallback(() => {
-    api?.scrollNext();
-  }, [api]);
+    api?.scrollNext(reduceMotion);
+  }, [api, reduceMotion]);
 
   const scrollTo = React.useCallback(
     (index: number) => {
-      api?.scrollTo(index);
+      api?.scrollTo(index, reduceMotion);
     },
-    [api],
+    [api, reduceMotion],
   );
 
   const handleKeyDown = React.useCallback(

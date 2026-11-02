@@ -69,3 +69,25 @@ test.describe("home best-sellers carousel", () => {
     ).toBeVisible();
   });
 });
+
+test.describe("home best-sellers carousel with reduced motion", () => {
+  test.use({ reducedMotion: "reduce" });
+
+  test("slides jump instead of animating", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/");
+    const region = carousel(page);
+    const track = region.locator('[data-slot="carousel-content"] > div');
+    const transform = () =>
+      track.evaluate((el) => getComputedStyle(el).transform);
+
+    const before = await transform();
+    await region.getByRole("button", { name: "Next slide" }).click();
+    const right = await transform();
+    await page.waitForTimeout(600);
+
+    // Without the jump, Embla would still be mid-animation right after the click.
+    expect(right).not.toBe(before);
+    expect(await transform()).toBe(right);
+  });
+});
