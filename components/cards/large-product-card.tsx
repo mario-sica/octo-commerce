@@ -74,7 +74,7 @@ export function LargeProductCard({
         </div>
         <Button asChild>
           <Link href={getProductHref(product)}>
-            Learn more<span className="sr-only"> about {product.name}</span>
+            Learn more <span className="sr-only">about {product.name}</span>
           </Link>
         </Button>
       </div>

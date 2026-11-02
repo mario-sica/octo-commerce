@@ -139,8 +139,8 @@ export function CategorySection({ category }: { category: Category }) {
           cta={
             <Button asChild variant="special">
               <Link href="/coming-soon">
-                Explore all products
-                <span className="sr-only"> in {category.name}</span>
+                Explore all products{" "}
+                <span className="sr-only">in {category.name}</span>
               </Link>
             </Button>
           }
