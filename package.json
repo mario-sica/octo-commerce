@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "check:tokens": "node scripts/check-tokens.mjs",
+    "gate": "pnpm typecheck && pnpm lint && pnpm check:tokens && pnpm build"
   },
   "dependencies": {
     "next": "16.4.3",
