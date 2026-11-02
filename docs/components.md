@@ -2,13 +2,13 @@
 
 ## shadcn/ui (Radix base): install only these
 
-Install command: `pnpm dlx shadcn@latest add button carousel accordion sheet radio-group`
+Install command: `pnpm dlx shadcn@latest add button carousel accordion radio-group`
 
 | Requirement (brief) | shadcn component | Why it fits | Changes needed |
 |---|---|---|---|
 | Buttons: primary, special (white with border), ghost, icon-only | `button` | `cva` variants, `asChild` (Radix Slot) for links | Replace the default variants with `primary`, `special`, `ghost`, `ghostDark`. Sizes `default` (h-10 px-4) and `icon` (size-10). Use `rounded-pill`, `text-cta`, `border`, the hover and pressed tokens, and the global focus outline (`outline-ring-inverse` on brand backgrounds). |
 | Best sellers carousel: arrows, dots, swipe, arrows disabled at the ends | `carousel` (Embla) | Swipe and drag come native. `CarouselPrevious`/`Next` are already `disabled` when `!canScrollPrev`/`!canScrollNext`. Arrow-key navigation is built in. It sets `role="region"` and `aria-roledescription="carousel"` | Add `CarouselDots`, built from `api.scrollSnapList()`, `api.selectedScrollSnap()` and `api.on("select")`. The dots are buttons with `aria-label="Go to slide n"` and `aria-current`, visible from `lg` up. Move the arrows to a bottom-right row. Use `opts={{ align: "start" }}`. |
-| Menu below 1200 px: opens and closes, keyboard, Escape | `sheet` (Radix Dialog) | Focus trap, Escape, focus returned to the trigger, `aria-expanded` on the trigger, scroll lock | Use `side="top"`, styled as the white rounded panel from the Figma. Logo plus close icon, link list, full-width primary button. Hidden at `lg`. |
+| Menu below 1200 px: opens and closes, keyboard, Escape | Radix `Collapsible` (from `radix-ui`, no shadcn file) | `aria-expanded` and `aria-controls` on the trigger; the panel stays inside the navbar, so nothing covers it | The navbar pill expands downwards: the root is `display: contents`, the trigger (Menu ↔ X icon, label "Open menu" / "Close menu") stays in the pill row and the panel wraps onto a full-width row (link list, full-width primary button). Escape closes it and returns focus to the trigger; choosing a link closes it. The header keeps a fixed `h-header`, so the open pill overlaps the page instead of pushing it down. Hidden at `lg`. Replaces the earlier `sheet` overlay. |
 | Specification sections, Downloads included: accessible accordion | `accordion` | `button` trigger with `aria-expanded`/`aria-controls`, Radix keyboard support | `type="multiple"`, first item open by default. Card container `rounded-card bg-card px-5 py-1`. Items separated by a `border-b`. Chevron rotates when open. "Downloads" is the last item. |
 | Colour selector: selected state | `radio-group` | `role="radiogroup"`, arrow keys, one item selected at a time | **Rewrite the root from `grid` to `flex`.** Each item is the 44 px ring with the 30 px swatch inside; the selected item has `border-primary`. The label "Colour - {name}" updates when the selection changes. |
 
@@ -87,7 +87,7 @@ This works for `MapPin`, `TriangleAlert` and `CircleAlert`, because in all three
 | `Section` | server | everywhere | `<section aria-labelledby>`. Padding is chosen **only** through the props `top` and `bottom` (`"sm" \| "md" \| "lg" \| "none"`), which map to `*-section-*` tokens. |
 | `SectionHeader` | server | home category sections, "Best sellers" (home and PDP), "Explore" | Props: `title`, `subtitle?`, `cta?`, `align: "center" \| "start"`, `level`. Typography follows the spec. |
 | `Logo` | server | header, mobile menu, footer | variants `full`, `mark`, `stacked`; see the Logo section |
-| `SiteHeader` | server + client leaf | both pages | sticky navbar pill with `Logo` (`mark` below `md`, `full` from `md`); `MobileMenu` (Sheet) is the client leaf |
+| `SiteHeader` | server + client leaf | both pages | sticky navbar pill with `Logo` (`mark` below `md`, `full` from `md`); `MobileMenu` (Radix Collapsible) is the client leaf |
 | `SiteFooter` | server | both pages | from `data/navigation.json`; `Logo variant="stacked"` |
 | `ProductImage` | server | everywhere | **always** `next/image` through `getImageProps` (`fill` + `sizes` + `object-cover`) inside a fixed `aspect-*` box. The caller adds `bg-card` and `rounded-card` through `className` where the design has them (cards, PDP), not on the full-bleed hero. Optional `md`/`lg` sources make a `<picture>` for art direction; `<source media>` reads `lib/breakpoints.ts`, which a test keeps in sync with `globals.css`. `priority`, only on the home hero and the first PDP image, means `loading="eager"` + `fetchPriority="high"` (Next 16 deprecates `priority`). |
 | `Hero` | server | home | art-directed media (1:2 / 3:4 / 16:9) with `priority`, under the navbar via `-mt-header`, and centred overlay text on every breakpoint |
