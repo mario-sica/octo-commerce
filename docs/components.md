@@ -89,7 +89,8 @@ This works for `MapPin`, `TriangleAlert` and `CircleAlert`, because in all three
 | `Logo` | server | header, mobile menu, footer | variants `full`, `mark`, `stacked`; see the Logo section |
 | `SiteHeader` | server + client leaf | both pages | sticky navbar pill with `Logo` (`mark` below `md`, `full` from `md`); `MobileMenu` (Sheet) is the client leaf |
 | `SiteFooter` | server | both pages | from `data/navigation.json`; `Logo variant="stacked"` |
-| `Hero` | server | home | 16:9 media with `priority` and centred overlay text on every breakpoint |
+| `ProductImage` | server | hero, cards, banners, PDP | `next/image` through `getImageProps` inside a fixed-ratio box (`fill` + `object-cover`). Optional `md`/`lg` sources make a `<picture>` for art direction; `<source media>` reads `lib/breakpoints.ts`, which a test keeps in sync with `globals.css`. `priority` means `loading="eager"` + `fetchPriority="high"` (Next 16 deprecates `priority`). |
+| `Hero` | server | home | art-directed media (1:2 / 3:4 / 16:9) with `priority`, under the navbar via `-mt-header`, and centred overlay text on every breakpoint |
 | `ProductImage` | server | everywhere | **always** `next/image` (`fill` + `sizes`) inside an `aspect-*` box with `bg-card` and `rounded-card`. `priority` only when the `priority` prop is set. |
 | `ProductCard` | server | home and PDP | variants `feature` (home carousel), `large`, `medium`, `small`, `compact` (PDP carousel); `orientation` for large and medium. "Learn more" uses `getProductHref(product)`. |
 | `Carousel` (shadcn + `CarouselDots`) | client | home and PDP | the **shared primitive**: Embla, arrows in a bottom-right row and disabled at the edges, dots from `lg`. Both best-sellers carousels are built on it. |
