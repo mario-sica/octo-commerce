@@ -5,10 +5,10 @@
  * Output: public/images/{products,categories,store}/ (committed).
  *
  * Every output is listed once in ASSETS below: where it comes from and its maximum width.
- * Images are never upscaled; product shots keep their transparency.
+ * Images are never upscaled. Product shots are matched to the card colour (see below).
  * See docs/content.md → Images for where each file is used.
  */
-import { existsSync, mkdirSync, readdirSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import sharp from "sharp";
 
@@ -111,11 +111,38 @@ const ASSETS = [
   ],
 ];
 
+/**
+ * Product shots sit on `bg-card`, but their backgrounds vary by a few levels (#f7f7f8, #fafafa…),
+ * which shows as a faint box. Scale each channel so the corner matches the card colour exactly
+ * (read from --octo-neutral-50 in app/globals.css). A pure multiplier: black stays black.
+ */
+const cardHex = readFileSync(join(ROOT, "app/globals.css"), "utf8").match(
+  /--octo-neutral-50:\s*#([0-9a-fA-F]{6})/,
+)?.[1];
+if (!cardHex) throw new Error("--octo-neutral-50 not found in app/globals.css");
+const CARD_RGB = [0, 2, 4].map((i) => parseInt(cardHex.slice(i, i + 2), 16));
+
+async function matchCardBackground(image) {
+  const { data, info } = await image
+    .clone()
+    .extract({ left: 2, top: 2, width: 1, height: 1 })
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const factors = CARD_RGB.map((target, c) => target / data[c]);
+  const multipliers = info.channels === 4 ? [...factors, 1] : factors;
+  return image.linear(
+    multipliers,
+    multipliers.map(() => 0),
+  );
+}
+
 let total = 0;
 for (const [out, src, maxWidth] of ASSETS) {
   const target = join(OUT, out);
   mkdirSync(dirname(target), { recursive: true });
-  const info = await sharp(join(SRC, src))
+  let image = sharp(join(SRC, src));
+  if (src.startsWith("Product Card/")) image = await matchCardBackground(image);
+  const info = await image
     .resize({ width: maxWidth, withoutEnlargement: true })
     .webp({ quality: 80, effort: 6 })
     .toFile(target);
