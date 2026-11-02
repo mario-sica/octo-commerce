@@ -49,7 +49,10 @@ type ProductImageProps = ImageSource & {
    * priority; inside `<picture>` only the matching source is downloaded.
    */
   priority?: boolean;
+  /** Classes for the ratio box. */
   className?: string;
+  /** Classes for the image itself, e.g. a zoom; the box clips it. */
+  imageClassName?: string;
 };
 
 /**
@@ -65,6 +68,7 @@ export function ProductImage({
   lg,
   priority = false,
   className,
+  imageClassName,
 }: ProductImageProps) {
   const common = {
     alt,
@@ -96,7 +100,11 @@ export function ProductImage({
           <source media={minWidth("md")} srcSet={srcSetFor(md)} sizes={sizes} />
         )}
         {/* Plain <img> carrying next/image props from getImageProps: needed inside <picture>. */}
-        <img {...base} alt={alt} className="object-cover" />
+        <img
+          {...base}
+          alt={alt}
+          className={cn("object-cover", imageClassName)}
+        />
       </picture>
     </div>
   );
