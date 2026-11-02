@@ -1,16 +1,11 @@
 "use client";
 
+import { useRef, useState } from "react";
+import type { KeyboardEvent } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
-import { Logo } from "@/components/brand/logo";
+import { Collapsible } from "radix-ui";
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import type { NavLink } from "@/types/content";
 
 type MobileMenuProps = {
@@ -19,72 +14,67 @@ type MobileMenuProps = {
 };
 
 /**
- * Menu below `lg` (spec, Assumption 1). Radix Dialog gives the trigger `aria-expanded` and
- * `aria-controls`, traps focus, closes on Escape and returns focus to the trigger.
- * The panel opens over the navbar pill, with the logo and close button in the same place.
+ * Menu below `lg` (spec, Assumption 1). The compact navbar pill expands downwards to show the
+ * links: the root uses `display: contents`, so the trigger stays in the pill's top row and the
+ * panel wraps onto a full-width row below it. Radix Collapsible gives the trigger
+ * `aria-expanded` and `aria-controls`; Escape closes the menu and returns focus to the trigger.
  */
 export function MobileMenu({ links, cta }: MobileMenuProps) {
+  const [open, setOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    if (event.key === "Escape" && open) {
+      setOpen(false);
+      triggerRef.current?.focus();
+    }
+  }
+
   return (
-    <Sheet>
-      <SheetTrigger asChild>
+    <Collapsible.Root
+      open={open}
+      onOpenChange={setOpen}
+      onKeyDown={handleKeyDown}
+      className="contents lg:hidden"
+    >
+      <Collapsible.Trigger asChild>
         <Button
+          ref={triggerRef}
           variant="ghost"
           size="icon"
-          aria-label="Open menu"
-          className="lg:hidden"
+          aria-label={open ? "Close menu" : "Open menu"}
         >
-          <Menu size={24} aria-hidden="true" />
+          {open ? (
+            <X size={24} aria-hidden="true" />
+          ) : (
+            <Menu size={24} aria-hidden="true" />
+          )}
         </Button>
-      </SheetTrigger>
+      </Collapsible.Trigger>
 
-      <SheetContent
-        side="top"
-        showCloseButton={false}
-        aria-describedby={undefined}
-        className="gap-0 rounded-pill bg-background py-3 pr-3 pl-5 shadow-navbar data-[side=top]:inset-x-gutter data-[side=top]:top-4 data-[side=top]:border-0 lg:hidden"
-      >
-        <SheetTitle className="sr-only">Menu</SheetTitle>
-
-        <div className="flex h-10 items-center justify-between">
-          <SheetClose asChild>
-            <Link
-              href="/"
-              aria-label="Octopus — home"
-              className="flex items-center rounded-pill text-brand"
-            >
-              <Logo variant="mark" className="h-5.5 md:hidden" />
-              <Logo variant="full" className="hidden h-6 md:block" />
-            </Link>
-          </SheetClose>
-          <SheetClose asChild>
-            <Button variant="ghost" size="icon" aria-label="Close menu">
-              <X size={24} aria-hidden="true" />
-            </Button>
-          </SheetClose>
-        </div>
-
+      {/* overflow-hidden is needed for the height animation, so focus rings inside are drawn inset. */}
+      <Collapsible.Content className="basis-full overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down motion-reduce:animate-none">
         <nav aria-label="Main" className="flex flex-col gap-1 pt-3">
           <ul className="flex flex-col">
             {links.map((link) => (
               <li key={link.href}>
-                <SheetClose asChild>
-                  <Link
-                    href={link.href}
-                    className="flex h-11 items-center text-cta text-subtle-foreground hover:text-foreground"
-                  >
-                    {link.label}
-                  </Link>
-                </SheetClose>
+                <Link
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className="flex h-11 items-center rounded-card text-cta text-subtle-foreground hover:text-foreground focus-visible:-outline-offset-2"
+                >
+                  {link.label}
+                </Link>
               </li>
             ))}
           </ul>
-          <SheetClose asChild>
-            <Button asChild className="w-full">
-              <Link href={cta.href}>{cta.label}</Link>
-            </Button>
-          </SheetClose>
+          <Button asChild className="w-full focus-visible:-outline-offset-2">
+            <Link href={cta.href} onClick={() => setOpen(false)}>
+              {cta.label}
+            </Link>
+          </Button>
         </nav>
-      </SheetContent>
-    </Sheet>
+      </Collapsible.Content>
+    </Collapsible.Root>
   );
 }

@@ -86,7 +86,7 @@
   /* lg values ✅ read from Figma · base/md values ≈ from screenshots */
   /* -------------------------------------------------------------- */
   --gutter: 1rem; /* page side margin: 16 / 32 / 48 ✅ */
-  --header: 6rem; /* navbar wrapper height: py-4 + h-16 = 96, every breakpoint */
+  --header: 6rem; /* fixed navbar wrapper height: pt-4 + 64 px pill + 16 px, every breakpoint */
 
   --section-sm: 2.5rem; /* 40 → 48 → 60   */
   --section-md: 4rem; /* 64 → 96 → 120  */

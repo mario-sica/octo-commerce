@@ -17,15 +17,19 @@ function setup() {
 }
 
 describe("MobileMenu", () => {
-  it("opens a named dialog with the links and the CTA", async () => {
+  it("expands to show the links and the CTA", async () => {
     const { user, trigger } = setup();
     expect(trigger).toHaveAttribute("aria-expanded", "false");
+    expect(screen.queryByRole("navigation")).not.toBeInTheDocument();
 
     await user.click(trigger);
 
-    const dialog = screen.getByRole("dialog", { name: "Menu" });
+    const nav = screen.getByRole("navigation", { name: "Main" });
     expect(trigger).toHaveAttribute("aria-expanded", "true");
-    expect(trigger).toHaveAttribute("aria-controls", dialog.id);
+    expect(trigger).toHaveAccessibleName("Close menu");
+    expect(
+      document.getElementById(trigger.getAttribute("aria-controls") ?? ""),
+    ).toContainElement(nav);
     expect(screen.getByRole("link", { name: "Kitchen" })).toHaveAttribute(
       "href",
       "/#kitchen",
@@ -39,12 +43,14 @@ describe("MobileMenu", () => {
   it("closes on Escape and returns focus to the trigger", async () => {
     const { user, trigger } = setup();
     await user.click(trigger);
-    expect(screen.getByRole("dialog", { name: "Menu" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("navigation", { name: "Main" }),
+    ).toBeInTheDocument();
 
     await user.keyboard("{Escape}");
 
     await waitFor(() =>
-      expect(screen.queryByRole("dialog")).not.toBeInTheDocument(),
+      expect(screen.queryByRole("navigation")).not.toBeInTheDocument(),
     );
     expect(trigger).toHaveAttribute("aria-expanded", "false");
     expect(trigger).toHaveFocus();
@@ -57,7 +63,7 @@ describe("MobileMenu", () => {
     await user.click(screen.getByRole("button", { name: "Close menu" }));
 
     await waitFor(() =>
-      expect(screen.queryByRole("dialog")).not.toBeInTheDocument(),
+      expect(screen.queryByRole("navigation")).not.toBeInTheDocument(),
     );
     expect(trigger).toHaveFocus();
   });
@@ -69,7 +75,7 @@ describe("MobileMenu", () => {
     await user.click(screen.getByRole("link", { name: "Home Security" }));
 
     await waitFor(() =>
-      expect(screen.queryByRole("dialog")).not.toBeInTheDocument(),
+      expect(screen.queryByRole("navigation")).not.toBeInTheDocument(),
     );
   });
 });
