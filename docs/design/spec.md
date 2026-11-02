@@ -81,6 +81,7 @@ The lg values are ✅. The base and md values are ≈, taken from the full-page 
 | Navbar links, button labels | `text-cta` ✅ | `text-cta` ✅ |
 | Footer column titles | `text-body font-bold` ✅ | `text-body font-bold` ✅ |
 | Footer links | `text-cta` ✅ | `text-cta` ✅ |
+| Footer copyright, "Policies & Terms" | `text-label` ≈ | `text-label` ≈ |
 | PDP title | `text-h2-s` ? | `text-h2-l` ✅ |
 | PDP description, "Colour - …" | `text-body font-book text-muted-foreground` ✅ | same ✅ |
 | Bento title | `text-title font-bold` ✅ | `text-title font-bold` ✅ |
@@ -165,6 +166,11 @@ A single leftover card in the last row grows to the full row width (`flex-1`). O
 - **Footer:**
   - `lg`/`md`: logo on the left (`Logo variant="stacked"`, `h-26` ≈); "Our Products" (2 columns) and "Learn" on the right; a bottom bar with copyright and "Policies & Terms";
   - base: everything stacked.
+  - internals ≈, measured from the full-page screenshots:
+    - column title ↔ link list: `gap-stack-sm`;
+    - link rows: `h-9` on base, `h-7` from `md`;
+    - "Our Products" columns: CSS `columns-2` with `gap-x-10`, which fills top to bottom like the Figma (Kitchen, Home Security | Hair Care, Accessories). It is multi-column, not `grid`, and `flex-wrap` would fill row by row (Assumption 18);
+    - bottom bar: `gap-1` between copyright and "Policies & Terms" on base.
 
 ## PDP composition ✅
 - **`md` and `lg`:** two columns in `max-w-content`, `gap-stack-xl`.
@@ -238,3 +244,5 @@ A single leftover card in the last row grows to the full row width (`flex-1`). O
 15. **Product copy:** where the Figma has several versions of a product's description, one `shortDescription` per product is used.
 16. **Best sellers order:** a single `bestSellerRank` drives both carousels. A best seller without a rank goes last.
 17. **Spacing** is defined once, as semantic tokens. The lg values come from Figma; the tablet and mobile values are estimated from the full-page screenshots.
+18. **Footer "Our Products" columns:** the Figma fills the two columns top to bottom. CSS multi-column (`columns-2`) does this without `grid`; `flex-wrap` would fill row by row, so it is used here instead of the usual `flex-wrap` + `basis-*`.
+19. **`/coming-soon` page:** not in the Figma. It is the placeholder for every link that leaves the two pages, built only from existing styles: `Section top="md" bottom="lg"`, an `h1` styled like a product banner title (`text-h2-s`, `text-h2-l` on `lg`), a subtitle (`text-subtitle-s`, `text-subtitle-l` on `lg`, `text-muted-foreground`), `gap-stack-sm`, and a `special` "Back to home" button. It is `noindex`.

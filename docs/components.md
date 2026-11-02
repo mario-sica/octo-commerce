@@ -83,7 +83,7 @@ This works for `MapPin`, `TriangleAlert` and `CircleAlert`, because in all three
 ## Custom components
 | Component | Type | Used in | Notes |
 |---|---|---|---|
-| `Container` | server | everywhere | `mx-auto w-full max-w-content px-gutter` |
+| `Container` | server | everywhere | outer `px-gutter`, inner `mx-auto w-full max-w-content`: the gutter sits outside the content cap, so content lines up with the navbar pill |
 | `Section` | server | everywhere | `<section aria-labelledby>`. Padding is chosen **only** through the props `top` and `bottom` (`"sm" \| "md" \| "lg" \| "none"`), which map to `*-section-*` tokens. |
 | `SectionHeader` | server | home category sections, "Best sellers" (home and PDP), "Explore" | Props: `title`, `subtitle?`, `cta?`, `align: "center" \| "start"`, `level`. Typography follows the spec. |
 | `Logo` | server | header, mobile menu, footer | variants `full`, `mark`, `stacked`; see the Logo section |
