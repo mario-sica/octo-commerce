@@ -94,8 +94,6 @@
     "category": "hair-care",
     "shortDescription": "An ionic hair dryer with a 110,000 RPM motor for fast drying and less frizz",
     "image": "/images/placeholders/square.webp",
-    "bannerImage": "/images/placeholders/banner.webp",
-    "bannerImageMobile": "/images/placeholders/banner-portrait.webp",
     "bannerSubtitle": "Dry your hair faster and with less frizz with this powerful ionic hair dryer",
     "bestSeller": true,
     "bestSellerRank": 3
