@@ -2,6 +2,7 @@ import Link from "next/link";
 import { LargeProductCard } from "@/components/cards/large-product-card";
 import { MediumProductCard } from "@/components/cards/medium-product-card";
 import { SmallProductCard } from "@/components/cards/small-product-card";
+import { ProductBanner } from "@/components/home/product-banner";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { SectionHeader } from "@/components/layout/section-header";
@@ -110,8 +111,11 @@ const LAYOUTS = {
  */
 export function CategorySection({ category }: { category: Category }) {
   const products = getProductsByCategory(category.id);
-  // A single product renders as that product's banner (added in a following step).
-  if (products.length < 2) return null;
+  if (products.length === 0) return null;
+  // A category with one product shows that product's banner instead of cards.
+  if (products.length === 1) {
+    return <ProductBanner category={category} product={products[0]} />;
+  }
 
   const headingId = `${category.id}-title`;
   const Layout = LAYOUTS[category.layout];
