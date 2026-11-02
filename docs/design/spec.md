@@ -151,9 +151,9 @@ A single leftover card in the last row grows to the full row width (`flex-1`). O
 
 ### Section details
 - **Navbar (sticky):**
-  - wrapper `sticky top-0 z-50 py-4 px-gutter`;
-  - pill `mx-auto max-w-content h-16 rounded-pill pl-5 pr-3 py-3 flex items-center justify-between`;
-  - from `lg`: logo, links and primary CTA; below `lg`: logo plus an icon-only menu button;
+  - wrapper `sticky top-0 z-50 h-header px-gutter pt-4`: a fixed height, so the open mobile menu overlaps the page instead of pushing it down;
+  - pill `mx-auto max-w-content min-h-16 rounded-pill pl-5 pr-3 py-3 flex flex-wrap items-center justify-between` (64 px tall when closed);
+  - from `lg`: logo, links and primary CTA; below `lg`: logo plus an icon-only menu button that expands the pill downwards (Assumption 22);
   - logo: `Logo variant="mark"` with `h-5.5` below `md`, and `Logo variant="full"` with `h-6` from `md` ≈ (see `components.md → Logo`).
 - **Hero:** full-bleed, art-directed media (`priority`): 1:2 on base, 3:4 on `md`, 16:9 on `lg` (Assumption 20). It slides under the navbar with `-mt-header` (Assumption 21). The overlay text is centred horizontally and starts below the pill (`pt-header`, then `pt-stack-md`): title and subtitle `gap-2` ≈, then `gap-stack-sm` to the CTA.
 - **Best sellers (home carousel, reference `card-carousel-home.png`):**
@@ -247,4 +247,5 @@ A single leftover card in the last row grows to the full row width (`flex-1`). O
 18. **Footer "Our Products" columns:** the Figma fills the two columns top to bottom. CSS multi-column (`columns-2`) does this without `grid`; `flex-wrap` would fill row by row, so it is used here instead of the usual `flex-wrap` + `basis-*`.
 19. **`/coming-soon` page:** not in the Figma. It is the placeholder for every link that leaves the two pages, built only from existing styles: `Section top="md" bottom="lg"`, an `h1` styled like a product banner title (`text-h2-s`, `text-h2-l` on `lg`), a subtitle (`text-subtitle-s`, `text-subtitle-l` on `lg`, `text-muted-foreground`), `gap-stack-sm`, and a `special` "Back to home" button. It is `noindex`.
 20. **Hero ratios:** the spec gave 16:9 on every breakpoint, but the Figma hero is 16:9 only on desktop (≈5:7 on tablet, ≈1:2 on mobile), and at 16:9 a phone hero is too short for the overlay text under the navbar. The hero follows the Figma: 1:2 on base, 3:4 on `md`, 16:9 on `lg`, art-directed with a portrait image below `lg`.
-21. **Navbar over the first block:** every page reference shows the navbar pill floating over the first block. The header stays sticky and in flow; the first full-bleed block (the home hero, later the PDP's first image) pulls up under it with `-mt-header`, the `--header` token (6rem = the wrapper's `py-4` + `h-16`). Text inside that block starts with `pt-header`, so it never sits behind the pill.
+21. **Navbar over the first block:** every page reference shows the navbar pill floating over the first block. The header stays sticky and in flow; the first full-bleed block (the home hero, later the PDP's first image) pulls up under it with `-mt-header`, the `--header` token (6rem: the header's fixed height, `pt-4` + the 64 px pill + 16 px below it). Text inside that block starts with `pt-header`, so it never sits behind the pill.
+22. **Mobile menu:** below `lg` the menu is a disclosure, not a dialog. A Radix Collapsible expands the navbar pill downwards, so the panel never covers the pill as the earlier Sheet overlay did. The header keeps its fixed `h-header`, so the open pill overlaps the page instead of pushing it down. The trigger swaps Menu ↔ X with the label "Open menu" / "Close menu" and exposes `aria-expanded` and `aria-controls`; Escape closes it and returns focus to the trigger, and choosing a link closes it. There is no focus trap or scroll lock, as fits a disclosure. The panel clips its content for the height animation, so focus rings inside it are drawn inset (`-outline-offset-2`).
