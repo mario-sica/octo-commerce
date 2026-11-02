@@ -1,0 +1,129 @@
+#!/usr/bin/env node
+/**
+ * Converts the original design assets into the WebP files the site uses.
+ * Input:  docs/Octopus_assets/ (local only, git-ignored — the files as delivered by design).
+ * Output: public/images/{products,categories,store}/ (committed).
+ *
+ * Every output is listed once in ASSETS below: where it comes from and its maximum width.
+ * Images are never upscaled; product shots keep their transparency.
+ * See docs/content.md → Images for where each file is used.
+ */
+import { existsSync, mkdirSync, readdirSync } from "node:fs";
+import { dirname, join } from "node:path";
+import sharp from "sharp";
+
+const ROOT = process.cwd();
+const SRC = join(ROOT, "docs/Octopus_assets");
+const OUT = join(ROOT, "public/images");
+
+if (!existsSync(SRC)) {
+  console.error(
+    "convert-assets: docs/Octopus_assets/ not found (originals are local only)",
+  );
+  process.exit(1);
+}
+
+const card = (name) => `Product Card/${name}.png`;
+
+/**
+ * Category banner crops are named "Category=<Name>, Breakpoint=<range>.png". The ranges contain
+ * "≥" and a narrow no-break space, so they are matched by content rather than typed out.
+ */
+function categoryBanner(category, crop) {
+  const match = readdirSync(SRC).find(
+    (file) =>
+      file.startsWith(`Category=${category}, Breakpoint=`) &&
+      (crop === "lg"
+        ? file.includes("≥")
+        : crop === "md"
+          ? file.includes("1199")
+          : !file.includes("≥") && !file.includes("1199")),
+  );
+  if (!match) throw new Error(`no ${crop} banner for ${category}`);
+  return match;
+}
+
+const PRODUCT_WIDTH = 1024;
+const BANNER_WIDTH = { lg: 3200, md: 1620, base: 1080 };
+
+/** [output path under public/images, source path under docs/Octopus_assets, max width] */
+const ASSETS = [
+  // Product shots (cards, carousels, first PDP image)
+  [
+    "products/octopus-countertop-blender.webp",
+    card("Frame 112"),
+    PRODUCT_WIDTH,
+  ],
+  ["products/octopus-blender.webp", card("Frame 112-1"), PRODUCT_WIDTH],
+  ["products/octopus-air-fryer-5-7l.webp", card("Frame 112-2"), PRODUCT_WIDTH],
+  ["products/octopus-kettle-1-7l.webp", card("Frame 112-3"), PRODUCT_WIDTH],
+  ["products/octopus-indoor-camera.webp", card("Frame 112-4"), PRODUCT_WIDTH],
+  ["products/octopus-video-doorbell.webp", card("Frame 112-5"), PRODUCT_WIDTH],
+  ["products/octopus-outdoor-camera.webp", card("Frame 112-6"), PRODUCT_WIDTH],
+  [
+    "products/octopus-ionic-hair-dryer.webp",
+    card("Frame 112-7"),
+    PRODUCT_WIDTH,
+  ],
+  [
+    "products/octopus-power-bank-10000.webp",
+    card("Frame 112-12"),
+    PRODUCT_WIDTH,
+  ],
+  [
+    "products/octopus-power-board-usb.webp",
+    card("Frame 112-14"),
+    PRODUCT_WIDTH,
+  ],
+  [
+    "products/octopus-3-in-1-charging-station.webp",
+    card("Frame 112-15"),
+    PRODUCT_WIDTH,
+  ],
+
+  // Explore tile without a matching product shot (the other tiles reuse product shots)
+  ["categories/accessories-tile.webp", card("Frame 112-8"), PRODUCT_WIDTH],
+
+  // Category banners: lg (≥ 1200), md (810–1199), base (< 810)
+  ...[
+    ["kitchen", "Kitchen"],
+    ["hair-care", "Hair Care"],
+    ["home-security", "Home Security"],
+    ["accessories", "Accessories"],
+  ].flatMap(([id, name]) =>
+    ["lg", "md", "base"].map((crop) => [
+      `categories/${id}-banner-${crop}.webp`,
+      categoryBanner(name, crop),
+      BANNER_WIDTH[crop],
+    ]),
+  ),
+
+  // "Find us at" store banner: wide from lg, the taller crop below lg
+  [
+    "store/store-banner-lg.webp",
+    "49bd8e22e90232affb0c405a7b5a405e4a6d8c5e.png",
+    3200,
+  ],
+  [
+    "store/store-banner-mobile.webp",
+    "765697dbce7e5894140bd537cf5629451271cb53.png",
+    2400,
+  ],
+];
+
+let total = 0;
+for (const [out, src, maxWidth] of ASSETS) {
+  const target = join(OUT, out);
+  mkdirSync(dirname(target), { recursive: true });
+  const info = await sharp(join(SRC, src))
+    .resize({ width: maxWidth, withoutEnlargement: true })
+    .webp({ quality: 80, effort: 6 })
+    .toFile(target);
+  total += info.size;
+  console.log(
+    `convert-assets: ${out.padEnd(48)} ${info.width}×${info.height}  ${(info.size / 1024).toFixed(0)} KB`,
+  );
+}
+console.log(
+  `convert-assets: ${ASSETS.length} files, ${(total / 1024 / 1024).toFixed(1)} MB`,
+);
