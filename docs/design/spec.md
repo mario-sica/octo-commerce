@@ -81,6 +81,7 @@ The lg values are ✅. The base and md values are ≈, taken from the full-page 
 | Navbar links, button labels | `text-cta` ✅ | `text-cta` ✅ |
 | Footer column titles | `text-body font-bold` ✅ | `text-body font-bold` ✅ |
 | Footer links | `text-cta` ✅ | `text-cta` ✅ |
+| Footer copyright, "Policies & Terms" | `text-label` ≈ | `text-label` ≈ |
 | PDP title | `text-h2-s` ? | `text-h2-l` ✅ |
 | PDP description, "Colour - …" | `text-body font-book text-muted-foreground` ✅ | same ✅ |
 | Bento title | `text-title font-bold` ✅ | `text-title font-bold` ✅ |
