@@ -1,0 +1,23 @@
+[
+  {
+    "type": "hero",
+    "productId": "octopus-ionic-hair-dryer",
+    "subtitle": "A powerful ionic hair dryer with a 110,000 RPM motor for fast drying and less frizz",
+    "image": "/images/placeholders/landscape.webp"
+  },
+  { "type": "best-sellers", "title": "Best sellers" },
+  { "type": "categories" },
+  {
+    "type": "explore",
+    "title": "Explore all categories",
+    "categoryIds": ["kitchen", "home-security", "hair-care", "accessories"]
+  },
+  {
+    "type": "store-banner",
+    "title": "Find us at",
+    "wordmark": "the warehouse",
+    "cta": { "label": "Find your nearest store", "href": "/coming-soon" },
+    "image": "/images/placeholders/banner.webp",
+    "imageMobile": "/images/placeholders/banner-portrait.webp"
+  }
+]
