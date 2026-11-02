@@ -4,7 +4,7 @@
     "name": "Kitchen",
     "tagline": "Powerful appliances for everyday cooking",
     "layout": "large-horizontal",
-    "tileImage": "/images/placeholders/square.webp",
+    "tileImage": "/images/products/octopus-blender.webp",
     "banner": {
       "lg": "/images/categories/kitchen-banner-lg.webp",
       "md": "/images/categories/kitchen-banner-md.webp",
@@ -16,7 +16,7 @@
     "name": "Hair Care",
     "tagline": "Salon-quality hair. At home, in minutes.",
     "layout": "large-horizontal",
-    "tileImage": "/images/placeholders/square.webp",
+    "tileImage": "/images/products/octopus-ionic-hair-dryer.webp",
     "banner": {
       "lg": "/images/categories/hair-care-banner-lg.webp",
       "md": "/images/categories/hair-care-banner-md.webp",
@@ -28,7 +28,7 @@
     "name": "Home Security",
     "tagline": "Home feels safer when you're always in the loop",
     "layout": "large-vertical",
-    "tileImage": "/images/placeholders/square.webp",
+    "tileImage": "/images/products/octopus-indoor-camera.webp",
     "banner": {
       "lg": "/images/categories/home-security-banner-lg.webp",
       "md": "/images/categories/home-security-banner-md.webp",
@@ -40,7 +40,7 @@
     "name": "Accessories",
     "tagline": "The little things that make everything work better",
     "layout": "small",
-    "tileImage": "/images/placeholders/square.webp",
+    "tileImage": "/images/categories/accessories-tile.webp",
     "banner": {
       "lg": "/images/categories/accessories-banner-lg.webp",
       "md": "/images/categories/accessories-banner-md.webp",

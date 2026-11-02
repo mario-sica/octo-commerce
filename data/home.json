@@ -18,7 +18,7 @@
     "title": "Find us at",
     "wordmark": "the warehouse",
     "cta": { "label": "Find your nearest store", "href": "/coming-soon" },
-    "image": "/images/placeholders/banner.webp",
-    "imageMobile": "/images/placeholders/banner-portrait.webp"
+    "image": "/images/store/store-banner-lg.webp",
+    "imageMobile": "/images/store/store-banner-mobile.webp"
   }
 ]
