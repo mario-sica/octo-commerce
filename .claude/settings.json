@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "includeCoAuthoredBy": false,
+  "permissions": {
+    "allow": [
+      "Bash(pnpm *)",
+      "Bash(pnpm dlx shadcn@latest add *)",
+      "Bash(node *)",
+      "Bash(git status *)",
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git diff)",
+      "Bash(git log *)",
+      "Bash(git branch *)",
+      "Bash(git branch)",
+      "Bash(git switch *)",
+      "Bash(git checkout -b *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git rev-parse *)",
+      "Bash(git show *)",
+      "Bash(git stash *)",
+      "Bash(ls *)",
+      "Bash(cat *)"
+    ],
+    "ask": [
+      "Bash(git merge *)",
+      "Bash(git branch -d *)",
+      "Bash(git reset *)",
+      "Bash(git restore *)",
+      "Bash(rm *)"
+    ],
+    "deny": [
+      "Bash(git push *)",
+      "Bash(git push)",
+      "Bash(git remote add *)",
+      "Bash(git remote set-url *)",
+      "Bash(git rebase *)",
+      "Bash(git reset --hard *)",
+      "Bash(git branch -D *)",
+      "Bash(git commit --no-verify *)",
+      "Bash(git commit -n *)",
+      "Bash(git commit --amend *)",
+      "Bash(vercel *)",
+      "Bash(npx vercel *)",
+      "Bash(git commit --trailer *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-git.mjs\"",
+            "timeout": 300
+          }
+        ]
+      }
+    ]
+  }
+}

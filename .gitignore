@@ -42,3 +42,16 @@ next-env.d.ts
 
 # webstorm
 .idea
+# local-only project material
+/docs/private/
+/docs/design/ref/
+
+# claude code personal settings
+/.claude/settings.local.json
+
+# playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/.shots/
