@@ -10,7 +10,8 @@ type LargeProductCardProps = {
   product: Product;
   /**
    * `horizontal`: text on the left from `md` (Kitchen). `vertical`: the same up to `lg`, then
-   * text on top and the card stretches to the height of its row (Home Security).
+   * text on top and the card stretches to the height of its row (Home Security; no fixed
+   * height, so the row's default stretch applies).
    * Below `md` both stack the text above the image.
    */
   orientation: "horizontal" | "vertical";
@@ -32,7 +33,7 @@ export function LargeProductCard({
     <article
       className={cn(
         "relative flex aspect-2/3 flex-col overflow-hidden rounded-card bg-card md:aspect-video md:flex-row md:items-center",
-        vertical && "lg:aspect-auto lg:h-full lg:flex-col lg:items-stretch",
+        vertical && "lg:aspect-auto lg:flex-col lg:items-stretch",
         className,
       )}
     >

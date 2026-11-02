@@ -45,6 +45,40 @@ function LargeHorizontalLayout({ products }: { products: Product[] }) {
 }
 
 /**
+ * Home Security: from `lg`, the large card stands beside a column of two horizontal medium cards
+ * and stretches to its height. On `md` it is the Kitchen layout; any further products follow as
+ * medium rows.
+ */
+function LargeVerticalLayout({ products }: { products: Product[] }) {
+  const [first, ...rest] = products;
+  const beside = rest.slice(0, 2);
+  const below = rest.slice(2);
+
+  return (
+    <div className="flex flex-col gap-cards">
+      <div className="flex flex-col gap-cards lg:flex-row">
+        <LargeProductCard
+          product={first}
+          orientation="vertical"
+          className="lg:flex-1"
+        />
+        <div className="flex flex-col gap-cards md:flex-row lg:flex-1 lg:flex-col">
+          {beside.map((product) => (
+            <MediumProductCard
+              key={product.id}
+              product={product}
+              orientation={beside.length === 1 ? "wide" : "horizontal"}
+              className="md:flex-1"
+            />
+          ))}
+        </div>
+      </div>
+      <MediumRows products={below} />
+    </div>
+  );
+}
+
+/**
  * One section per category (spec → Category section rule). Products come from
  * `getProductsByCategory()` in JSON order; the first one takes the large slot.
  */
@@ -78,7 +112,11 @@ export function CategorySection({ category }: { category: Category }) {
             </Button>
           }
         />
-        <LargeHorizontalLayout products={products} />
+        {category.layout === "large-vertical" ? (
+          <LargeVerticalLayout products={products} />
+        ) : (
+          <LargeHorizontalLayout products={products} />
+        )}
       </Container>
     </Section>
   );
