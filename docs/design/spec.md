@@ -161,7 +161,7 @@ A single leftover card in the last row grows to the full row width (`flex-1`). O
   - 1 card visible plus a peek of the next: slides are `basis-7/8` on base, `basis-11/12` on `md`, `basis-4/5` on `lg` ≈, spaced by `gap-cards`;
   - the peek runs past the content column to the page edge, as in the references: the Embla viewport is not clipped and the section clips at the page edge (`overflow-x-clip`), so the page never scrolls sideways;
   - the product image is the full card height from `md` (full width on base) and zoomed 1.2× ≈, because the product shots carry wide margins in the card colour;
-  - arrows bottom-right (`special` icon buttons), dots from `lg` (6 px dots in 24 px buttons); title ↔ carousel ↔ controls `gap-stack-md`.
+  - arrows bottom-right (`special` icon buttons), dots from `lg` (Assumption 2); title ↔ carousel ↔ controls `gap-stack-md`.
 - **Explore:** square tiles (`pt-card-md pb-card-md px-card-sm`), label below. Four in a row on `md` and `lg`; on base, `flex-wrap` with tiles at `basis-1/2` (2×2).
 - **Banners:** on `md` and `lg`, text on the left and image on the right (2.4:1). On base, text on top, centred, image below; the image changes per breakpoint (art direction, see `components.md`).
 - **Footer:**
@@ -216,7 +216,7 @@ A single leftover card in the last row grows to the full row width (`flex-1`). O
 
 ## Assumptions (copy them into the README)
 1. **Menu:** the Figma shows the full nav on tablet, but the brief requires it to collapse below 1200 → **follow the brief**.
-2. **Carousel dots:** missing in the Figma, required by the brief on desktop → shown from `lg` up, styled with tokens (6 px dots, `bg-border`, active `bg-foreground`).
+2. **Carousel dots:** missing in the Figma, required by the brief on desktop → shown from `lg` up, styled with tokens: 6 px dots in `bg-muted-foreground` (≈7:1 on white; `bg-border` would be ≈1.2:1 and fail WCAG 1.4.11), the current one a 16 px `bg-foreground` pill so it differs by shape too; each dot sits in a 24 px button.
 3. **Assets:** images were meant to be exported from the design file, but export is disabled → assets were requested from the design owner and later delivered as files. The delivered set covers the product shots, the Explore tiles and the category and store banners; the home hero, the Kettle and Indoor Camera large-card photos and the PDP lifestyle and bento images were not included, so those slots keep neutral WebP placeholders of the right ratio, as the brief allows. Banner images belong to the **category** (the files are named per category), not to the product.
 4. **Line-height "Auto"** ≈ 1.35, measured from the height of multi-line layers. **Card radius** ≈ 16, because it can't be read in view-only mode.
 5. **Contrast (WCAG AA, required by the brief):** two Figma interaction colours fail AA.

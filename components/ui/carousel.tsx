@@ -302,13 +302,17 @@ function CarouselDots({ className, ...props }: React.ComponentProps<"div">) {
             aria-label={`Go to slide ${index + 1}`}
             aria-current={current ? "true" : undefined}
             onClick={() => scrollTo(index)}
-            className="flex size-6 items-center justify-center rounded-full"
+            className="group flex size-6 items-center justify-center rounded-full"
           >
+            {/* Inactive dots meet 3:1 against the page (WCAG 1.4.11); the current one is
+                also wider, so it differs by shape as well as colour. */}
             <span
               aria-hidden="true"
               className={cn(
-                "size-1.5 rounded-full transition-colors motion-reduce:transition-none",
-                current ? "bg-foreground" : "bg-border",
+                "h-1.5 rounded-full transition-all motion-reduce:transition-none",
+                current
+                  ? "w-4 bg-foreground"
+                  : "w-1.5 bg-muted-foreground group-hover:bg-foreground",
               )}
             />
           </button>
