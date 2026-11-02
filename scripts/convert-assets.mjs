@@ -43,6 +43,15 @@ function categoryBanner(category, crop) {
   return match;
 }
 
+/**
+ * Crops that replace the "Category=" file for one breakpoint. The Hair Care desktop banner puts
+ * its text over the left half, and only this export leaves that half empty (it is 1200 px wide,
+ * so it is not upscaled). Spec, Assumption 23.
+ */
+const BANNER_OVERRIDES = {
+  "hair-care/lg": "Breakpoint=Desktop.png",
+};
+
 const PRODUCT_WIDTH = 1024;
 const BANNER_WIDTH = { lg: 3200, md: 1620, base: 1080 };
 
@@ -93,7 +102,7 @@ const ASSETS = [
   ].flatMap(([id, name]) =>
     ["lg", "md", "base"].map((crop) => [
       `categories/${id}-banner-${crop}.webp`,
-      categoryBanner(name, crop),
+      BANNER_OVERRIDES[`${id}/${crop}`] ?? categoryBanner(name, crop),
       BANNER_WIDTH[crop],
     ]),
   ),
