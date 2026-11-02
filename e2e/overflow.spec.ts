@@ -8,30 +8,49 @@ test.describe("no horizontal overflow on home", () => {
     test(`${width}px`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 });
       await page.goto("/");
-      await page.evaluate(() => document.fonts.ready);
+      await page.evaluate(async () => {
+        await document.fonts.ready;
+      });
 
       const result = await page.evaluate(() => {
         const root = document.documentElement;
         const viewport = root.clientWidth;
-        // Name the elements that stick out, so a failure points at the cause.
+
+        // Elements inside an ancestor that clips horizontally (e.g. carousel slides
+        // off-screen) cannot widen the page, so they are not reported.
+        const isClipped = (el: Element) => {
+          for (
+            let p = el.parentElement;
+            p && p !== document.body;
+            p = p.parentElement
+          ) {
+            const { overflowX } = getComputedStyle(p);
+            if (overflowX === "hidden" || overflowX === "clip") return true;
+          }
+          return false;
+        };
+
+        // Name the elements that stick out furthest, so a failure points at the cause.
         const offenders = [...document.body.querySelectorAll("*")]
-          .filter((el) => el.getBoundingClientRect().right > viewport + 0.5)
+          .map((el) => ({ el, right: el.getBoundingClientRect().right }))
+          .filter(({ el, right }) => right > viewport + 0.5 && !isClipped(el))
+          .sort((a, b) => b.right - a.right)
           .slice(0, 5)
-          .map((el) => {
+          .map(({ el, right }) => {
             const id = el.id ? `#${el.id}` : "";
             const cls = el
               .getAttribute("class")
               ?.split(" ")
               .slice(0, 3)
               .join(".");
-            return `${el.tagName.toLowerCase()}${id}${cls ? `.${cls}` : ""}`;
+            return `${el.tagName.toLowerCase()}${id}${cls ? `.${cls}` : ""} (right ${Math.round(right)}px)`;
           });
         return { scrollWidth: root.scrollWidth, viewport, offenders };
       });
 
       expect(
         result.scrollWidth,
-        `page is wider than the viewport; widest elements: ${result.offenders.join(", ")}`,
+        `page is wider than the viewport; elements sticking out furthest: ${result.offenders.join(", ")}`,
       ).toBeLessThanOrEqual(result.viewport);
     });
   }
