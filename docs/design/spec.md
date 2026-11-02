@@ -157,10 +157,11 @@ A single leftover card in the last row grows to the full row width (`flex-1`). O
   - logo: `Logo variant="mark"` with `h-5.5` below `md`, and `Logo variant="full"` with `h-6` from `md` ≈ (see `components.md → Logo`).
 - **Hero:** full-bleed, art-directed media (`priority`): 1:2 on base, 3:4 on `md`, 16:9 on `lg` (Assumption 20). It slides under the navbar with `-mt-header` (Assumption 21). The overlay text is centred horizontally and starts below the pill (`pt-header`, then `pt-stack-md`): title and subtitle `gap-2` ≈, then `gap-stack-sm` to the CTA.
 - **Best sellers (home carousel, reference `card-carousel-home.png`):**
-  - `feature` cards with `p-card-lg`, text on the left and image on the right on `lg`;
-  - on base, text above the image, centred;
-  - 1 card visible plus a peek of the next;
-  - arrows bottom-right, dots on `lg`.
+  - `feature` cards with `p-card-lg`: text on the left and image on the right from `md`, in a 5:3 (`md`) / 16:9 (`lg`) card ≈; on base, text above the image, centred, and the card takes its content's height;
+  - 1 card visible plus a peek of the next: slides are `basis-7/8` on base, `basis-11/12` on `md`, `basis-4/5` on `lg` ≈, spaced by `gap-cards`;
+  - the peek runs past the content column to the page edge, as in the references: the Embla viewport is not clipped and the section clips at the page edge (`overflow-x-clip`), so the page never scrolls sideways;
+  - the product image is the full card height from `md` (full width on base) and zoomed 1.2× ≈, because the product shots carry wide margins in the card colour;
+  - arrows bottom-right (`special` icon buttons), dots from `lg` (6 px dots in 24 px buttons); title ↔ carousel ↔ controls `gap-stack-md`.
 - **Explore:** square tiles (`pt-card-md pb-card-md px-card-sm`), label below. Four in a row on `md` and `lg`; on base, `flex-wrap` with tiles at `basis-1/2` (2×2).
 - **Banners:** on `md` and `lg`, text on the left and image on the right (2.4:1). On base, text on top, centred, image below; the image changes per breakpoint (art direction, see `components.md`).
 - **Footer:**
