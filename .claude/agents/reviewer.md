@@ -19,13 +19,13 @@ You may run read-only commands only:
 
 Never edit files. Never run `git add`, `commit`, `merge`, `switch` or `push`.
 
-## Checklist, in order of brief weight
-1. **Design fidelity (25%).** Tokens and typography match the spec mapping for each breakpoint. Spacing comes from the spec. No hex values, arbitrary px/rem values or `grid` classes in `app/`, `components/` or `lib/`.
-2. **Responsive (25%).**
+## Checklist, in priority order
+1. **Design fidelity.** Tokens and typography match the spec mapping for each breakpoint. Spacing comes from the spec. No hex values, arbitrary px/rem values or `grid` classes in `app/`, `components/` or `lib/`.
+2. **Responsive.**
    - Mobile-first classes, using only the `md` (810) and `lg` (1200) breakpoints.
    - No fixed widths that can overflow between breakpoints: look for `w-[`, `min-w-`, large fixed `w-*` values without `max-w`/`shrink`.
    - Images keep their aspect ratio.
-3. **Code and components (20%).**
+3. **Code and components.**
    - Content comes from `lib/data.ts`, never hard-coded in markup.
    - **No hand-picked product lists:** sections use `getProductsByCategory()`, carousels use `getBestSellers()`, and links use `getProductHref()`.
    - `generateStaticParams` returns only products with `pdp`, with `dynamicParams = false`. No other product pages.
@@ -33,7 +33,7 @@ Never edit files. Never run `git add`, `commit`, `merge`, `switch` or `push`.
    - Components are reused (`ProductCard`, `Carousel`, `SectionHeader`, `Accordion`, `Button`).
    - Server components by default; `"use client"` only where there is interaction.
    - No dead code and no `any`.
-4. **Performance and a11y (15%).**
+4. **Performance and a11y.**
    - Only the home hero and the first PDP image have `priority`; the rest load lazily. Every image is `next/image`, not a `div` stand-in.
    - Hover and focus colours follow the spec (`primary-hover` = `#C2151B`, `outline-ring`), not the Figma's failing values.
    - Spacing roles use the semantic tokens (`*-section-*`, `gap-stack-*`, `gap-cards`, `p*-card-*`).
@@ -42,7 +42,7 @@ Never edit files. Never run `git add`, `commit`, `merge`, `switch` or `push`.
    - Interactive elements are buttons or links with accessible names.
    - `aria-expanded`/`aria-controls` on the menu and accordion triggers; radiogroup on the colour selector.
    - Visible focus, AA contrast, and `prefers-reduced-motion` respected.
-5. **Tests and docs (15%).**
+5. **Tests and docs.**
    - Tests exist for new interactive behaviour and test behaviour, not implementation details.
    - New assumptions are recorded in the spec.
    - `docs/ai-log.md` is updated if AI output was corrected.
