@@ -12,6 +12,7 @@
     "columns": [
       {
         "title": "Our Products",
+        "twoColumns": true,
         "links": [
           { "label": "Kitchen", "href": "/#kitchen" },
           { "label": "Home Security", "href": "/#home-security" },

@@ -37,6 +37,8 @@ export type HomeSection =
 export type FooterColumn = {
   title: string;
   links: NavLink[];
+  /** Split the links into two columns (filled top to bottom) from `md`. */
+  twoColumns?: boolean;
 };
 
 export type Navigation = {
