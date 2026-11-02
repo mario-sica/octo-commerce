@@ -1,6 +1,7 @@
+import { CategorySection } from "@/components/home/category-section";
 import { Hero } from "@/components/home/hero";
 import { HomeBestSellers } from "@/components/home/home-best-sellers";
-import { getHomeSections } from "@/lib/data";
+import { getCategories, getHomeSections } from "@/lib/data";
 
 /** Home: the sections listed in data/home.json, in order. Section types are added as they are built. */
 export default function Home() {
@@ -11,6 +12,10 @@ export default function Home() {
         return <Hero key={key} {...section} />;
       case "best-sellers":
         return <HomeBestSellers key={key} title={section.title} />;
+      case "categories":
+        return getCategories().map((category) => (
+          <CategorySection key={category.id} category={category} />
+        ));
       default:
         return null;
     }
