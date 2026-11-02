@@ -25,18 +25,14 @@ export function SiteFooter() {
             {footer.columns.map((column) => {
               const headingId = `footer-${column.title.toLowerCase().replace(/\s+/g, "-")}`;
               return (
-                <div
-                  key={column.title}
-                  className="flex flex-col gap-8 md:gap-6"
-                >
+                <div key={column.title} className="flex flex-col gap-stack-sm">
                   <h2 id={headingId} className="text-body font-bold">
                     {column.title}
                   </h2>
                   <ul
                     aria-labelledby={headingId}
                     className={cn(
-                      "md:gap-x-10",
-                      column.twoColumns && "md:w-max md:columns-2",
+                      column.twoColumns && "md:w-max md:columns-2 md:gap-x-10",
                     )}
                   >
                     {column.links.map((link) => (
