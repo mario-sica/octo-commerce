@@ -17,7 +17,7 @@ A demo of two pages: the **Homepage** and the **Product Detail Page** (`/product
 | `pnpm gate` | typecheck, lint, token check, build. **This runs automatically before every commit.** |
 | `pnpm test:unit` | Vitest |
 | `pnpm test:e2e` | Playwright: home → PDP flow, plus the no-overflow check at 7 widths |
-| `pnpm test` | unit and e2e together; the single command the brief asks for |
+| `pnpm test` | unit and e2e together; the single test command |
 | `pnpm shots` | screenshots of both pages at 375, 810 and 1200 px into `.shots/` |
 
 ## Git workflow (enforced by `.claude/hooks/guard-git.mjs`)
