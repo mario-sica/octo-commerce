@@ -69,6 +69,11 @@ export type Product = {
   shortDescription: string;
   /** Product shot. */
   image: string;
+  /**
+   * Lifestyle photo used as the full-image background when the product takes the large card slot.
+   * Without it, the large card shows the product shot instead.
+   */
+  lifestyleImage?: string;
   /** Banner copy, when it differs from `shortDescription` (banner images live on the category). */
   bannerSubtitle?: string;
   bestSeller: boolean;
