@@ -1,13 +1,17 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@/lib/utils";
 import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from "embla-carousel-react";
-
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+/**
+ * Shared carousel primitive (shadcn `carousel` on Embla). Both best-sellers carousels build on it;
+ * the controls — dots from `lg` and the arrow pair — sit in one row below the slides.
+ */
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -26,8 +30,11 @@ type CarouselContextProps = {
   api: ReturnType<typeof useEmblaCarousel>[1];
   scrollPrev: () => void;
   scrollNext: () => void;
+  scrollTo: (index: number) => void;
   canScrollPrev: boolean;
   canScrollNext: boolean;
+  selectedIndex: number;
+  snapCount: number;
 } & CarouselProps;
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null);
@@ -58,6 +65,7 @@ function Carousel({
     },
     plugins,
   );
+
   // Read Embla's state as an external store, so it updates on its own events.
   const subscribe = React.useCallback(
     (onChange: () => void) => {
@@ -79,6 +87,16 @@ function Carousel({
     () => api?.canScrollNext() ?? false,
     () => false,
   );
+  const selectedIndex = React.useSyncExternalStore(
+    subscribe,
+    () => api?.selectedScrollSnap() ?? 0,
+    () => 0,
+  );
+  const snapCount = React.useSyncExternalStore(
+    subscribe,
+    () => api?.scrollSnapList().length ?? 0,
+    () => 0,
+  );
 
   const scrollPrev = React.useCallback(() => {
     api?.scrollPrev();
@@ -87,6 +105,13 @@ function Carousel({
   const scrollNext = React.useCallback(() => {
     api?.scrollNext();
   }, [api]);
+
+  const scrollTo = React.useCallback(
+    (index: number) => {
+      api?.scrollTo(index);
+    },
+    [api],
+  );
 
   const handleKeyDown = React.useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -116,8 +141,11 @@ function Carousel({
           orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
         scrollPrev,
         scrollNext,
+        scrollTo,
         canScrollPrev,
         canScrollNext,
+        selectedIndex,
+        snapCount,
       }}
     >
       <div
@@ -134,19 +162,29 @@ function Carousel({
   );
 }
 
-function CarouselContent({ className, ...props }: React.ComponentProps<"div">) {
+type CarouselContentProps = React.ComponentProps<"div"> & {
+  /** Classes for the Embla viewport, e.g. `overflow-visible` to let slides peek past it. */
+  viewportClassName?: string;
+};
+
+/** The slide track. Slides are spaced by `gap-cards` (negative margin + slide padding). */
+function CarouselContent({
+  className,
+  viewportClassName,
+  ...props
+}: CarouselContentProps) {
   const { carouselRef, orientation } = useCarousel();
 
   return (
     <div
       ref={carouselRef}
-      className="overflow-hidden"
+      className={cn("overflow-hidden", viewportClassName)}
       data-slot="carousel-content"
     >
       <div
         className={cn(
           "flex",
-          orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col",
+          orientation === "horizontal" ? "-ml-cards" : "-mt-cards flex-col",
           className,
         )}
         {...props}
@@ -165,7 +203,7 @@ function CarouselItem({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="carousel-item"
       className={cn(
         "min-w-0 shrink-0 grow-0 basis-full",
-        orientation === "horizontal" ? "pl-4" : "pt-4",
+        orientation === "horizontal" ? "pl-cards" : "pt-cards",
         className,
       )}
       {...props}
@@ -173,63 +211,112 @@ function CarouselItem({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
+/** Previous-slide arrow; disabled at the start. */
 function CarouselPrevious({
   className,
   variant = "special",
   size = "icon",
   ...props
 }: React.ComponentProps<typeof Button>) {
-  const { orientation, scrollPrev, canScrollPrev } = useCarousel();
+  const { scrollPrev, canScrollPrev } = useCarousel();
 
   return (
     <Button
       data-slot="carousel-previous"
       variant={variant}
       size={size}
-      className={cn(
-        "absolute touch-manipulation rounded-full",
-        orientation === "horizontal"
-          ? "inset-y-0 -left-12 my-auto"
-          : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
-        className,
-      )}
+      className={cn("touch-manipulation", className)}
       disabled={!canScrollPrev}
       onClick={scrollPrev}
+      aria-label="Previous slide"
       {...props}
     >
-      <ChevronLeftIcon />
-      <span className="sr-only">Previous slide</span>
+      <ChevronLeft size={24} aria-hidden="true" />
     </Button>
   );
 }
 
+/** Next-slide arrow; disabled at the end. */
 function CarouselNext({
   className,
   variant = "special",
   size = "icon",
   ...props
 }: React.ComponentProps<typeof Button>) {
-  const { orientation, scrollNext, canScrollNext } = useCarousel();
+  const { scrollNext, canScrollNext } = useCarousel();
 
   return (
     <Button
       data-slot="carousel-next"
       variant={variant}
       size={size}
-      className={cn(
-        "absolute touch-manipulation rounded-full",
-        orientation === "horizontal"
-          ? "inset-y-0 -right-12 my-auto"
-          : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
-        className,
-      )}
+      className={cn("touch-manipulation", className)}
       disabled={!canScrollNext}
       onClick={scrollNext}
+      aria-label="Next slide"
       {...props}
     >
-      <ChevronRightIcon />
-      <span className="sr-only">Next slide</span>
+      <ChevronRight size={24} aria-hidden="true" />
     </Button>
+  );
+}
+
+/**
+ * Pagination dots, one per scroll snap, shown from `lg` (spec, Assumption 2). Each 6 px dot sits
+ * in a 24 px button so the touch target stays usable.
+ */
+function CarouselDots({ className, ...props }: React.ComponentProps<"div">) {
+  const { snapCount, selectedIndex, scrollTo } = useCarousel();
+  if (snapCount < 2) return null;
+
+  return (
+    <div
+      data-slot="carousel-dots"
+      className={cn("hidden items-center lg:flex", className)}
+      {...props}
+    >
+      {Array.from({ length: snapCount }, (_, index) => {
+        const current = index === selectedIndex;
+        return (
+          <button
+            key={index}
+            type="button"
+            aria-label={`Go to slide ${index + 1}`}
+            aria-current={current ? "true" : undefined}
+            onClick={() => scrollTo(index)}
+            className="flex size-6 items-center justify-center rounded-full"
+          >
+            <span
+              aria-hidden="true"
+              className={cn(
+                "size-1.5 rounded-full transition-colors motion-reduce:transition-none",
+                current ? "bg-foreground" : "bg-border",
+              )}
+            />
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+/** The row below the slides: dots on the left (from `lg`), the arrow pair bottom-right. */
+function CarouselControls({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="carousel-controls"
+      className={cn("flex items-center justify-between gap-4", className)}
+      {...props}
+    >
+      <CarouselDots />
+      <div className="ml-auto flex items-center gap-2">
+        <CarouselPrevious />
+        <CarouselNext />
+      </div>
+    </div>
   );
 }
 
@@ -240,5 +327,7 @@ export {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
+  CarouselDots,
+  CarouselControls,
   useCarousel,
 };
