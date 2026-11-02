@@ -5,7 +5,7 @@
  * Output: public/images/{products,categories,store}/ (committed).
  *
  * Every output is listed once in ASSETS below: where it comes from and its maximum width.
- * Images are never upscaled; product shots keep their transparency.
+ * Images are never upscaled. Product shots are matched to the card colour (see below).
  * See docs/content.md → Images for where each file is used.
  */
 import { existsSync, mkdirSync, readdirSync, readFileSync } from "node:fs";
