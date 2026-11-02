@@ -16,9 +16,18 @@ const EXT = /\.(tsx?|jsx?|css|mdx)$/;
 const IGNORE = [/^app\/globals\.css$/, /\.test\.tsx?$/, /\.spec\.tsx?$/];
 
 const RULES = [
-  { name: "hard-coded colour", re: /#[0-9a-fA-F]{3,8}\b|\b(?:rgba?|hsla?|oklch)\(/g },
-  { name: "arbitrary length value", re: /\b[\w:-]+-\[\s*-?[\d.]+(?:px|rem|em|vh|vw|%)\s*\]/g },
-  { name: "CSS grid (flexbox only)", re: /(?<![\w-])(?:inline-)?grid(?:-(?:cols|rows|flow)-[\w[\]/.-]+)?(?![\w-])|\bdisplay:\s*grid/g },
+  {
+    name: "hard-coded colour",
+    re: /#[0-9a-fA-F]{3,8}\b|\b(?:rgba?|hsla?|oklch)\(/g,
+  },
+  {
+    name: "arbitrary length value",
+    re: /\b[\w:-]+-\[\s*-?[\d.]+(?:px|rem|em|vh|vw|%)\s*\]/g,
+  },
+  {
+    name: "CSS grid (flexbox only)",
+    re: /(?<![\w-])(?:inline-)?grid(?:-(?:cols|rows|flow)-[\w[\]/.-]+)?(?![\w-])|\bdisplay:\s*grid/g,
+  },
 ];
 
 const violations = [];
@@ -27,7 +36,11 @@ for (const dir of DIRS) walk(join(ROOT, dir));
 
 function walk(p) {
   let st;
-  try { st = statSync(p); } catch { return; }
+  try {
+    st = statSync(p);
+  } catch {
+    return;
+  }
   if (st.isDirectory()) {
     for (const f of readdirSync(p)) walk(join(p, f));
     return;
