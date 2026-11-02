@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { LargeProductCard } from "@/components/cards/large-product-card";
 import { MediumProductCard } from "@/components/cards/medium-product-card";
+import { SmallProductCard } from "@/components/cards/small-product-card";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { SectionHeader } from "@/components/layout/section-header";
@@ -78,6 +79,31 @@ function LargeVerticalLayout({ products }: { products: Product[] }) {
   );
 }
 
+/** Accessories: small cards in rows of 3 from `md`. */
+function SmallLayout({ products }: { products: Product[] }) {
+  return (
+    <div className="flex flex-col gap-cards">
+      {rows(products, 3).map((row) => (
+        <div key={row[0].id} className="flex flex-col gap-cards md:flex-row">
+          {row.map((product) => (
+            <SmallProductCard
+              key={product.id}
+              product={product}
+              className="md:flex-1"
+            />
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+const LAYOUTS = {
+  "large-horizontal": LargeHorizontalLayout,
+  "large-vertical": LargeVerticalLayout,
+  small: SmallLayout,
+} satisfies Record<Category["layout"], unknown>;
+
 /**
  * One section per category (spec → Category section rule). Products come from
  * `getProductsByCategory()` in JSON order; the first one takes the large slot.
@@ -88,13 +114,16 @@ export function CategorySection({ category }: { category: Category }) {
   if (products.length < 2) return null;
 
   const headingId = `${category.id}-title`;
+  const Layout = LAYOUTS[category.layout];
+  // Spec → Section spacing: the small-card section (Accessories) uses `py-section-md`.
+  const small = category.layout === "small";
 
   return (
     <Section
       id={category.id}
       labelledBy={headingId}
-      top="sm"
-      bottom="lg"
+      top={small ? "md" : "sm"}
+      bottom={small ? "md" : "lg"}
       className="scroll-mt-header"
     >
       <Container className="flex flex-col gap-stack-xl">
@@ -112,11 +141,7 @@ export function CategorySection({ category }: { category: Category }) {
             </Button>
           }
         />
-        {category.layout === "large-vertical" ? (
-          <LargeVerticalLayout products={products} />
-        ) : (
-          <LargeHorizontalLayout products={products} />
-        )}
+        <Layout products={products} />
       </Container>
     </Section>
   );
