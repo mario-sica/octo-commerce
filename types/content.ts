@@ -1,3 +1,5 @@
+import type { CategoryId } from "@/types/catalog";
+
 export type NavLink = {
   label: string;
   href: string;
@@ -14,7 +16,12 @@ export type HomeSection =
   | { type: "best-sellers"; title: string }
   /** One category section per category, in `categories.json` order. */
   | { type: "categories" }
-  | { type: "explore"; title: string }
+  | {
+      type: "explore";
+      title: string;
+      /** Tile order, which differs from the section order in `categories.json`. */
+      categoryIds: CategoryId[];
+    }
   | {
       type: "store-banner";
       title: string;

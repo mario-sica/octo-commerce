@@ -135,6 +135,17 @@ describe("content data integrity", () => {
     );
   });
 
+  it("lists every category exactly once in the explore tiles", async () => {
+    const data = await import("@/lib/data");
+    const explore = data.getHomeSections().find((s) => s.type === "explore");
+    const categoryIds = data.getCategories().map((c) => c.id);
+
+    expect(explore?.categoryIds).toHaveLength(categoryIds.length);
+    expect([...(explore?.categoryIds ?? [])].sort()).toEqual(
+      [...categoryIds].sort(),
+    );
+  });
+
   it("references only image files that exist in public/", async () => {
     const data = await import("@/lib/data");
     const json = JSON.stringify([

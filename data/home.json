@@ -7,7 +7,11 @@
   },
   { "type": "best-sellers", "title": "Best sellers" },
   { "type": "categories" },
-  { "type": "explore", "title": "Explore all categories" },
+  {
+    "type": "explore",
+    "title": "Explore all categories",
+    "categoryIds": ["kitchen", "home-security", "hair-care", "accessories"]
+  },
   {
     "type": "store-banner",
     "title": "Find us at",
