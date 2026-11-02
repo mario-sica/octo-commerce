@@ -33,7 +33,7 @@ export function Hero({ productId, subtitle, image, imageMobile }: HeroProps) {
 
       <div className="absolute inset-x-0 top-0 pt-header">
         <Container className="flex flex-col items-center gap-stack-sm pt-stack-md text-center">
-          <div className="flex max-w-3xl flex-col gap-2">
+          <div className="flex flex-col gap-2">
             <h1 id="hero-title" className="text-h2-s md:text-h2-m lg:text-h2-l">
               {product.name}
             </h1>
