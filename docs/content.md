@@ -6,8 +6,8 @@ Figma export is disabled. Assets have been requested from the design owner; unti
 | File | Ratio | Used for |
 |---|---|---|
 | `square.webp` | 1:1 | product shots, category tiles, medium and small card images |
-| `portrait.webp` | 3:4 | PDP product image, lifestyle images, large vertical card |
-| `landscape.webp` | 16:9 | hero, large horizontal card |
+| `portrait.webp` | 3:4 | PDP product image, lifestyle images, large vertical card, hero below `lg` |
+| `landscape.webp` | 16:9 | hero from `lg`, large horizontal card |
 | `banner.webp` | 12:5 (2.4:1) | product and store banners on `md`/`lg`; wide bento cards |
 | `banner-portrait.webp` | 4:5 | banners on mobile |
 
@@ -69,7 +69,7 @@ The Hair Care tagline is an assumption: it is borrowed from the design system's 
 The Figma uses slightly different copy for the same product in different places; one `shortDescription` per product is kept. The banner subtitle is a separate optional field, `bannerSubtitle`, because the Figma banner uses different text.
 
 ## Homepage (`data/home.json`)
-1. **Hero:** product `octopus-ionic-hair-dryer`. Title "Octopus Ionic Hair Dryer", subtitle "A powerful ionic hair dryer with a 110,000 RPM motor for fast drying and less frizz", CTA "Learn more". **Same text on every breakpoint.** 16:9 placeholder image with `priority`.
+1. **Hero:** product `octopus-ionic-hair-dryer`. Title "Octopus Ionic Hair Dryer", subtitle "A powerful ionic hair dryer with a 110,000 RPM motor for fast drying and less frizz", CTA "Learn more". **Same text on every breakpoint.** Placeholder images with `priority`: `portrait.webp` below `lg` (1:2 box on base, 3:4 on `md`), `landscape.webp` from `lg` (16:9).
 2. Best sellers: `feature` cards.
 3. Categories: one section per category, in `categories.json` order.
 4. Explore all categories: Kitchen, Home Security, Hair Care, Accessories.

@@ -89,8 +89,8 @@ This works for `MapPin`, `TriangleAlert` and `CircleAlert`, because in all three
 | `Logo` | server | header, mobile menu, footer | variants `full`, `mark`, `stacked`; see the Logo section |
 | `SiteHeader` | server + client leaf | both pages | sticky navbar pill with `Logo` (`mark` below `md`, `full` from `md`); `MobileMenu` (Sheet) is the client leaf |
 | `SiteFooter` | server | both pages | from `data/navigation.json`; `Logo variant="stacked"` |
-| `Hero` | server | home | 16:9 media with `priority` and centred overlay text on every breakpoint |
-| `ProductImage` | server | everywhere | **always** `next/image` (`fill` + `sizes`) inside an `aspect-*` box with `bg-card` and `rounded-card`. `priority` only when the `priority` prop is set. |
+| `ProductImage` | server | everywhere | **always** `next/image` through `getImageProps` (`fill` + `sizes` + `object-cover`) inside a fixed `aspect-*` box. The caller adds `bg-card` and `rounded-card` through `className` where the design has them (cards, PDP), not on the full-bleed hero. Optional `md`/`lg` sources make a `<picture>` for art direction; `<source media>` reads `lib/breakpoints.ts`, which a test keeps in sync with `globals.css`. `priority`, only on the home hero and the first PDP image, means `loading="eager"` + `fetchPriority="high"` (Next 16 deprecates `priority`). |
+| `Hero` | server | home | art-directed media (1:2 / 3:4 / 16:9) with `priority`, under the navbar via `-mt-header`, and centred overlay text on every breakpoint |
 | `ProductCard` | server | home and PDP | variants `feature` (home carousel), `large`, `medium`, `small`, `compact` (PDP carousel); `orientation` for large and medium. "Learn more" uses `getProductHref(product)`. |
 | `Carousel` (shadcn + `CarouselDots`) | client | home and PDP | the **shared primitive**: Embla, arrows in a bottom-right row and disabled at the edges, dots from `lg`. Both best-sellers carousels are built on it. |
 | `HomeBestSellers` | client | home | **home carousel:** `feature` cards, one visible plus a peek of the next. Reference `card-carousel-home.png`. |
@@ -142,11 +142,11 @@ export type Product = {
 };
 
 export type HomeSection =
-  | { type: "hero"; productId: string }
-  | { type: "best-sellers" }
+  | { type: "hero"; productId: string; subtitle: string; image: string; imageMobile: string }
+  | { type: "best-sellers"; title: string }
   | { type: "categories" }            // one CategorySection per category, categories.json order
-  | { type: "explore" }
-  | { type: "store-banner" };
+  | { type: "explore"; title: string; categoryIds: CategoryId[] }   // tile order
+  | { type: "store-banner"; title: string; wordmark: string; cta: NavLink; image: string; imageMobile: string };
 ```
 
 ## `lib/data.ts`

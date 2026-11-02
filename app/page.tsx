@@ -1,14 +1,14 @@
-import { Container } from "@/components/layout/container";
-import { Section } from "@/components/layout/section";
+import { Hero } from "@/components/home/hero";
+import { getHomeSections } from "@/lib/data";
 
+/** Home: the sections listed in data/home.json, in order. Section types are added as they are built. */
 export default function Home() {
-  return (
-    <Section labelledBy="home-title" top="md" bottom="lg">
-      <Container>
-        <h1 id="home-title" className="text-h2-s lg:text-h1-l">
-          Octopus
-        </h1>
-      </Container>
-    </Section>
-  );
+  return getHomeSections().map((section) => {
+    switch (section.type) {
+      case "hero":
+        return <Hero key={section.type} {...section} />;
+      default:
+        return null;
+    }
+  });
 }

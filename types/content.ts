@@ -11,7 +11,10 @@ export type HomeSection =
       /** The product the hero presents; its name is the hero title. */
       productId: string;
       subtitle: string;
+      /** Wide image (from `lg`, 16:9). */
       image: string;
+      /** Portrait image (below `lg`: 1:2 on base, 3:4 on `md`). */
+      imageMobile: string;
     }
   | { type: "best-sellers"; title: string }
   /** One category section per category, in `categories.json` order. */
