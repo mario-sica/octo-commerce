@@ -52,6 +52,7 @@ export function MobileMenu({ links, cta }: MobileMenuProps) {
         </Button>
       </Collapsible.Trigger>
 
+      {/* overflow-hidden is needed for the height animation, so focus rings inside are drawn inset. */}
       <Collapsible.Content className="basis-full overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down motion-reduce:animate-none">
         <nav aria-label="Main" className="flex flex-col gap-1 pt-3">
           <ul className="flex flex-col">
@@ -60,14 +61,14 @@ export function MobileMenu({ links, cta }: MobileMenuProps) {
                 <Link
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="flex h-11 items-center text-cta text-subtle-foreground hover:text-foreground"
+                  className="flex h-11 items-center rounded-card text-cta text-subtle-foreground hover:text-foreground focus-visible:-outline-offset-2"
                 >
                   {link.label}
                 </Link>
               </li>
             ))}
           </ul>
-          <Button asChild className="w-full">
+          <Button asChild className="w-full focus-visible:-outline-offset-2">
             <Link href={cta.href} onClick={() => setOpen(false)}>
               {cta.label}
             </Link>
