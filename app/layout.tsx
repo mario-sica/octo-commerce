@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { SiteHeader } from "@/components/layout/site-header";
 import "./globals.css";
 
 const satoshi = localFont({
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Skip to content
         </a>
+        <SiteHeader />
         <main
           id="main-content"
           tabIndex={-1}
