@@ -5,7 +5,7 @@
     "name": "Octopus Kettle 1.7 L",
     "category": "kitchen",
     "shortDescription": "A 1.7 L kettle that boils fast on 1800W, with a body that stays cool to the touch",
-    "image": "/images/placeholders/square.webp",
+    "image": "/images/products/octopus-kettle-1-7l.webp",
     "bestSeller": true,
     "bestSellerRank": 5
   },
@@ -15,7 +15,7 @@
     "name": "Octopus Blender",
     "category": "kitchen",
     "shortDescription": "A portable blender that blends straight into a cup you can take with you",
-    "image": "/images/placeholders/square.webp",
+    "image": "/images/products/octopus-blender.webp",
     "bestSeller": true,
     "bestSellerRank": 4
   },
@@ -25,7 +25,7 @@
     "name": "Octopus Countertop Blender",
     "category": "kitchen",
     "shortDescription": "A powerful blender that crushes ice and blends smooth with seven presets",
-    "image": "/images/placeholders/square.webp",
+    "image": "/images/products/octopus-countertop-blender.webp",
     "bestSeller": false,
     "pdp": {
       "description": "The Octopus Countertop Blender has the power for daily smoothies and tougher jobs alike. A 1500W motor and seven presets handle most of the work, and a one-touch clean cycle rinses the jug so you don't have to.",
@@ -83,7 +83,7 @@
     "name": "Octopus Air Fryer 5.7 L",
     "category": "kitchen",
     "shortDescription": "A 5.7 L air fryer that cooks meals quickly and evenly, with 2200W and dual heaters",
-    "image": "/images/placeholders/square.webp",
+    "image": "/images/products/octopus-air-fryer-5-7l.webp",
     "bestSeller": true,
     "bestSellerRank": 1
   },
@@ -93,9 +93,7 @@
     "name": "Octopus Ionic Hair Dryer",
     "category": "hair-care",
     "shortDescription": "An ionic hair dryer with a 110,000 RPM motor for fast drying and less frizz",
-    "image": "/images/placeholders/square.webp",
-    "bannerImage": "/images/placeholders/banner.webp",
-    "bannerImageMobile": "/images/placeholders/banner-portrait.webp",
+    "image": "/images/products/octopus-ionic-hair-dryer.webp",
     "bannerSubtitle": "Dry your hair faster and with less frizz with this powerful ionic hair dryer",
     "bestSeller": true,
     "bestSellerRank": 3
@@ -106,7 +104,7 @@
     "name": "Octopus Indoor Camera",
     "category": "home-security",
     "shortDescription": "A 2K indoor camera that pans to cover the whole room and tracks movement as it happens",
-    "image": "/images/placeholders/square.webp",
+    "image": "/images/products/octopus-indoor-camera.webp",
     "bestSeller": true,
     "bestSellerRank": 2
   },
@@ -116,7 +114,7 @@
     "name": "Octopus Outdoor Camera",
     "category": "home-security",
     "shortDescription": "An outdoor camera that runs on solar power and records in 3K",
-    "image": "/images/placeholders/square.webp",
+    "image": "/images/products/octopus-outdoor-camera.webp",
     "bestSeller": false
   },
   {
@@ -125,7 +123,7 @@
     "name": "Octopus Video Doorbell",
     "category": "home-security",
     "shortDescription": "A 2K video doorbell that lets you answer from your phone",
-    "image": "/images/placeholders/square.webp",
+    "image": "/images/products/octopus-video-doorbell.webp",
     "bestSeller": false
   },
   {
@@ -134,7 +132,7 @@
     "name": "Octopus Power Bank 10,000 mAh",
     "category": "accessories",
     "shortDescription": "A slim power bank with the USB-C cable already built in",
-    "image": "/images/placeholders/square.webp",
+    "image": "/images/products/octopus-power-bank-10000.webp",
     "bestSeller": false
   },
   {
@@ -143,7 +141,7 @@
     "name": "Octopus Power Board with USB Charging",
     "category": "accessories",
     "shortDescription": "A compact power board with four sockets and four USB ports",
-    "image": "/images/placeholders/square.webp",
+    "image": "/images/products/octopus-power-board-usb.webp",
     "bestSeller": false
   },
   {
@@ -152,7 +150,7 @@
     "name": "Octopus 3-in-1 Magnetic Charging Station",
     "category": "accessories",
     "shortDescription": "A Qi2 stand that charges your phone, watch and earbuds at the same time",
-    "image": "/images/placeholders/square.webp",
+    "image": "/images/products/octopus-3-in-1-charging-station.webp",
     "bestSeller": false
   }
 ]

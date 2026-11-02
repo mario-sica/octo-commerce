@@ -104,7 +104,7 @@ This works for `MapPin`, `TriangleAlert` and `CircleAlert`, because in all three
 | `ProductSpecs` | client | PDP | Accordion from `product.pdp.specs`, plus "Downloads" as the last item |
 | `Reveal` | client | sections | IntersectionObserver plus `animate-reveal`; plays once; reduced-motion safe; never on LCP elements |
 
-**Art direction for banners.** Use `getImageProps()` from `next/image` with two sources inside `<picture>`: the portrait image below `md`, 2.4:1 from `md`. This keeps responsive `srcset` and lazy loading.
+**Art direction for banners.** Use `ProductImage` with `md` and `lg` sources (`getImageProps()` inside `<picture>`): the category banner has one crop per breakpoint (`banner.base`, `banner.md`, `banner.lg`), the store banner a wide image from `lg` and a taller one below. This keeps responsive `srcset` and lazy loading. Box ratios: see spec, Assumption 23.
 
 ## Data model (`types/`)
 It adapts the brief's sample shape, which the brief allows. `image` stays a required `string`, as in the brief, because placeholders are real files.
@@ -113,10 +113,13 @@ It adapts the brief's sample shape, which the brief allows. `image` stays a requ
 export type CategoryId = "kitchen" | "home-security" | "hair-care" | "accessories";
 export type CategoryLayout = "large-horizontal" | "large-vertical" | "small";
 
+export type CategoryBanner = { lg: string; md: string; base: string };   // one crop per breakpoint
+
 export type Category = {
   id: CategoryId; name: string; tagline: string;
   layout: CategoryLayout;   // used when the category has ≥ 2 products
   tileImage: string;        // Explore tile
+  banner: CategoryBanner;   // shown when the category has exactly one product
 };
 
 export type Colour = { name: string; hex: string };
@@ -133,9 +136,8 @@ export type ProductDetail = {
 export type Product = {
   id: string; slug: string; name: string; category: CategoryId;
   shortDescription: string;
-  image: string;                      // product shot (placeholder until assets arrive)
-  bannerImage?: string;               // used when the product is shown as a category banner
-  bannerSubtitle?: string;            // banner copy, when the Figma uses different text from shortDescription
+  image: string;                      // product shot (public/images/products/<slug>.webp)
+  bannerSubtitle?: string;            // banner copy, when the Figma uses different text from shortDescription; the banner images live on the category
   bestSeller: boolean;
   bestSellerRank?: number;
   pdp?: ProductDetail;                // present ⇔ the product has a PDP

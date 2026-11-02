@@ -4,6 +4,16 @@ export type CategoryId =
 /** How a category with two or more products lays out its cards. */
 export type CategoryLayout = "large-horizontal" | "large-vertical" | "small";
 
+/** Art-directed banner images: one crop per breakpoint. */
+export type CategoryBanner = {
+  /** From `lg` (≥ 1200). */
+  lg: string;
+  /** From `md` (810–1199). */
+  md: string;
+  /** Below `md`. */
+  base: string;
+};
+
 export type Category = {
   id: CategoryId;
   name: string;
@@ -12,6 +22,8 @@ export type Category = {
   layout: CategoryLayout;
   /** Image for the "Explore all categories" tile. */
   tileImage: string;
+  /** Shown when the category has exactly one product (the product banner). */
+  banner: CategoryBanner;
 };
 
 export type Colour = {
@@ -57,11 +69,7 @@ export type Product = {
   shortDescription: string;
   /** Product shot. */
   image: string;
-  /** Wide image used when the product is shown as a category banner (from `md`). */
-  bannerImage?: string;
-  /** Portrait image used for the banner below `md`. */
-  bannerImageMobile?: string;
-  /** Banner copy, when it differs from `shortDescription`. */
+  /** Banner copy, when it differs from `shortDescription` (banner images live on the category). */
   bannerSubtitle?: string;
   bestSeller: boolean;
   /** Order in both best-sellers carousels; best sellers without a rank go last. */
