@@ -1,6 +1,6 @@
 # AI usage log
 
-The README's "How I used AI" section is built from this file. Add one row per correction (`/ai-log`). Be specific and honest.
+The README's "How AI tools were used" section is built from this file. Add one row per correction (`/ai-log`). Be specific and honest.
 
 ## Tools
 - **Claude Code**: implementation, tests, and review through the `reviewer` subagent.
