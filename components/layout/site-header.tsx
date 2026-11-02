@@ -4,13 +4,17 @@ import { MobileMenu } from "@/components/layout/mobile-menu";
 import { Button } from "@/components/ui/button";
 import { getNavigation } from "@/lib/data";
 
-/** Sticky navbar pill. The full nav shows from `lg`; below it, the mobile menu takes over. */
+/**
+ * Sticky navbar pill. The full nav shows from `lg`; below it, the mobile menu takes over and
+ * expands the pill downwards. The header keeps a fixed `h-header`, so the open pill overflows
+ * over the page instead of pushing it down.
+ */
 export function SiteHeader() {
   const { header } = getNavigation();
 
   return (
-    <header className="sticky top-0 z-50 px-gutter py-4">
-      <div className="mx-auto flex h-16 max-w-content items-center justify-between rounded-pill bg-navbar py-3 pr-3 pl-5 shadow-navbar backdrop-blur-navbar">
+    <header className="sticky top-0 z-50 h-header px-gutter pt-4">
+      <div className="mx-auto flex min-h-16 max-w-content flex-wrap items-center justify-between rounded-pill bg-navbar py-3 pr-3 pl-5 shadow-navbar backdrop-blur-navbar">
         <Link
           href="/"
           aria-label="Octopus — home"
