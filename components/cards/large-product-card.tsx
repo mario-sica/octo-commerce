@@ -41,6 +41,10 @@ export function LargeProductCard({
         <ProductImage
           src={product.lifestyleImage}
           ratio="landscape"
+          {...(vertical &&
+            product.lifestyleImageTall && {
+              lg: { src: product.lifestyleImageTall, ratio: "portrait" },
+            })}
           alt=""
           sizes={`${minWidth("lg")} ${vertical ? "50vw" : "90vw"}, 100vw`}
           // Below md the text sits above the photo, which fills the lower half, so it never

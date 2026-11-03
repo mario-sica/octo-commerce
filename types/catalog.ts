@@ -74,6 +74,11 @@ export type Product = {
    * Without it, the large card shows the product shot instead.
    */
   lifestyleImage?: string;
+  /**
+   * Optional portrait crop for the `large-vertical` layout, where the card is tall from `lg`
+   * (Home Security). Without it, that card crops `lifestyleImage`.
+   */
+  lifestyleImageTall?: string;
   /** Banner copy, when it differs from `shortDescription` (banner images live on the category). */
   bannerSubtitle?: string;
   bestSeller: boolean;
