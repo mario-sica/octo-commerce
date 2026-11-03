@@ -160,7 +160,7 @@ A single leftover card in the last row grows to the full row width: a medium car
   - pill `mx-auto max-w-content min-h-16 rounded-pill pl-5 pr-3 py-3 flex flex-wrap items-center justify-between` (64 px tall when closed);
   - from `lg`: logo, links and primary CTA; below `lg`: logo plus an icon-only menu button that expands the pill downwards (Assumption 22);
   - logo: `Logo variant="mark"` with `h-5.5` below `md`, and `Logo variant="full"` with `h-6` from `md` ≈ (see `components.md → Logo`).
-- **Hero:** full-bleed, art-directed media (`priority` poster, video loop over it, Assumption 25): 1:2 on base, 3:4 on `md`, 16:9 on `lg` (Assumption 20). It slides under the navbar with `-mt-header` (Assumption 21). The overlay text is centred horizontally and starts below the pill (`pt-header`, then `pt-stack-md`): title and subtitle `gap-2` ≈, then `gap-stack-sm` to the CTA.
+- **Hero:** full-bleed, art-directed media (`priority` poster, video loop over it, Assumption 25): 1:2 on base, 3:4 on `md`, 16:9 on `lg` (Assumption 20). It slides under the navbar with `-mt-header` (Assumption 21). The overlay text is centred horizontally and starts below the pill (`pt-header`, then `pt-stack-xl`): title and subtitle `gap-2` ≈, then `gap-stack-sm` to the CTA.
 - **Best sellers (home carousel, reference `card-carousel-home.png`):**
   - `feature` cards with `p-card-lg`: text on the left and image on the right from `md`, in a 5:3 (`md`) / 16:9 (`lg`) card ≈; on base, text above the image, centred, and the card takes its content's height;
   - 1 card visible plus a peek of the next: slides are `basis-7/8` on base, `basis-11/12` on `md`, `basis-4/5` on `lg` ≈, spaced by `gap-cards`;
