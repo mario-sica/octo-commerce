@@ -263,8 +263,8 @@ This branch is a bonus: only do it if branches 1–18 are done.
 
 ## 20 · `perf/lighthouse`
 - Commits:
-  1. `perf(images): tune sizes and priority for lcp`
-  2. `fix(a11y): address lighthouse findings`. One commit per finding type.
+  1. ~~`perf(images): tune sizes and priority for lcp`~~: nothing to change. The hero poster and the first PDP image already have `priority`, the PDP image is served at 750 w for a 412 px phone (14 KiB), and no image audit fails. The PDP's simulated LCP is a localhost artifact (`docs/lighthouse/README.md`).
+  2. ~~`fix(a11y): address lighthouse findings`~~: none; Accessibility is 100 on both pages.
   3. `docs(lighthouse): add mobile reports for both pages`, saved to `docs/lighthouse/`.
 
 ## 21 · `docs/readme`
