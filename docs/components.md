@@ -99,8 +99,8 @@ This works for `MapPin`, `TriangleAlert` and `CircleAlert`, because in all three
 | `PdpBestSellers` | client | PDP | **PDP carousel**, different from the home one: `compact` cards, 5 visible on `lg`, 3 plus a peek on `md`, 2 plus a peek on base. References `carousel-pdp-large/medium/small.png`. |
 | `CategorySection` | server | home | Applies the category rule in the spec: 0 products → nothing; 1 → `ProductBanner`; 2 or more → `SectionHeader` plus layout by `category.layout` |
 | `ProductBanner` | server | home | the single-product category (today Hair Care), from `category.banner`: text over the 2.4:1 desktop crop from `lg`, text above the image below `lg` (2.4:1 on `md`, 3:4 on base). Spec, Assumption 23. |
-| `StoreBanner` | server | home | "Find us at"; same art direction |
-| `ExploreCategories` | server | home | tiles from `getCategories()`; links to `#<category-id>` |
+| `StoreBanner` | server | home | "Find us at" + the styled retailer name and a `special` link button (`outline-ring-inverse` on red); 3:4 mobile crop anchored right, 2.4:1 wide photo from `md`, text over the photo's empty red (Assumption 23) |
+| `ExploreCategories` | server | home | tiles from `getCategories()` in the `categoryIds` order of `home.json`; each tile is one link to `/#<category-id>` (square `bg-card` box, label below) |
 | `ProductInfo` | server + client leaf | PDP | title, description, `ColourSelector` (client), "Where to buy" |
 | `FeatureBento` | server | PDP | feature cards from `product.pdp.features` |
 | `ProductSpecs` | client | PDP | Accordion from `product.pdp.specs`, plus "Downloads" as the last item |
