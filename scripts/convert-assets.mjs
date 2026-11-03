@@ -125,6 +125,16 @@ const ASSETS = [
     1080,
   ],
 
+  // PDP gallery: two 768 × 1376 portraits in 3:4 boxes (spec, Assumption 26).
+  ["pdp/blender-lifestyle-fruits.webp", "PDP/blender-fruits-vertical.png", 768],
+  ["pdp/blender-lifestyle-clean.webp", "PDP/blender-clean-vertical.png", 768],
+  // PDP bento, shot for its layout: the wide cards (≈2.26:1) leave the left half empty for the
+  // text, the half cards (3:4) leave the top empty.
+  ["pdp/blender-bento-ice.webp", "PDP/blender-ice.jpg", 1920],
+  ["pdp/blender-bento-clean.webp", "PDP/blender-clean.jpg", 1060],
+  ["pdp/blender-bento-pulse.webp", "PDP/blender-pulse.jpg", 1060],
+  ["pdp/blender-bento-presets.webp", "PDP/blender-presets.jpg", 1920],
+
   // "Find us at" store banner: wide from lg, the taller crop below lg
   [
     "store/store-banner-lg.webp",
