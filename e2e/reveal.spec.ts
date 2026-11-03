@@ -49,7 +49,10 @@ test.describe("scroll reveal", () => {
     const explore = revealOf(page, "Explore all categories");
     await expect(explore).toHaveAttribute("data-reveal", "hidden");
     await explore.getByRole("link").first().focus();
-    await expect(explore).toHaveAttribute("data-reveal", "shown");
+    // Shown at once, without the rise, so nothing moves under the focus (or under a click).
+    await expect(explore).toHaveAttribute("data-reveal", "visible");
+    await expect(explore).toHaveCSS("opacity", "1");
+    await expect(explore).toHaveCSS("animation-name", "none");
   });
 
   test("hidden sections print", async ({ page }) => {

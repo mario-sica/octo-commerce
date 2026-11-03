@@ -34,26 +34,29 @@ export function Reveal({ children, variant = "media", className }: RevealProps) 
     if (element.getBoundingClientRect().top < window.innerHeight) return;
 
     element.dataset.reveal = "hidden";
-    const reveal = () => {
-      element.dataset.reveal = "shown";
+    const reveal = (state: "shown" | "visible") => {
+      element.dataset.reveal = state;
       observer.disconnect();
-      element.removeEventListener("focusin", reveal);
+      element.removeEventListener("focusin", showNow);
     };
+    // Focus shows the block at once, without the rise: focus comes on mousedown too, and a block
+    // that starts moving between mousedown and mouseup would swallow the click.
+    const showNow = () => reveal("visible");
     // A bottom margin instead of a ratio threshold: a block taller than the viewport would never
     // reach a 15% ratio, while its top always crosses the line.
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry?.isIntersecting) reveal();
+        if (entry?.isIntersecting) reveal("shown");
       },
       { rootMargin: "0px 0px -15% 0px" },
     );
     observer.observe(element);
-    // Keyboard focus can land in the bottom 15% before the observer fires: show the block at once,
-    // so focus is never on an invisible element.
-    element.addEventListener("focusin", reveal);
+    // Keyboard focus can land in the bottom 15% before the observer fires: never leave focus on an
+    // invisible element.
+    element.addEventListener("focusin", showNow);
     return () => {
       observer.disconnect();
-      element.removeEventListener("focusin", reveal);
+      element.removeEventListener("focusin", showNow);
     };
   }, []);
 
