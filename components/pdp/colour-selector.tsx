@@ -10,8 +10,10 @@ import type { Colour } from "@/types/catalog";
  * swatch colour comes from data, so it is the one inline style allowed.
  */
 export function ColourSelector({ colours }: { colours: Colour[] }) {
-  const [selected, setSelected] = useState(colours[0].name);
+  const [selected, setSelected] = useState(colours[0]?.name ?? "");
   const labelId = useId();
+  // A product with no colours in its data has nothing to choose.
+  if (colours.length === 0) return null;
 
   return (
     <div className="flex flex-col gap-3">
