@@ -185,7 +185,7 @@ A single leftover card in the last row grows to the full row width: a medium car
     3. feature bento (`gap-cards`; Assumption 26);
     4. second lifestyle image;
     5. specifications accordion, whose last item is "Downloads".
-  - **Right column** (555), `sticky top-24 pt-section-md`, `gap-stack-sm`. In order: title, description, colour selector (block gap 12), **"Where to buy"** (`w-full`).
+  - **Right column** (555), `sticky top-header pt-section-md`, `gap-stack-sm`. In order: title, description, colour selector (block gap 12), **"Where to buy"** (`w-full`).
 - **Base:** a single column. In order:
   1. product image;
   2. title and description;
