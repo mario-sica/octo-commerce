@@ -6,7 +6,7 @@ import { getSite } from "@/lib/data";
  * deployment; on Vercel the production domain is used; locally it falls back to the dev server.
  */
 export const SITE_URL = new URL(
-  process.env.SITE_URL ??
+  process.env.SITE_URL ||
     (process.env.VERCEL_PROJECT_PRODUCTION_URL
       ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
       : "http://localhost:3000"),
