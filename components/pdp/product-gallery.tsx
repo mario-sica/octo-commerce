@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { ProductImage } from "@/components/media/product-image";
+import { Reveal } from "@/components/motion/reveal";
 import { minWidth } from "@/lib/breakpoints";
 
 type ProductGalleryProps = {
@@ -17,15 +18,17 @@ type ProductGalleryProps = {
 export function ProductGallery({ images, children }: ProductGalleryProps) {
   const [first, ...rest] = images;
 
+  // Each image reveals on its own: the column is several screens tall (spec → Motion).
   const image = (src: string, index: number) => (
-    <ProductImage
-      key={`${src}-${index}`}
-      src={src}
-      ratio="portrait"
-      alt=""
-      sizes={`${minWidth("md")} 55vw, 100vw`}
-      className="rounded-card bg-card"
-    />
+    <Reveal key={`${src}-${index}`}>
+      <ProductImage
+        src={src}
+        ratio="portrait"
+        alt=""
+        sizes={`${minWidth("md")} 55vw, 100vw`}
+        className="rounded-card bg-card"
+      />
+    </Reveal>
   );
 
   return (

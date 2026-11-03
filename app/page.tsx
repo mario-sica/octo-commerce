@@ -4,6 +4,7 @@ import { ExploreCategories } from "@/components/home/explore-categories";
 import { Hero } from "@/components/home/hero";
 import { HomeBestSellers } from "@/components/home/home-best-sellers";
 import { StoreBanner } from "@/components/home/store-banner";
+import { Reveal } from "@/components/motion/reveal";
 import { getCategories, getHomeSections, getSite } from "@/lib/data";
 import { openGraph } from "@/lib/seo";
 
@@ -27,22 +28,34 @@ export default function Home() {
     switch (section.type) {
       case "hero":
         return <Hero key={key} {...section} />;
+      // The hero is the LCP element, so it is never revealed (spec → Motion).
       case "best-sellers":
-        return <HomeBestSellers key={key} title={section.title} />;
+        return (
+          <Reveal key={key}>
+            <HomeBestSellers title={section.title} />
+          </Reveal>
+        );
       case "categories":
         return getCategories().map((category) => (
-          <CategorySection key={category.id} category={category} />
+          <Reveal key={category.id}>
+            <CategorySection category={category} />
+          </Reveal>
         ));
       case "explore":
         return (
-          <ExploreCategories
-            key={key}
-            title={section.title}
-            categoryIds={section.categoryIds}
-          />
+          <Reveal key={key}>
+            <ExploreCategories
+              title={section.title}
+              categoryIds={section.categoryIds}
+            />
+          </Reveal>
         );
       case "store-banner":
-        return <StoreBanner key={key} {...section} />;
+        return (
+          <Reveal key={key}>
+            <StoreBanner {...section} />
+          </Reveal>
+        );
       default:
         return null;
     }

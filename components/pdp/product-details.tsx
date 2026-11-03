@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { ProductImage } from "@/components/media/product-image";
+import { Reveal } from "@/components/motion/reveal";
 import { FeatureBento } from "@/components/pdp/feature-bento";
 import { ProductGallery } from "@/components/pdp/product-gallery";
 import { ProductInfo } from "@/components/pdp/product-info";
@@ -70,10 +71,12 @@ export async function ProductDetails({
           <ProductGallery images={product.pdp.gallery}>
             <FeatureBento features={product.pdp.features} />
           </ProductGallery>
-          <ProductSpecs
-            specs={product.pdp.specs}
-            downloads={product.pdp.downloads}
-          />
+          <Reveal variant="text">
+            <ProductSpecs
+              specs={product.pdp.specs}
+              downloads={product.pdp.downloads}
+            />
+          </Reveal>
         </div>
       }
     />
