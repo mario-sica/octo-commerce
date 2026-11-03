@@ -1,10 +1,12 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import {
   ProductDetails,
   ProductDetailsPlaceholder,
 } from "@/components/pdp/product-details";
 import { PdpBestSellers } from "@/components/pdp/pdp-best-sellers";
-import { getPdpProducts } from "@/lib/data";
+import { getPdpProducts, getProduct, getProductHref, getSite } from "@/lib/data";
+import { openGraph } from "@/lib/seo";
 
 /**
  * Only products with PDP content are prerendered. `dynamicParams = false` can't be used with
@@ -13,6 +15,27 @@ import { getPdpProducts } from "@/lib/data";
  */
 export function generateStaticParams() {
   return getPdpProducts().map((product) => ({ slug: product.slug }));
+}
+
+/** Title "{product} — Octopus" through the layout template; description from the PDP data. */
+export async function generateMetadata({
+  params,
+}: PageProps<"/products/[slug]">): Promise<Metadata> {
+  const { slug } = await params;
+  const product = getProduct(slug);
+  if (!product?.pdp) return {};
+
+  const url = getProductHref(product);
+  return {
+    title: product.name,
+    description: product.pdp.metaDescription,
+    alternates: { canonical: url },
+    openGraph: openGraph({
+      title: `${product.name} — ${getSite().name}`,
+      description: product.pdp.metaDescription,
+      url,
+    }),
+  };
 }
 
 /**
