@@ -4,7 +4,7 @@ import { getPdpProducts, getProduct, getProductHref, getSite } from "@/lib/data"
 const site = getSite();
 const blender = getProduct("octopus-countertop-blender");
 
-/** Title, meta description and Open Graph tags on both pages (brief → SEO; content.md → SEO). */
+/** Title, meta description and Open Graph tags on both pages (content.md → SEO). */
 const PAGES = [
   {
     path: "/",
