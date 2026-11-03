@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { ProductImage } from "@/components/media/product-image";
+import { FeatureBento } from "@/components/pdp/feature-bento";
 import { ProductGallery } from "@/components/pdp/product-gallery";
 import { ProductInfo } from "@/components/pdp/product-info";
 import { minWidth } from "@/lib/breakpoints";
@@ -63,7 +64,11 @@ export async function ProductDetails({
         />
       }
       info={<ProductInfo product={product} detail={product.pdp} />}
-      rest={<ProductGallery images={product.pdp.gallery} />}
+      rest={
+        <ProductGallery images={product.pdp.gallery}>
+          <FeatureBento features={product.pdp.features} />
+        </ProductGallery>
+      }
     />
   );
 }
