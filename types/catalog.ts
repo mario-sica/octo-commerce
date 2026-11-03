@@ -53,6 +53,8 @@ export type ProductDownload = {
 /** Product detail page content. Present only for products that have a PDP. */
 export type ProductDetail = {
   description: string;
+  /** Meta and Open Graph description for the product page (≈ 150 characters at most). */
+  metaDescription: string;
   colours: Colour[];
   /** Lifestyle images, in order. */
   gallery: string[];

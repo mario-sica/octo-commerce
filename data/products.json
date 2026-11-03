@@ -30,6 +30,7 @@
     "bestSeller": false,
     "pdp": {
       "description": "The Octopus Countertop Blender has the power for daily smoothies and tougher jobs alike. A 1500W motor and seven presets handle most of the work, and a one-touch clean cycle rinses the jug so you don't have to.",
+      "metaDescription": "1500W countertop blender with seven presets and one-touch clean.",
       "colours": [
         { "name": "Black", "hex": "#000000" },
         { "name": "Silver", "hex": "#C0C0C0" }

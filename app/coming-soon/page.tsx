@@ -5,7 +5,7 @@ import { Section } from "@/components/layout/section";
 import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
-  title: "Coming soon — Octopus",
+  title: "Coming soon",
   robots: { index: false },
 };
 
