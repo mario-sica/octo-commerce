@@ -51,7 +51,7 @@ test.describe("pdp best-sellers carousel", () => {
       await expect(next).toBeDisabled();
       await expect(dots).toHaveCount(0);
     } else {
-      // More than five: dots appear on desktop (brief; spec, Assumption 2).
+      // More than five: dots appear on desktop (spec, Assumption 2).
       await expect(next).toBeEnabled();
       await expect(dots.first()).toBeVisible();
     }

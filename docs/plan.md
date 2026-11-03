@@ -35,15 +35,15 @@ The first commit is **the bare create-next-app project, with only the README rep
 
 1. **User:** create the app without its automatic git commit:
    `pnpm create next-app@latest octopus --ts --eslint --tailwind --app --no-src-dir --import-alias "@/*" --use-pnpm --disable-git`
-2. **User:** in the new folder, run `git init -b main`, then unzip the workflow bundle there.
-   - The bundle adds `CLAUDE.md`, `.claude/`, `docs/` and `scripts/`, which stay **untracked** for now.
-   - Its `README.md` replaces the create-next-app one.
-   - The requirements summary is already at `docs/private/brief.md`. This folder is never committed (see branch 1).
+2. **User:** in the new folder, run `git init -b main`, then add the workflow files there.
+   - They are `CLAUDE.md`, `.claude/`, `docs/` and `scripts/`, which stay **untracked** for now.
+   - The project `README.md` replaces the create-next-app one.
+   - The requirements summary is kept locally in `docs/private/`. This folder is never committed (see branch 1).
 3. **Claude:**
    1. Review `README.md`. It describes the product only, with no reference to why, how or for whom the project was produced.
    2. Stage only the create-next-app files and the README, as one call:
       `git add . ':!CLAUDE.md' ':!.claude' ':!docs' ':!scripts'`
-   3. Check with `git status --short` that nothing from the bundle is staged.
+   3. Check with `git status --short` that none of the workflow files is staged.
    4. Commit: `chore: initial next.js project`. For this first commit the hook gate runs only `pnpm build`, because the project doesn't have a `gate` script yet.
 4. Run `git switch -c dev`. This creates a branch, not a commit. **From here on, main is frozen.**
 
@@ -153,7 +153,7 @@ This is the first feature branch. It turns the bare app into the gated workflow.
   2. `feat(header): add sticky navbar pill with logo and desktop nav`. `mark` below `md`, `full` from `md`, inside a link to `/`. Data comes from navigation.json.
   3. `feat(header): add mobile menu with shadcn sheet below 1200px`. Hidden at `lg`; trigger with `aria-expanded`/`aria-controls`.
   4. `test(header): menu opens, closes on escape and restores focus`
-- **Assumption:** the menu collapses below 1200 px, following the brief. The Figma shows the full nav on tablet.
+- **Assumption:** the menu collapses below 1200 px, following the requirements. The Figma shows the full nav on tablet.
 
 ## 7 · `feat/site-footer`
 - References: `pages/*` (bottom of each page).
@@ -183,7 +183,7 @@ This is the first feature branch. It turns the bare app into the gated workflow.
   4. `feat(cards): add feature product card variant`
   5. `feat(home): render home best sellers carousel from data`. `HomeBestSellers`: one feature card plus a peek; title through `SectionHeader`.
   6. `test(carousel): arrows disable at edges, dots reflect and change slide`
-- **Assumption:** the brief requires dots on desktop, and the Figma has none. Dots are shown from `lg` up, styled with tokens.
+- **Assumption:** the requirements ask for dots on desktop, and the Figma has none. Dots are shown from `lg` up, styled with tokens.
 
 ## 11 · `feat/category-sections`
 - References: `heading.png`, `card-large.png`, `card-medium.png`, `card-small.png`, `pages/home-*`, and the spec's "Category section rule".
@@ -251,7 +251,7 @@ This is the first feature branch. It turns the bare app into the gated workflow.
 - Commits:
   1. ~~`test(e2e): home learn more on countertop blender opens pdp`~~: already on `dev` (`e2e/pdp.spec.ts`, since `feat/pdp-route`).
   2. ~~`test(e2e): extend overflow check to pdp`~~: already on `dev` (`e2e/overflow.spec.ts` loops over both pages, since `feat/pdp-route`).
-  3. `test(e2e): walk the home to pdp journey on mobile`. One path at 375 px through acceptance criteria 2, 4, 7 and 8, ending on `/coming-soon`.
+  3. `test(e2e): walk the home to pdp journey on mobile`. One path at 375 px through the menu, "Learn more", the colour selector and the specifications accordion, ending on `/coming-soon`.
   4. `test(e2e): check titles, descriptions and open graph on both pages`. Plus robots and the sitemap.
 
 ## 19 · `feat/motion`
@@ -278,7 +278,7 @@ This branch is a bonus: only do it if branches 1–18 are done.
 ---
 
 ## Handled by the user, outside Claude Code
-- **Email the design owner before starting.** Figma export is disabled, but the requirements say images can be exported; ask for the assets. When they arrive, drop them into `public/images/products/` and change the JSON paths on a `chore/real-assets` branch.
+- **Real assets:** when more original files are available (the PDP lifestyle and feature photos), drop them into `docs/Octopus_assets/`, add them to `scripts/convert-assets.mjs` and change the JSON paths on a `chore/real-assets` branch.
 - **Push** the branches and **merge `dev → main`** at the end.
 - **Deploy:** connect the GitHub repo to Vercel and add the live link to the README.
 - Run Lighthouse on the live URL. This can go back into branch 20 as an update.

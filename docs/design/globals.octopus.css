@@ -202,7 +202,7 @@
 }
 
 @theme {
-  /* Brief breakpoints: tablet 810, desktop 1200 (mobile-first) */
+  /* Breakpoints: tablet 810, desktop 1200 (mobile-first) */
   --breakpoint-*: initial;
   --breakpoint-md: 50.625rem; /* 810 */
   --breakpoint-lg: 75rem; /* 1200 */

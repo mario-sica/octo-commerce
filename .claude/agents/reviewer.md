@@ -1,6 +1,6 @@
 ---
 name: reviewer
-description: Independent reviewer for a finished feature branch. Reads the diff against dev and checks it against the brief, the design spec and the project rules. Read-only — never edits files or runs git commands that change state.
+description: Independent reviewer for a finished feature branch. Reads the diff against dev and checks it against the requirements, the design spec and the project rules. Read-only — never edits files or runs git commands that change state.
 tools: Read, Grep, Glob, Bash
 model: inherit
 color: purple
