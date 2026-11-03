@@ -30,6 +30,7 @@ for (const { path, title, description } of PAGES) {
     expect(await meta('meta[property="og:description"]')).toBe(description);
     expect(await meta('meta[property="og:type"]')).toBe("website");
     expect(await meta('meta[property="og:site_name"]')).toBe(site.name);
+    expect(await meta('meta[property="og:locale"]')).toBe(site.locale);
     expect(new URL((await meta('meta[property="og:url"]')) ?? "").pathname).toBe(
       path,
     );
@@ -43,12 +44,23 @@ for (const { path, title, description } of PAGES) {
 }
 
 test("robots and sitemap list only the real pages", async ({ request }) => {
-  const robots = await (await request.get("/robots.txt")).text();
-  expect(robots).toContain("Sitemap:");
+  const response = await request.get("/robots.txt");
+  expect(response.ok()).toBe(true);
+  const robots = await response.text();
+  expect(robots).toMatch(/^Allow: \/$/m);
+  expect(robots).not.toMatch(/^Disallow:/m);
+  expect(robots).toMatch(/^Sitemap: \S+\/sitemap\.xml$/m);
 
   const sitemap = await (await request.get("/sitemap.xml")).text();
   const paths = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(
     ([, url]) => new URL(url).pathname,
   );
   expect(paths).toEqual(["/", ...getPdpProducts().map(getProductHref)]);
+});
+
+test("the placeholder route is noindex", async ({ page }) => {
+  await page.goto("/coming-soon");
+  expect(
+    await page.locator('meta[name="robots"]').getAttribute("content"),
+  ).toContain("noindex");
 });
