@@ -159,7 +159,7 @@ A single leftover card in the last row grows to the full row width: a medium car
   - wrapper `sticky top-0 z-50 h-header px-gutter pt-4`: a fixed height, so the open mobile menu overlaps the page instead of pushing it down;
   - pill `mx-auto max-w-content min-h-16 rounded-pill pl-5 pr-3 py-3 flex flex-wrap items-center justify-between` (64 px tall when closed);
   - from `md`: logo, links and primary CTA (Assumption 1); below `md`: logo plus an icon-only menu button that expands the pill downwards (Assumption 22);
-  - the logo links home; on the home page it scrolls back to the top instead (smoothly, instantly with reduced motion) and clears a `/#section` hash, since Next has nothing to navigate to;
+  - the logo links to `/#top`, the standard fragment for the top of the page, so on the home page it returns to the top with no custom code;
   - logo: `Logo variant="mark"` with `h-5.5` below `md`, and `Logo variant="full"` with `h-6` from `md` ≈ (see `components.md → Logo`).
 - **Hero:** full-bleed, art-directed media (`priority` poster, video loop over it, Assumption 25): 1:2 on base, 3:4 on `md`, 16:9 on `lg` (Assumption 20). It slides under the navbar with `-mt-header` (Assumption 21). The overlay text is centred horizontally and starts below the pill (`pt-header`, then `pt-stack-xl`): title and subtitle `gap-2` ≈, then `gap-stack-sm` to the CTA.
 - **Best sellers (home carousel, reference `card-carousel-home.png`):**
@@ -245,7 +245,7 @@ A single leftover card in the last row grows to the full row width: a medium car
     - **Accepted consequence:** the Octopus Air Fryer is a Kitchen product, so the Kitchen section shows it as an extra card, which the Figma doesn't show. This is deliberate: the data model wins over a hand-picked layout, because the requirements ask that adding a product to the data be enough.
 11. **Downloads:** the requirements list it as an accordion section, while the Figma shows a separate box → it is the **last accordion item**, expanding to the "User manual" link.
 12. **Product pages:** the requirements put "other product pages" out of scope and let other cards link to the same page.
-    - There is one dynamic route, `/products/[slug]`, but static params are generated **only** for products with PDP data (today only the Countertop Blender). The scaffold enables `cacheComponents`, which rules out `dynamicParams = false` and streams the page shell before `notFound()` can set the status, so `proxy.ts` rewrites any other slug to the built-in not-found page before rendering: a real 404, checked by an e2e test.
+    - There is one dynamic route, `/products/[slug]`, but static params are generated **only** for products with PDP data (today only the Countertop Blender). Any other slug shows Next's not-found page through `notFound()`, checked by an e2e test. The scaffold enables `cacheComponents`, which rules out `dynamicParams = false` and streams the page shell first, so that page is served with status 200: the requirements only put other product pages out of scope, and no extra routing code is added to change the status.
     - Cards link to their own PDP when it exists, otherwise to the Countertop Blender PDP.
 13. **Second colour:** the Figma has only Black. Silver is added so the selector can switch, as the requirements ask.
 14. **Dimensions & weight:** the value is truncated in the Figma → realistic placeholder values, marked in the data.
