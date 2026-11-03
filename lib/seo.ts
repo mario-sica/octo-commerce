@@ -16,9 +16,16 @@ type OpenGraph = NonNullable<Metadata["openGraph"]>;
 
 /**
  * Open Graph for a page. Next replaces a parent's `openGraph` object instead of merging it, so
- * every page spreads the shared fields (type, site name, locale) through this helper.
+ * every page spreads the shared fields (type, site name, locale, image) through this helper.
  */
 export function openGraph(page: Omit<OpenGraph, "type">): OpenGraph {
   const site = getSite();
-  return { type: "website", siteName: site.name, locale: site.locale, ...page };
+  return {
+    type: "website",
+    siteName: site.name,
+    locale: site.locale,
+    // Placeholder made by `pnpm placeholders` (docs/content.md → SEO).
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: site.name }],
+    ...page,
+  };
 }
