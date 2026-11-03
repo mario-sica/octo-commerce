@@ -145,3 +145,22 @@ Lighthouse mobile, production build ([reports and method](docs/lighthouse/README
 - Run Lighthouse against a deployed URL: the product page's simulated LCP from a localhost trace overstates the real figure.
 - Remove the unused `cn` dependency, which came with the shadcn setup, and move `shadcn` to `devDependencies`.
 - Add an `apple-icon` and a `.ico` fallback next to the SVG favicon.
+
+## How AI tools were used
+- **Claude (chat):** analysis of the requirements, extraction of the design tokens from the design file (view-only), and the design of the development workflow.
+- **Claude Code:** implementation, tests and documentation, branch by branch, following [`CLAUDE.md`](CLAUDE.md) and the [delivery plan](docs/plan.md).
+- **Independent review:** a read-only `reviewer` subagent checked every finished branch against the requirements, the design spec and the project rules, without being told how the code was written. Its must-fix findings were fixed before merging.
+
+### Guardrails
+- A git hook (`.claude/hooks/guard-git.mjs`) runs `pnpm gate` before every commit, enforces Conventional Commits, blocks pushes, rebases, amends and AI attribution, and allows merges only into `dev` with `--no-ff`.
+- `pnpm check:tokens` keeps hand-written values out of the code, so generated code cannot drift from the design system.
+- Project skills define one loop per branch: start, small gated commits, full verification (gate, unit and e2e tests, screenshots against the references, independent review), then a merge only after explicit human approval.
+
+### What had to be corrected
+Every time AI output had to be corrected, it was logged with what was wrong and how it was fixed: [`docs/ai-log.md`](docs/ai-log.md) lists 20 corrections. They fall into a few patterns:
+
+- **Following the design file where it fails the requirements.** Interaction colours copied from the design failed WCAG AA; carousel dots were first drawn at about 1.2:1 contrast; the product-page carousel first dropped the pagination dots because the design had none.
+- **Reduced motion that looked handled but wasn't.** Three times a `motion-reduce:` override, or a keyframes redefinition inside a media query, lost to a more specific or later CSS rule, so the animation still played. Each was found by measuring the computed animation in a real browser, fixed with `motion-safe:` or a separate animation, and is now covered by an end-to-end test.
+- **Framework behaviour.** With Cache Components, `dynamicParams` is unavailable and `notFound()` after streaming gave a 404 page with status 200; reading the URL outside `<Suspense>` blocked instant navigation (flagged by a Next.js dev insight).
+- **Layout details found in screenshots.** A flex row that shrank a banner's text column, a container one gutter narrower than the navbar, a product shot rendered at half the reference size.
+- **Data and interaction design.** Hand-picked product lists instead of data-driven sections; a mobile menu first built as a modal overlay; a reveal-on-focus that started moving the element between mousedown and mouseup and swallowed clicks.
