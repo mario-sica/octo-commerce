@@ -6,8 +6,9 @@ import { getPdpProducts, getProduct } from "@/lib/data";
 
 /**
  * Only products with PDP content are prerendered. `dynamicParams = false` can't be used with
- * `cacheComponents` (next.config.ts), so any other slug reaches `notFound()` below and gets a 404
- * (spec, Assumption 12; covered by an e2e test).
+ * `cacheComponents` (next.config.ts); `proxy.ts` rewrites any other slug to the built-in
+ * `/_not-found` route, a real 404 (spec, Assumption 12; covered by e2e). The `notFound()` below is
+ * only a fallback: under `cacheComponents` it alone would answer with status 200.
  */
 export function generateStaticParams() {
   return getPdpProducts().map((product) => ({ slug: product.slug }));
