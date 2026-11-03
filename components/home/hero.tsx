@@ -13,8 +13,9 @@ type HeroProps = Extract<HomeSection, { type: "hero" }>;
 /**
  * Home hero (spec, Assumptions 9, 20–21 and 25): full-bleed media, 1:2 on base, 3:4 on `md`, 16:9
  * on `lg`. It slides under the sticky navbar (`-mt-header`) and its text starts just below the
- * pill. The poster image is the LCP element, so it gets `priority` and never scroll-reveal; the
- * video loop plays over it, under a light scrim that keeps the text readable on dark frames.
+ * pill. The poster image and the text are the LCP candidates (on mobile Lighthouse picks the
+ * subtitle), so the poster gets `priority` and the hero never gets scroll-reveal; the video loop
+ * plays over it, under a light scrim that keeps the text readable on dark frames.
  */
 export function Hero({
   productId,
