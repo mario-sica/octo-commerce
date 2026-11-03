@@ -107,7 +107,7 @@ This works for `MapPin`, `TriangleAlert` and `CircleAlert`, because in all three
 | `ProductGallery` | server | PDP | the lifestyle images from `product.pdp.gallery` (rounded 3:4, decorative), with its `children` (the bento) after the first one; rendered in the second line of the PDP columns |
 | `FeatureBento` | server | PDP | feature cards from `product.pdp.features`, grouped by `bentoRows()` into rows of 1, 2, 1, 2…: from `lg` a wide 2.4:1 card or two 3:4 halves; below `lg` a column of 3:4 cards; text over the image, title `h2` (spec, Assumption 26) |
 | `ProductSpecs` | server (renders the client `Accordion`) | PDP | a `section` named by a screen-reader-only `h2` "Specifications"; one item per `product.pdp.specs` group (several values → bulleted list, one → plain text), first open; "Downloads" last, listing `product.pdp.downloads` as links with the `Download` icon (spec, Assumption 27) |
-| `Reveal` | client | sections | IntersectionObserver plus `animate-reveal`; plays once; reduced-motion safe; never on LCP elements |
+| `Reveal` | client | sections | IntersectionObserver plus `animate-reveal` (`variant="text"`: `animate-reveal-text`), `animate-reveal-fade` under reduced motion; plays once; blocks already on screen at load are left alone; state in a `data-reveal` attribute (no re-render); never on LCP elements (spec, Assumption 30) |
 
 **Art direction for banners.** Use `ProductImage` with `md` and `lg` sources (`getImageProps()` inside `<picture>`): the category banner has one crop per breakpoint (`banner.base`, `banner.md`, `banner.lg`), the store banner a wide image from `lg` and a taller one below. This keeps responsive `srcset` and lazy loading. Box ratios: see spec, Assumption 23.
 
