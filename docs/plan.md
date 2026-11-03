@@ -38,7 +38,7 @@ The first commit is **the bare create-next-app project, with only the README rep
 2. **User:** in the new folder, run `git init -b main`, then unzip the workflow bundle there.
    - The bundle adds `CLAUDE.md`, `.claude/`, `docs/` and `scripts/`, which stay **untracked** for now.
    - Its `README.md` replaces the create-next-app one.
-   - The requirements summary is already at `docs/private/brief.md`. This folder is never committed (see branch 1).
+   - The requirements summary is kept locally in `docs/private/`. This folder is never committed (see branch 1).
 3. **Claude:**
    1. Review `README.md`. It describes the product only, with no reference to why, how or for whom the project was produced.
    2. Stage only the create-next-app files and the README, as one call:
@@ -153,7 +153,7 @@ This is the first feature branch. It turns the bare app into the gated workflow.
   2. `feat(header): add sticky navbar pill with logo and desktop nav`. `mark` below `md`, `full` from `md`, inside a link to `/`. Data comes from navigation.json.
   3. `feat(header): add mobile menu with shadcn sheet below 1200px`. Hidden at `lg`; trigger with `aria-expanded`/`aria-controls`.
   4. `test(header): menu opens, closes on escape and restores focus`
-- **Assumption:** the menu collapses below 1200 px, following the brief. The Figma shows the full nav on tablet.
+- **Assumption:** the menu collapses below 1200 px, following the requirements. The Figma shows the full nav on tablet.
 
 ## 7 · `feat/site-footer`
 - References: `pages/*` (bottom of each page).
@@ -183,7 +183,7 @@ This is the first feature branch. It turns the bare app into the gated workflow.
   4. `feat(cards): add feature product card variant`
   5. `feat(home): render home best sellers carousel from data`. `HomeBestSellers`: one feature card plus a peek; title through `SectionHeader`.
   6. `test(carousel): arrows disable at edges, dots reflect and change slide`
-- **Assumption:** the brief requires dots on desktop, and the Figma has none. Dots are shown from `lg` up, styled with tokens.
+- **Assumption:** the requirements ask for dots on desktop, and the Figma has none. Dots are shown from `lg` up, styled with tokens.
 
 ## 11 · `feat/category-sections`
 - References: `heading.png`, `card-large.png`, `card-medium.png`, `card-small.png`, `pages/home-*`, and the spec's "Category section rule".
@@ -278,7 +278,7 @@ This branch is a bonus: only do it if branches 1–18 are done.
 ---
 
 ## Handled by the user, outside Claude Code
-- **Email the design owner before starting.** Figma export is disabled, but the requirements say images can be exported; ask for the assets. When they arrive, drop them into `public/images/products/` and change the JSON paths on a `chore/real-assets` branch.
+- **Real assets:** when more original files are available (the PDP lifestyle and feature photos), drop them into `docs/Octopus_assets/`, add them to `scripts/convert-assets.mjs` and change the JSON paths on a `chore/real-assets` branch.
 - **Push** the branches and **merge `dev → main`** at the end.
 - **Deploy:** connect the GitHub repo to Vercel and add the live link to the README.
 - Run Lighthouse on the live URL. This can go back into branch 20 as an update.
