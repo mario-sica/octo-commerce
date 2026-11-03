@@ -28,6 +28,38 @@ test.describe("scroll reveal", () => {
     await expect(explore).toHaveCSS("opacity", "1");
   });
 
+  test("a section already on screen at load is left alone", async ({ page }) => {
+    await page.goto("/");
+    // At 375×812 the best-sellers section starts inside the first screen, under the hero.
+    await expect(revealOf(page, "Best sellers")).not.toHaveAttribute(
+      "data-reveal",
+      /.*/,
+    );
+  });
+
+  test("a deep link shows its section without scrolling", async ({ page }) => {
+    await page.goto("/#accessories");
+    const accessories = revealOf(page, "Accessories");
+    await expect(accessories).toBeInViewport();
+    await expect(accessories).toHaveCSS("opacity", "1");
+  });
+
+  test("keyboard focus inside a hidden section reveals it", async ({ page }) => {
+    await page.goto("/");
+    const explore = revealOf(page, "Explore all categories");
+    await expect(explore).toHaveAttribute("data-reveal", "hidden");
+    await explore.getByRole("link").first().focus();
+    await expect(explore).toHaveAttribute("data-reveal", "shown");
+  });
+
+  test("hidden sections print", async ({ page }) => {
+    await page.goto("/");
+    const explore = revealOf(page, "Explore all categories");
+    await expect(explore).toHaveAttribute("data-reveal", "hidden");
+    await page.emulateMedia({ media: "print" });
+    await expect(explore).toHaveCSS("opacity", "1");
+  });
+
   test("the LCP elements are never hidden", async ({ page }) => {
     await page.goto("/");
     // The hero is not wrapped: no hidden ancestor above its poster.
