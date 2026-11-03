@@ -10,9 +10,8 @@ import { getPdpProducts, getProduct, getProductHref, getSite } from "@/lib/data"
 import { openGraph } from "@/lib/seo";
 
 /**
- * Only products with PDP content are prerendered. `dynamicParams = false` can't be used with
- * `cacheComponents` (next.config.ts); `proxy.ts` rewrites any other slug to the built-in
- * `/_not-found` route, a real 404 (spec, Assumption 12; covered by e2e).
+ * Only products with PDP content are prerendered. Any other slug renders Next's not-found page
+ * through `notFound()` in `ProductDetails` (spec, Assumption 12; covered by e2e).
  */
 export function generateStaticParams() {
   return getPdpProducts().map((product) => ({ slug: product.slug }));
