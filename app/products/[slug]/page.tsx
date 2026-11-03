@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { ProductImage } from "@/components/media/product-image";
+import { ProductInfo } from "@/components/pdp/product-info";
 import { minWidth } from "@/lib/breakpoints";
 import { getPdpProducts, getProduct } from "@/lib/data";
 
@@ -39,11 +40,7 @@ export default async function ProductPage({
           />
         </div>
 
-        <div className="flex flex-col gap-stack-sm px-gutter md:flex-555 md:px-0 md:pt-section-md">
-          <h1 className="text-h2-s md:text-h2-m lg:text-h2-l">
-            {product.name}
-          </h1>
-        </div>
+        <ProductInfo product={product} detail={product.pdp} />
       </div>
     </div>
   );
