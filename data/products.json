@@ -6,6 +6,7 @@
     "category": "kitchen",
     "shortDescription": "A 1.7 L kettle that boils fast on 1800W, with a body that stays cool to the touch",
     "image": "/images/products/octopus-kettle-1-7l.webp",
+    "lifestyleImage": "/images/lifestyle/octopus-kettle-1-7l.webp",
     "bestSeller": true,
     "bestSellerRank": 5
   },
@@ -105,6 +106,7 @@
     "category": "home-security",
     "shortDescription": "A 2K indoor camera that pans to cover the whole room and tracks movement as it happens",
     "image": "/images/products/octopus-indoor-camera.webp",
+    "lifestyleImage": "/images/placeholders/portrait.webp",
     "bestSeller": true,
     "bestSellerRank": 2
   },

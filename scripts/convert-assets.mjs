@@ -2,12 +2,13 @@
 /**
  * Converts the original design assets into the WebP files the site uses.
  * Input:  docs/Octopus_assets/ (local only, git-ignored — the files as delivered by design).
- * Output: public/images/{products,categories,store}/ (committed).
+ * Output: public/images/{products,categories,lifestyle,store,hero}/ and public/videos/ (committed).
  *
  * Every output is listed once in ASSETS below: where it comes from and its maximum width.
  * Images are never upscaled. Product shots are matched to the card colour (see below).
  * See docs/content.md → Images for where each file is used.
  */
+import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import sharp from "sharp";
@@ -42,6 +43,15 @@ function categoryBanner(category, crop) {
   if (!match) throw new Error(`no ${crop} banner for ${category}`);
   return match;
 }
+
+/**
+ * Crops that replace the "Category=" file for one breakpoint. The Hair Care desktop banner puts
+ * its text over the left half, and only this export leaves that half empty (it is 1200 px wide,
+ * so it is not upscaled). Spec, Assumption 23.
+ */
+const BANNER_OVERRIDES = {
+  "hair-care/lg": "Breakpoint=Desktop.png",
+};
 
 const PRODUCT_WIDTH = 1024;
 const BANNER_WIDTH = { lg: 3200, md: 1620, base: 1080 };
@@ -93,10 +103,13 @@ const ASSETS = [
   ].flatMap(([id, name]) =>
     ["lg", "md", "base"].map((crop) => [
       `categories/${id}-banner-${crop}.webp`,
-      categoryBanner(name, crop),
+      BANNER_OVERRIDES[`${id}/${crop}`] ?? categoryBanner(name, crop),
       BANNER_WIDTH[crop],
     ]),
   ),
+
+  // Large-card lifestyle photos (spec, Assumption 24)
+  ["lifestyle/octopus-kettle-1-7l.webp", "lifestyle-kettle.png", 1600],
 
   // "Find us at" store banner: wide from lg, the taller crop below lg
   [
@@ -154,3 +167,62 @@ for (const [out, src, maxWidth] of ASSETS) {
 console.log(
   `convert-assets: ${ASSETS.length} files, ${(total / 1024 / 1024).toFixed(1)} MB`,
 );
+
+/**
+ * Home hero video (needs ffmpeg). The original is 2416×1360 at ≈6 Mbit/s with no audio track.
+ * Each crop becomes a silent VP9 WebM (smallest, listed first) and an H.264 MP4 fallback
+ * (libx264 when the local ffmpeg has it, otherwise OpenH264 at a fixed bitrate), plus a WebP
+ * poster from the last frame (the clean, centred shot), which is also what reduced-motion users
+ * see. The portrait crop is the centre 3:4 of the frame and covers the 1:2 (base) and 3:4 (`md`)
+ * hero boxes.
+ */
+const HERO_VIDEO = "hair_dryer_hero.mp4";
+const HERO_CROPS = [
+  // [name, ffmpeg crop+scale filter, poster max width, H.264 fallback bitrate]
+  ["hero-lg", "scale=1920:-2", 1920, "2500k"],
+  ["hero-portrait", "crop=ih*3/4:ih,scale=810:-2", 810, "1200k"],
+];
+
+const ffmpeg = (args) => execFileSync("ffmpeg", ["-v", "error", "-y", ...args]);
+const hasX264 = execFileSync("ffmpeg", ["-hide_banner", "-encoders"])
+  .toString()
+  .includes("libx264");
+const h264 = (bitrate) =>
+  hasX264
+    ? ["-c:v", "libx264", "-preset", "slow", "-crf", "26"]
+    : ["-c:v", "libopenh264", "-b:v", bitrate];
+
+const videoOut = join(ROOT, "public/videos");
+const posterOut = join(OUT, "hero");
+mkdirSync(videoOut, { recursive: true });
+mkdirSync(posterOut, { recursive: true });
+const kb = (file) => `${(readFileSync(file).length / 1024).toFixed(0)} KB`;
+
+for (const [name, filter, posterWidth, bitrate] of HERO_CROPS) {
+  const input = ["-i", join(SRC, HERO_VIDEO), "-vf", filter, "-an"];
+  const webm = join(videoOut, `${name}.webm`);
+  const mp4 = join(videoOut, `${name}.mp4`);
+  ffmpeg([
+    ...input,
+    ...["-c:v", "libvpx-vp9", "-crf", "36", "-b:v", "0", "-row-mt", "1"],
+    ...["-deadline", "good", "-cpu-used", "2", "-pix_fmt", "yuv420p"],
+    webm,
+  ]);
+  ffmpeg([
+    ...input,
+    ...h264(bitrate),
+    ...["-pix_fmt", "yuv420p", "-movflags", "+faststart"],
+    mp4,
+  ]);
+  const frame = execFileSync("ffmpeg", [
+    ...["-v", "error", "-sseof", "-0.1", "-i", join(SRC, HERO_VIDEO)],
+    ...["-frames:v", "1", "-vf", filter, "-f", "image2pipe", "-c:v", "png", "-"],
+  ]);
+  const poster = await sharp(frame)
+    .resize({ width: posterWidth, withoutEnlargement: true })
+    .webp({ quality: 80, effort: 6 })
+    .toFile(join(posterOut, `${name}.webp`));
+  console.log(
+    `convert-assets: ${name}: webm ${kb(webm)}, mp4 ${kb(mp4)}, poster ${poster.width}×${poster.height} ${(poster.size / 1024).toFixed(0)} KB`,
+  );
+}

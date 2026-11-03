@@ -6,6 +6,7 @@ import useEmblaCarousel, {
 } from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { usePrefersReducedMotion } from "@/lib/use-prefers-reduced-motion";
 import { cn } from "@/lib/utils";
 
 /**
@@ -38,21 +39,6 @@ type CarouselContextProps = {
 } & CarouselProps;
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null);
-
-const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
-
-/** True when the user asks for reduced motion; follows changes to the setting. */
-function usePrefersReducedMotion() {
-  return React.useSyncExternalStore(
-    (onChange) => {
-      const query = window.matchMedia(REDUCED_MOTION);
-      query.addEventListener("change", onChange);
-      return () => query.removeEventListener("change", onChange);
-    },
-    () => window.matchMedia(REDUCED_MOTION).matches,
-    () => false,
-  );
-}
 
 function useCarousel() {
   const context = React.useContext(CarouselContext);

@@ -5,16 +5,24 @@ export type NavLink = {
   href: string;
 };
 
+/** One hero video crop: VP9 WebM first, H.264 MP4 as the fallback. */
+export type VideoSources = { webm: string; mp4: string };
+
+/** The hero loop: the wide crop from `lg`, the portrait crop below. */
+export type HeroVideo = { lg: VideoSources; portrait: VideoSources };
+
 export type HomeSection =
   | {
       type: "hero";
       /** The product the hero presents; its name is the hero title. */
       productId: string;
       subtitle: string;
-      /** Wide image (from `lg`, 16:9). */
+      /** Wide image (from `lg`, 16:9); the video's poster. */
       image: string;
-      /** Portrait image (below `lg`: 1:2 on base, 3:4 on `md`). */
+      /** Portrait image (below `lg`: 1:2 on base, 3:4 on `md`); the video's poster. */
       imageMobile: string;
+      /** Optional loop over the poster; without it the hero is the image alone. */
+      video?: HeroVideo;
     }
   | { type: "best-sellers"; title: string }
   /** One category section per category, in `categories.json` order. */

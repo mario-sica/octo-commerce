@@ -136,7 +136,11 @@ hero → best sellers → **one section per category, in `categories.json` order
 | `large-vertical` | Large card, vertical, image background, next to… | …a column of 2 Medium **horizontal** cards; further products go in rows of 2 Medium below | Home Security |
 | `small` | — | Small cards, rows of 3 | Accessories |
 
-A single leftover card in the last row grows to the full row width (`flex-1`). On base, everything stacks into one column.
+A single leftover card in the last row grows to the full row width: a medium card alone in its row turns `wide` (text left, image right, 16:9 from `md`) instead of becoming a full-width 3:4 card. On base, everything stacks into one column. `large-vertical` is the side-by-side layout only from `lg`; on `md` it behaves like `large-horizontal`, as in the tablet reference. Cards (≈, from card-large/medium/small.png and the page references):
+- **Large:** `p-card-lg`, full-image background from the product's `lifestyleImage` (Assumption 24); 2:3 with the text on top on base, 16:9 with the text on the left half from `md`; `vertical` turns back to text-on-top from `lg` and stretches to the height of its row.
+- **Medium:** text `pt-card-md px-card-lg` above the product shot, which fills the rest of the card with `object-contain`; 3:4. `horizontal` (Home Security column, `lg` only): 4:3, text on the left half with `px-card-sm`, because `card-lg` sides leave too little room for the text.
+- **Small:** `p-card-sm`; text above a square product shot on base, the image first from `md`.
+- Each section has `id={category.id}` and `scroll-mt-header`, so the navbar links land below the sticky header.
 
 ### Section spacing
 | Section | Padding | Inner gap |
@@ -144,9 +148,9 @@ A single leftover card in the last row grows to the full row width (`flex-1`). O
 | Best sellers | `pt-section-md pb-section-sm` | `gap-stack-md` |
 | Category (≥ 2 products) | `pt-section-sm pb-section-lg` | header ↔ cards `gap-stack-xl`, cards `gap-cards` |
 | Accessories | `py-section-md` | same |
-| Product banner | none; full-bleed `aspect-banner` on `md`+ | content `gap-stack-sm` |
+| Product banner | none; full-bleed; ratios and text placement in Assumption 23 | content `gap-stack-sm`, text block `py-stack-xl` when stacked |
 | Explore | `pt-section-md pb-section-lg` | `gap-stack-lg`, tiles `gap-cards` |
-| Store banner | none; `aspect-banner`, `border-t border-border-light` | content `gap-stack-sm` |
+| Store banner | none; ratios in Assumption 23, `border-t border-border-light` | content `gap-stack-sm` |
 | Footer | `pt-section-sm pb-6` | columns `gap-stack-xl` |
 
 ### Section details
@@ -155,7 +159,7 @@ A single leftover card in the last row grows to the full row width (`flex-1`). O
   - pill `mx-auto max-w-content min-h-16 rounded-pill pl-5 pr-3 py-3 flex flex-wrap items-center justify-between` (64 px tall when closed);
   - from `lg`: logo, links and primary CTA; below `lg`: logo plus an icon-only menu button that expands the pill downwards (Assumption 22);
   - logo: `Logo variant="mark"` with `h-5.5` below `md`, and `Logo variant="full"` with `h-6` from `md` ≈ (see `components.md → Logo`).
-- **Hero:** full-bleed, art-directed media (`priority`): 1:2 on base, 3:4 on `md`, 16:9 on `lg` (Assumption 20). It slides under the navbar with `-mt-header` (Assumption 21). The overlay text is centred horizontally and starts below the pill (`pt-header`, then `pt-stack-md`): title and subtitle `gap-2` ≈, then `gap-stack-sm` to the CTA.
+- **Hero:** full-bleed, art-directed media (`priority` poster, video loop over it, Assumption 25): 1:2 on base, 3:4 on `md`, 16:9 on `lg` (Assumption 20). It slides under the navbar with `-mt-header` (Assumption 21). The overlay text is centred horizontally and starts below the pill (`pt-header`, then `pt-stack-md`): title and subtitle `gap-2` ≈, then `gap-stack-sm` to the CTA.
 - **Best sellers (home carousel, reference `card-carousel-home.png`):**
   - `feature` cards with `p-card-lg`: text on the left and image on the right from `md`, in a 5:3 (`md`) / 16:9 (`lg`) card ≈; on base, text above the image, centred, and the card takes its content's height;
   - 1 card visible plus a peek of the next: slides are `basis-7/8` on base, `basis-11/12` on `md`, `basis-4/5` on `lg` ≈, spaced by `gap-cards`;
@@ -163,7 +167,7 @@ A single leftover card in the last row grows to the full row width (`flex-1`). O
   - the product image is the full card height from `md` (full width on base) and zoomed 1.2× ≈, because the product shots carry wide margins in the card colour;
   - arrows bottom-right (`special` icon buttons), dots from `lg` (Assumption 2); title ↔ carousel ↔ controls `gap-stack-md`.
 - **Explore:** square tiles (`pt-card-md pb-card-md px-card-sm`), label below. Four in a row on `md` and `lg`; on base, `flex-wrap` with tiles at `basis-1/2` (2×2).
-- **Banners:** on `md` and `lg`, text on the left and image on the right (2.4:1). On base, text on top, centred, image below; the image changes per breakpoint (art direction, see `components.md`).
+- **Banners:** full-bleed and art-directed (see `components.md`); ratios and where the text sits follow Assumption 23.
 - **Footer:**
   - `lg`/`md`: logo on the left (`Logo variant="stacked"`, `h-26` ≈); "Our Products" (2 columns) and "Learn" on the right; a bottom bar with copyright and "Policies & Terms";
   - base: everything stacked.
@@ -203,7 +207,7 @@ A single leftover card in the last row grows to the full row width (`flex-1`). O
 ## Images
 - Every image is a real file rendered with `next/image` inside an aspect-ratio box (`fill` + `sizes`). This gives responsive `srcset`, lazy loading below the fold, and no layout shift.
 - Only the hero (home) and the first product image (PDP) get `priority`.
-- Product shots, Explore tiles and the category and store banners are the original assets, converted to WebP by `scripts/convert-assets.mjs` (see `docs/content.md → Images`). Slots whose asset is still missing (home hero, the Kettle and Indoor Camera large cards, PDP lifestyle and bento images) use **neutral WebP placeholders** (`bg-card` colour, one per aspect ratio) made by `scripts/generate-placeholders.mjs`. SVG is not used, because Next doesn't optimise it.
+- Product shots, Explore tiles and the category and store banners are the original assets, converted to WebP by `scripts/convert-assets.mjs` (see `docs/content.md → Images`). The home hero is a video loop over a WebP poster (Assumption 25). Slots whose asset is still missing (the Indoor Camera large-card photo, PDP lifestyle and bento images) use **neutral WebP placeholders** (`bg-card` colour, one per aspect ratio) made by `scripts/generate-placeholders.mjs`. SVG is not used, because Next doesn't optimise it.
 
 ## Motion (bonus)
 - `animate-reveal` on media blocks and `animate-reveal-text` on text-only blocks.
@@ -217,7 +221,7 @@ A single leftover card in the last row grows to the full row width (`flex-1`). O
 ## Assumptions (copy them into the README)
 1. **Menu:** the Figma shows the full nav on tablet, but the brief requires it to collapse below 1200 → **follow the brief**.
 2. **Carousel dots:** missing in the Figma, required by the brief on desktop → shown from `lg` up, styled with tokens: 6 px dots in `bg-muted-foreground` (≈7:1 on white; `bg-border` would be ≈1.2:1 and fail WCAG 1.4.11), the current one a 16 px `bg-foreground` pill so it differs by shape too; each dot sits in a 24 px button.
-3. **Assets:** images were meant to be exported from the design file, but export is disabled → assets were requested from the design owner and later delivered as files. The delivered set covers the product shots, the Explore tiles and the category and store banners; the home hero, the Kettle and Indoor Camera large-card photos and the PDP lifestyle and bento images were not included, so those slots keep neutral WebP placeholders of the right ratio, as the brief allows. Banner images belong to the **category** (the files are named per category), not to the product.
+3. **Assets:** images were meant to be exported from the design file, but export is disabled → assets were requested from the design owner and later delivered as files. The delivered set covers the product shots, the Explore tiles, the category and store banners and, later, the hero video (Assumption 25); the Kettle large-card photo arrived later; the Indoor Camera large-card photo and the PDP lifestyle and bento images were not included, so those slots keep neutral WebP placeholders of the right ratio, as the brief allows. Banner images belong to the **category** (the files are named per category), not to the product.
 4. **Line-height "Auto"** ≈ 1.35, measured from the height of multi-line layers. **Card radius** ≈ 16, because it can't be read in view-only mode.
 5. **Contrast (WCAG AA, required by the brief):** two Figma interaction colours fail AA.
    - The primary **hover** `#F23F45` with white text is 3.77:1, against 4.5:1 required → it uses `#C2151B`, the Figma "Primary/Stroke" token (6.15:1).
@@ -250,4 +254,6 @@ A single leftover card in the last row grows to the full row width (`flex-1`). O
 20. **Hero ratios:** the spec gave 16:9 on every breakpoint, but the Figma hero is 16:9 only on desktop (≈5:7 on tablet, ≈1:2 on mobile), and at 16:9 a phone hero is too short for the overlay text under the navbar. The hero follows the Figma: 1:2 on base, 3:4 on `md`, 16:9 on `lg`, art-directed with a portrait image below `lg`.
 21. **Navbar over the first block:** every page reference shows the navbar pill floating over the first block. The header stays sticky and in flow; the first full-bleed block (the home hero, later the PDP's first image) pulls up under it with `-mt-header`, the `--header` token (6rem: the header's fixed height, `pt-4` + the 64 px pill + 16 px below it). Text inside that block starts with `pt-header`, so it never sits behind the pill.
 22. **Mobile menu:** below `lg` the menu is a disclosure, not a dialog. A Radix Collapsible expands the navbar pill downwards, so the panel never covers the pill as the earlier Sheet overlay did. The header keeps its fixed `h-header`, so the open pill overlaps the page instead of pushing it down. The trigger swaps Menu ↔ X with the label "Open menu" / "Close menu" and exposes `aria-expanded` and `aria-controls`; Escape closes it and returns focus to the trigger, and choosing a link closes it. There is no focus trap or scroll lock, as fits a disclosure. The panel clips its content for the height animation, so focus rings inside it are drawn inset (`-outline-offset-2`).
-23. **Banner ratios:** the spec gave banners 2.4:1 from `md` and 4:5 below. The page references show the full-bleed banners at 2.4:1 on desktop, ≈1.62:1 on tablet (810 × 500) and ≈9:16 on mobile, and the delivered category crops are ≈2.9:1, 2.5:1 and 3:4. `feat/category-sections` (product banner) and `feat/explore-store-banner` (store banner) size their boxes from the page references (2.4:1 on `lg`, ≈1.62:1 on `md`, ≈9:16 on base); the images fill them with `object-cover`.
+23. **Banner ratios:** the spec gave banners 2.4:1 from `md` and 4:5 below. The page references show the full-bleed banners at 2.4:1 on desktop, ≈1.62:1 on tablet and ≈9:16 on mobile, with the text over the empty left of the photo, but the delivered high-resolution crops (≈2.9:1, 2.5:1, 3:4) have the subject in the centre, where overlaid text would cover it. **Product banner:** from `lg` the text sits over the left of a 2.4:1 box filled by `Breakpoint=Desktop.png` (the designer's export with an empty left half; 1200 px wide, so slightly soft on larger screens); below `lg` the text is centred above the image, 2.4:1 on `md` and 3:4 on base, from the sharp crops, so nothing covers the subject. **Store banner** (`feat/explore-store-banner`): same rule; its mobile photo must be anchored right (`object-right`) so the products stay in frame.
+24. **Large-card photos:** the large card has a full-image lifestyle background, which is not the product shot. It is an optional `lifestyleImage` on the product; the Kettle photo was delivered later (`lifestyle/octopus-kettle-1-7l.webp`); the Indoor Camera photo was not, so it still points to the neutral placeholder (Assumption 3). From `md` the photo fills the card behind the text; below `md` the text sits above it and the photo fills the lower half, anchored right, so the text never covers the subject (as for the banners, Assumption 23). A product that lands in the large slot without one shows its product shot, contained, in the half of the card away from the text.
+25. **Hero video:** the Figma hero is a looping dryer video (`OctopusHairDryer_4K.mp4`). It plays over the poster image, which stays the LCP element with `priority`: two crops (16:9 from `lg`, the centre 3:4 below), each a VP9 WebM with an H.264 MP4 fallback, silent and looping, made by `pnpm assets` (≈0.9 MB / 0.6 MB WebM against the 8.8 MB original). The video element is added only on the client and only without `prefers-reduced-motion`, so reduced-motion users never download it and see the poster (the last frame). A pause button (lucide `Pause` / `Play`, not in the Figma icon set) sits bottom right, because a loop longer than 5 s needs one (WCAG 2.2.2). The first seconds show the dark dryer body behind the centred text, so a light `bg-background` gradient sits over the top of the hero to keep the text at AA contrast.
