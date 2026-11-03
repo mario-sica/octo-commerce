@@ -37,6 +37,8 @@ export default async function ProductPage({
             sizes={`${minWidth("md")} 60vw, 100vw`}
             priority
             className="bg-card"
+            // The 1:1 shot (its background matches bg-card) shows whole, centred in the 3:4 box.
+            imageClassName="object-contain"
           />
         </div>
 
