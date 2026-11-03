@@ -209,7 +209,7 @@ This is the first feature branch. It turns the bare app into the gated workflow.
 - References: `pdp-info.png` and `pages/pdp-*`.
 - Commits:
   1. `feat(pdp): add product route generated only for products with pdp data`.
-     - `generateStaticParams` maps over `getPdpProducts()`; other slugs get a 404 from `proxy.ts` (`dynamicParams` is not available with `cacheComponents`).
+     - `generateStaticParams` maps over `getPdpProducts()`; other slugs show the not-found page through `notFound()` (`dynamicParams` is not available with `cacheComponents`).
      - Includes `notFound()` and the page shell.
   2. ~~`feat(cards): link learn more through getProductHref`~~: already true on `dev` (every card, the hero and the product banner link through `getProductHref()` since `feat/category-sections`).
   3. `feat(pdp): add product info with title and description`
@@ -217,7 +217,7 @@ This is the first feature branch. It turns the bare app into the gated workflow.
   5. `feat(pdp): add where to buy below the colour selector`. On every breakpoint, with no fixed bar (spec, Assumption 8).
   6. `test(pdp): selecting a colour updates selected state and label`
 - **Layout:** two columns on `md` and `lg`, with the right column sticky. A single column on mobile, in the order image → info → colour → Where to buy → gallery.
-- **Out of scope check:** only `/products/octopus-countertop-blender` is built, and any other slug returns 404.
+- **Out of scope check:** only `/products/octopus-countertop-blender` is built, and any other slug shows the not-found page.
 
 ## 14 · `feat/pdp-gallery`
 - References: `pages/pdp-*`.

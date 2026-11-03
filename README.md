@@ -77,7 +77,6 @@ components/
 data/                   products, categories, home sections, navigation, site metadata (JSON)
 types/                  types for the data
 lib/                    data access, SEO helpers, breakpoints, shared hooks
-proxy.ts                sends product slugs without a page to a real 404
 e2e/                    Playwright tests
 scripts/                token check, asset conversion, placeholder generation
 docs/                   design spec, component and content docs, AI log, Lighthouse reports
@@ -89,7 +88,7 @@ Every page reads its content through `lib/data.ts`; components never import JSON
 - **Category sections** come from `getProductsByCategory()` in JSON order, with no hand-picked lists. A category's `layout` decides how its cards are arranged; a category with a single product renders as a full-width banner, and one with none renders nothing.
 - **Best sellers** come from `getBestSellers()`, ordered by `bestSellerRank`. The home page shows them as feature cards and the PDP as compact cards, on the same carousel primitive.
 - **Adding a product** to `data/products.json` is enough for it to appear in its category section and, if it is a best seller, in both carousels.
-- **Product pages** exist only for products with a `pdp` object (today the Countertop Blender). Every "Learn more" goes through `getProductHref()`, which falls back to that page. `generateStaticParams` builds only those products, and `proxy.ts` answers any other slug with a real 404.
+- **Product pages** exist only for products with a `pdp` object (today the Countertop Blender). Every "Learn more" goes through `getProductHref()`, which falls back to that page. `generateStaticParams` builds only those products, and any other slug shows the not-found page through `notFound()`.
 
 ### Design system
 - **Tokens:** colours, type scale, spacing, radii and motion are defined once in `app/globals.css`. Spacing is semantic (`section-*`, `stack-*`, `card-*`, `cards`, `gutter`) and changes per breakpoint inside the token, so components use one class.
@@ -115,7 +114,7 @@ Every page reads its content through `lib/data.ts`; components never import JSON
   - home → PDP through "Learn more", and a full mobile journey (menu, colour, accordion, "Where to buy");
   - no horizontal overflow on both pages at 375, 809, 810, 1000, 1199, 1200 and 1440 px;
   - the home carousel: arrows disabled at the edges, dots, keyboard and reduced motion; the product-page carousel: compact cards from data, arrows disabled at the edges, dots only when there is more than one position;
-  - 404 for product slugs without a page;
+  - the not-found page for product slugs without a page;
   - titles, descriptions, Open Graph, canonical URLs, robots and sitemap;
   - reduced motion for the menu, the accordion and the scroll reveal;
   - the scroll reveal: below-the-fold only, deep links, focus and print.
@@ -125,7 +124,7 @@ Every place where the design and the requirements were unclear or disagreed is r
 
 - **Requirements over the design file when they conflict.** The best-sellers carousels have pagination dots on desktop, and two interaction colours from the design (a hover red and a light-blue focus ring) are replaced by existing palette colours because they fail WCAG AA.
 - **Missing design content follows the design system.** Text missing from some tablet and mobile frames, the second product colour and the truncated product dimensions are filled in with the design system's styles and marked as placeholders in the data where relevant.
-- **One product page.** Only the Countertop Blender has a product page. Other products' cards link to it, and any other product URL returns a real 404 (Cache Components rules out `dynamicParams`, so `proxy.ts` handles it before rendering).
+- **One product page.** Only the Countertop Blender has a product page. Other products' cards link to it, and any other product URL shows the not-found page.
 - **Instant navigation to the product page.** The product content reads the URL inside a `<Suspense>` boundary, so the page shell is shared and prefetched once for every product link.
 - **Assets.** Product shots, category tiles, banners and the hero video come from the original files, converted to WebP (and WebM/MP4) by `pnpm assets`. Slots without an asset fall back to neutral WebP placeholders of the right ratio; adding a photo only means converting it and changing a JSON path.
 - **Navigation.** The full nav shows from 810 px, with the links centred between logo and button on tablet; below that, the menu is a disclosure, not a modal: it expands the navbar pill and closes on Escape, with no focus trap. The logo scrolls back to the top on the home page.
@@ -156,11 +155,11 @@ Lighthouse mobile, production build ([reports and method](docs/lighthouse/README
 - Project skills define one loop per branch: start, small gated commits, full verification (gate, unit and e2e tests, screenshots against the references, independent review), then a merge only after explicit human approval.
 
 ### What had to be corrected
-Every time AI output had to be corrected, it was logged with what was wrong and how it was fixed: [`docs/ai-log.md`](docs/ai-log.md) lists 22 corrections. They fall into a few patterns:
+Every time AI output had to be corrected, it was logged with what was wrong and how it was fixed: [`docs/ai-log.md`](docs/ai-log.md) lists 23 corrections. They fall into a few patterns:
 
 - **Following the design file where it fails the requirements.** Interaction colours copied from the design failed WCAG AA; carousel dots were first drawn at about 1.2:1 contrast; the product-page carousel first dropped the pagination dots because the design had none.
 - **Reduced motion that looked handled but wasn't.** Three times a `motion-reduce:` override, or a keyframes redefinition inside a media query, lost to a more specific or later CSS rule, so the animation still played. They were found in review, by measuring the computed animation in a real browser and by a new end-to-end test; each was fixed with `motion-safe:` or a separate animation and is now covered by an end-to-end test.
 - **Design-system plumbing.** Colour tokens first sampled from anti-aliased screenshots came out too light; the default shadcn `cn` read the custom `text-cta` size as a colour and dropped it.
-- **Framework behaviour.** With Cache Components, `dynamicParams` is unavailable and `notFound()` after streaming gave a 404 page with status 200; reading the URL outside `<Suspense>` blocked instant navigation (flagged by a Next.js dev insight).
+- **Framework behaviour.** With Cache Components, reading the URL outside `<Suspense>` blocked instant navigation (flagged by a Next.js dev insight).
 - **Layout details found in screenshots.** A flex row that shrank a banner's text column, a container one gutter narrower than the navbar, a product shot rendered at half the reference size.
 - **Data and interaction design.** Hand-picked product lists instead of data-driven sections; a mobile menu first built as a modal overlay; a reveal-on-focus that started moving the element between mousedown and mouseup and swallowed clicks.

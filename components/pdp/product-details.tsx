@@ -48,7 +48,7 @@ export async function ProductDetails({
 }: Pick<PageProps<"/products/[slug]">, "params">) {
   const { slug } = await params;
   const product = getProduct(slug);
-  // Other slugs get their 404 from proxy.ts; this is only a fallback (spec, Assumption 12).
+  // Only products with PDP content have a page (spec, Assumption 12).
   if (!product?.pdp) notFound();
 
   return (

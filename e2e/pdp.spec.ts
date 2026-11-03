@@ -21,8 +21,9 @@ test("home → pdp: learn more opens the countertop blender page", async ({
 
 test("only products with pdp content have a page", async ({ page }) => {
   for (const slug of ["octopus-kettle-1-7l", "not-a-product"]) {
-    const response = await page.goto(`/products/${slug}`);
-    expect(response?.status(), slug).toBe(404);
+    await page.goto(`/products/${slug}`);
+    await expect(page.getByText("This page could not be found.")).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("404");
   }
 });
 

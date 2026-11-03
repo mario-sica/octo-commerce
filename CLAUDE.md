@@ -55,7 +55,7 @@ A website of two pages: the **Homepage** and the **Product Detail Page** (`/prod
   - **Never hard-code or hand-pick product lists.** Category sections come from `getProductsByCategory()` in JSON order, and best sellers from `getBestSellers()`.
   - Adding one product object to `products.json` must be enough for it to appear in its category section and, if it is a best seller, in both carousels.
   - A category with one product renders as that product's banner.
-- **PDP route.** There is one dynamic route, `app/products/[slug]`. `generateStaticParams` returns only `getPdpProducts()`; today that is only the Countertop Blender. `dynamicParams` is not available with `cacheComponents`, so `proxy.ts` sends any other slug to the not-found page with a real 404. Building other product pages is out of scope. "Learn more" links always go through `getProductHref()`.
+- **PDP route.** There is one dynamic route, `app/products/[slug]`. `generateStaticParams` returns only `getPdpProducts()`; today that is only the Countertop Blender. Any other slug shows Next's not-found page through `notFound()`. Building other product pages is out of scope. "Learn more" links always go through `getProductHref()`.
 - Server Components by default. Use `"use client"` only for interactive leaves: menu, carousel, colour selector, accordion, scroll-reveal.
 - Reuse the components in `components/`: `Button`, `ProductCard` and its variants, `Carousel`, `SectionHeader`, `Accordion`, `Section`, `Container`. Don't duplicate them.
 - **Two different best-sellers carousels:** `HomeBestSellers` (feature cards) and `PdpBestSellers` (compact cards). Both are built on the same shared `Carousel` primitive; never copy the carousel logic into either of them.
