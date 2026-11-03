@@ -209,7 +209,7 @@ This is the first feature branch. It turns the bare app into the gated workflow.
 - References: `pdp-info.png` and `pages/pdp-*`.
 - Commits:
   1. `feat(pdp): add product route generated only for products with pdp data`.
-     - `generateStaticParams` maps over `getPdpProducts()`, and `export const dynamicParams = false`.
+     - `generateStaticParams` maps over `getPdpProducts()`; other slugs get a 404 from `proxy.ts` (`dynamicParams` is not available with `cacheComponents`).
      - Includes `notFound()` and the page shell.
   2. `feat(cards): link learn more through getProductHref`. Products without a PDP link to the Countertop Blender PDP.
   3. `feat(pdp): add product info with title and description`
