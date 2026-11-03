@@ -278,7 +278,7 @@ This branch is a bonus: only do it if branches 1–18 are done.
 ---
 
 ## Handled by the user, outside Claude Code
-- **Real assets:** when more original files are available (the PDP lifestyle and feature photos), drop them into `docs/Octopus_assets/`, add them to `scripts/convert-assets.mjs` and change the JSON paths on a `chore/real-assets` branch.
+- **Real assets:** done on `fix/pdp-images` (the PDP gallery and bento photos). Any later original goes into `docs/Octopus_assets/`, then into `scripts/convert-assets.mjs`, and only its JSON path changes.
 - **Push** the branches and **merge `dev → main`** at the end.
 - **Deploy:** connect the GitHub repo to Vercel and add the live link to the README.
 - Run Lighthouse on the live URL. This can go back into branch 20 as an update.

@@ -43,7 +43,7 @@ The three official variants are in `docs/design/assets/`. They come from the des
 - In the navbar and the menu panel, the logo is wrapped in a link to `/` with `aria-label="Octopus — home"`. The SVG gets `aria-hidden="true" focusable="false"`.
 - In the footer, the logo is not a link. The SVG gets `role="img"` and `aria-label="Octopus"`.
 
-**Favicon.** `app/icon.svg` is a copy of `logo-mark.svg` with `fill` set to the brand red, since a favicon can't inherit `currentColor`. It is the only place where the hex value appears outside the token file, and `check-tokens` doesn't scan `.svg` files.
+**Favicon.** `app/icon.svg` is the `logo-mark.svg` path in white on a brand-red square (the mark spans 75% of the width, centred), since a favicon can't inherit `currentColor`. It is the only place where the hex value appears outside the token file, and `check-tokens` doesn't scan `.svg` files.
 
 ## Icons (`lucide-react`)
 The mapping from the Figma icon set (`Foundations → Icons`) to lucide-react:
@@ -105,7 +105,7 @@ This works for `MapPin`, `TriangleAlert` and `CircleAlert`, because in all three
 | `ProductInfo` | server + client leaf | PDP | title (h1), description, `ColourSelector` (client), "Where to buy" (full-width primary link to `/coming-soon`); sticky right column from `md` (`top-header`) |
 | `ColourSelector` | client | PDP | `RadioGroup` labelled by the visible "Colour - {name}" (`aria-labelledby`), one item per colour named by `aria-label`; the swatch colour comes from data through `style` |
 | `ProductGallery` | server | PDP | the lifestyle images from `product.pdp.gallery` (rounded 3:4, decorative), with its `children` (the bento) after the first one; rendered in the second line of the PDP columns |
-| `FeatureBento` | server | PDP | feature cards from `product.pdp.features`, grouped by `bentoRows()` into rows of 1, 2, 1, 2…: from `lg` a wide 2.4:1 card or two 3:4 halves; below `lg` a column of 3:4 cards; text over the image, title `h2` (spec, Assumption 26) |
+| `FeatureBento` | server | PDP | feature cards from `product.pdp.features`, grouped by `bentoRows()` into rows of 1, 2, 1, 2…: a wide card (2.4:1 photo; text over its empty left half from `lg`, stacked above the photo below `lg`) or two 3:4 halves (text over the top of the photo; `p-card-xs` from `lg`); title `h2` (spec, Assumption 26) |
 | `ProductSpecs` | server (renders the client `Accordion`) | PDP | a `section` named by a screen-reader-only `h2` "Specifications"; one item per `product.pdp.specs` group (several values → bulleted list, one → plain text), first open; "Downloads" last, listing `product.pdp.downloads` as links with the `Download` icon (spec, Assumption 27) |
 | `Reveal` | client | sections | IntersectionObserver plus `animate-reveal` (`variant="text"`: `animate-reveal-text`), `animate-reveal-fade` under reduced motion; plays once; only blocks below the fold at load are hidden; focus inside reveals at once; print shows all; state in a `data-reveal` attribute (no re-render); never on LCP elements (spec, Assumption 30) |
 
