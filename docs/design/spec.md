@@ -159,7 +159,7 @@ A single leftover card in the last row grows to the full row width: a medium car
   - wrapper `sticky top-0 z-50 h-header px-gutter pt-4`: a fixed height, so the open mobile menu overlaps the page instead of pushing it down;
   - pill `mx-auto max-w-content min-h-16 rounded-pill pl-5 pr-3 py-3 flex flex-wrap items-center justify-between` (64 px tall when closed);
   - from `md`: logo, links and primary CTA (Assumption 1); below `md`: logo plus an icon-only menu button that expands the pill downwards (Assumption 22);
-  - the logo links to `/#top`, the standard fragment for the top of the page, so on the home page it returns to the top with no custom code;
+  - the logo links home; on the home page it scrolls back to the top instead (smoothly, instantly with reduced motion) and clears a `/#section` hash;
   - logo: `Logo variant="mark"` with `h-5.5` below `md`, and `Logo variant="full"` with `h-6` from `md` ≈ (see `components.md → Logo`).
 - **Hero:** full-bleed, art-directed media (`priority` poster, video loop over it, Assumption 25): 1:2 on base, 3:4 on `md`, 16:9 on `lg` (Assumption 20). It slides under the navbar with `-mt-header` (Assumption 21). The overlay text is centred horizontally and starts below the pill (`pt-header`, then `pt-stack-xl`): title and subtitle `gap-2` ≈, then `gap-stack-sm` to the CTA.
 - **Best sellers (home carousel, reference `card-carousel-home.png`):**

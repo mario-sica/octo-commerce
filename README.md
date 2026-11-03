@@ -95,7 +95,7 @@ Every page reads its content through `lib/data.ts`; components never import JSON
 - **Breakpoints:** mobile-first with two breakpoints, `md` (810 px) and `lg` (1200 px).
 - **Layout:** flexbox only. `pnpm check:tokens` rejects `grid`, arbitrary values, hex colours and inline styles in `app/`, `components/` and `lib/`; the only inline style is a swatch colour that comes from data.
 - **Images:** always Next's image optimisation (`next/image` props via `getImageProps`) inside a fixed-ratio box, with `sizes`, lazy below the fold and `priority` only on the LCP candidates (home hero, first PDP image). Banners use art direction (`<picture>` with a crop per breakpoint).
-- **Server first:** components are Server Components; only interactive leaves are client components (mobile menu, carousel, colour selector, accordion, hero video, scroll reveal).
+- **Server first:** components are Server Components; only interactive leaves are client components (logo link, mobile menu, carousel, colour selector, accordion, hero video, scroll reveal).
 
 ### Accessibility
 - Landmarks and headings in order on both pages, a skip link, and a visible focus outline everywhere (white on red backgrounds).
@@ -127,7 +127,7 @@ Every place where the design and the requirements were unclear or disagreed is r
 - **One product page.** Only the Countertop Blender has a product page. Other products' cards link to it, and any other product URL shows the not-found page.
 - **Instant navigation to the product page.** The product content reads the URL inside a `<Suspense>` boundary, so the page shell is shared and prefetched once for every product link.
 - **Assets.** Product shots, category tiles, banners and the hero video come from the original files, converted to WebP (and WebM/MP4) by `pnpm assets`. Slots without an asset fall back to neutral WebP placeholders of the right ratio; adding a photo only means converting it and changing a JSON path.
-- **Navigation.** The full nav shows from 810 px, with the links centred between logo and button on tablet; below that, the menu is a disclosure, not a modal: it expands the navbar pill and closes on Escape, with no focus trap. The logo links to `/#top`, so it also returns to the top on the home page.
+- **Navigation.** The full nav shows from 810 px, with the links centred between logo and button on tablet; below that, the menu is a disclosure, not a modal: it expands the navbar pill and closes on Escape, with no focus trap. The logo scrolls back to the top on the home page.
 - **The "Downloads" box is the last accordion item,** so all product information follows one accessible pattern.
 - **Motion is optional.** Sections fade and rise once as they scroll into view; with reduced motion they only fade, and the hero media and first product image are never animated.
 

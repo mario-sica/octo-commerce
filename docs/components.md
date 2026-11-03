@@ -40,7 +40,7 @@ The three official variants are in `docs/design/assets/`. They come from the des
 - The navbar shows both variants and hides one per breakpoint: `mark` with `md:hidden`, `full` with `hidden md:block`.
 
 **Accessibility.**
-- In the navbar, the logo is wrapped in a link to `/#top` with `aria-label="Octopus — home"` (`/#top`, the standard fragment for the top of the page, so it also works on the home page itself). The SVG gets `aria-hidden="true" focusable="false"`.
+- In the navbar, the logo is wrapped in a link to `/` with `aria-label="Octopus — home"` (`HomeLink`: on the home page it scrolls to the top instead). The SVG gets `aria-hidden="true" focusable="false"`.
 - In the footer, the logo is not a link. The SVG gets `role="img"` and `aria-label="Octopus"`.
 
 **Favicon.** `app/icon.svg` is the `logo-mark.svg` path in white on a brand-red square (the mark spans 75% of the width; centred horizontally, and vertically by its centre of mass rather than its bounding box, because the tentacles make it bottom-heavy), since a favicon can't inherit `currentColor`. It is the only place where the hex value appears outside the token file, and `check-tokens` doesn't scan `.svg` files.
@@ -88,7 +88,7 @@ This works for `MapPin`, `TriangleAlert` and `CircleAlert`, because in all three
 | `Section` | server | everywhere | `<section aria-labelledby>`. Padding is chosen **only** through the props `top` and `bottom` (`"sm" \| "md" \| "lg" \| "none"`), which map to `*-section-*` tokens. |
 | `SectionHeader` | server | home category sections, "Best sellers" (home and PDP), "Explore" | Props: `title`, `subtitle?`, `cta?`, `align: "center" \| "start"`, `level`. Typography follows the spec. |
 | `Logo` | server | header, footer | variants `full`, `mark`, `stacked`; see the Logo section |
-| `SiteHeader` | server + client leaf | both pages | sticky navbar pill with `Logo` (`mark` below `md`, `full` from `md`); `MobileMenu` (Radix Collapsible) is the client leaf |
+| `SiteHeader` | server + client leaf | both pages | sticky navbar pill with `Logo` (`mark` below `md`, `full` from `md`); `HomeLink` (logo link: scrolls to the top on the home page) and `MobileMenu` (Radix Collapsible) are the client leaves |
 | `SiteFooter` | server | both pages | from `data/navigation.json`; `Logo variant="stacked"` |
 | `ProductImage` | server | everywhere | **always** `next/image` through `getImageProps` (`fill` + `sizes` + `object-cover`) inside a fixed `aspect-*` box. The caller adds `bg-card` and `rounded-card` through `className` where the design has them (cards, PDP), not on the full-bleed hero. Optional `md`/`lg` sources make a `<picture>` for art direction; `<source media>` reads `lib/breakpoints.ts`, which a test keeps in sync with `globals.css`. `priority`, only on the home hero and the first PDP image, means `loading="eager"` + `fetchPriority="high"` (Next 16 deprecates `priority`). |
 | `Hero` | server | home | art-directed media (1:2 / 3:4 / 16:9) with a `priority` poster, under the navbar via `-mt-header`, and centred overlay text on every breakpoint over a light top gradient |
