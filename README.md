@@ -119,3 +119,29 @@ Every page reads its content through `lib/data.ts`; components never import JSON
   - titles, descriptions, Open Graph, canonical URLs, robots and sitemap;
   - reduced motion for the menu, the accordion and the scroll reveal;
   - the scroll reveal: below-the-fold only, deep links, focus and print.
+
+## Decisions and trade-offs
+Every place where the design and the requirements were unclear or disagreed is recorded, with its reason, in [`docs/design/spec.md` → Assumptions](docs/design/spec.md). The main ones:
+
+- **Requirements over the design file when they conflict.** The navigation collapses into a menu below 1200 px, the best-sellers carousels have pagination dots on desktop, and two interaction colours from the design (a hover red and a light-blue focus ring) are replaced by existing palette colours because they fail WCAG AA.
+- **Missing design content follows the design system.** Text missing from some tablet and mobile frames, the second product colour and the truncated product dimensions are filled in with the design system's styles and marked as placeholders in the data where relevant.
+- **One product page.** Only the Countertop Blender has a product page. Other products' cards link to it, and any other product URL returns a real 404 (Cache Components rules out `dynamicParams`, so `proxy.ts` handles it before rendering).
+- **Instant navigation to the product page.** The product content reads the URL inside a `<Suspense>` boundary, so the page shell is shared and prefetched once for every product link.
+- **Assets.** Product shots, category tiles, banners and the hero video come from the original files, converted to WebP (and WebM/MP4) by `pnpm assets`. The product page's lifestyle and feature photos were not available, so those slots use neutral WebP placeholders of the right ratio; replacing them only means changing JSON paths.
+- **Mobile menu as a disclosure,** not a modal: it expands the navbar pill and closes on Escape, with no focus trap.
+- **The "Downloads" box is the last accordion item,** so all product information follows one accessible pattern.
+- **Motion is optional.** Sections fade and rise once as they scroll into view; with reduced motion they only fade, and the hero media and first product image are never animated.
+
+## Performance
+Lighthouse mobile, production build ([reports and method](docs/lighthouse/README.md)):
+
+| Page | Performance | Accessibility | Best practices | SEO |
+|---|---|---|---|---|
+| Home | 100 | 100 | 100 | 100 |
+| Product page | 99 | 100 | 100 | 100 |
+
+## Next steps
+- Replace the product page's lifestyle and feature placeholders with real photos, and give gallery images an optional `alt` in the data for when they carry information.
+- Run Lighthouse against a deployed URL: the product page's simulated LCP from a localhost trace overstates the real figure.
+- Remove the unused `cn` dependency, which came with the shadcn setup, and move `shadcn` to `devDependencies`.
+- Add an `apple-icon` and a `.ico` fallback next to the SVG favicon.
