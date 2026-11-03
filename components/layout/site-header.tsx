@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { getNavigation } from "@/lib/data";
 
 /**
- * Sticky navbar pill. The full nav shows from `lg`; below it, the mobile menu takes over and
+ * Sticky navbar pill. The full nav shows from `md`; below it, the mobile menu takes over and
  * expands the pill downwards. The header keeps a fixed `h-header`, so the open pill overflows
  * over the page instead of pushing it down.
  */
@@ -24,11 +24,14 @@ export function SiteHeader() {
           <Logo variant="full" className="hidden h-6 md:block" />
         </HomeLink>
 
-        <nav aria-label="Main" className="hidden items-center gap-2 lg:flex">
-          <ul className="flex items-center gap-2">
+        {/* From md the links fill the space between logo and CTA: centred there on tablet,
+            against the CTA from lg (spec, Assumption 1). */}
+        <nav aria-label="Main" className="hidden flex-1 items-center gap-2 pl-2 md:flex lg:pl-0">
+          <ul className="flex flex-1 items-center justify-center gap-1 lg:justify-end lg:gap-2">
             {header.links.map((link) => (
               <li key={link.href}>
-                <Button asChild variant="ghost">
+                {/* Tighter below lg, so logo, links and CTA fit one line at 810 px. */}
+                <Button asChild variant="ghost" className="px-2.5 lg:px-4">
                   <Link href={link.href}>{link.label}</Link>
                 </Button>
               </li>
