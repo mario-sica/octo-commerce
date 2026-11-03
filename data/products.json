@@ -106,7 +106,8 @@
     "category": "home-security",
     "shortDescription": "A 2K indoor camera that pans to cover the whole room and tracks movement as it happens",
     "image": "/images/products/octopus-indoor-camera.webp",
-    "lifestyleImage": "/images/placeholders/portrait.webp",
+    "lifestyleImage": "/images/lifestyle/octopus-indoor-camera-wide.webp",
+    "lifestyleImageTall": "/images/lifestyle/octopus-indoor-camera-tall.webp",
     "bestSeller": true,
     "bestSellerRank": 2
   },

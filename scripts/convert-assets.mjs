@@ -110,6 +110,17 @@ const ASSETS = [
 
   // Large-card lifestyle photos (spec, Assumption 24)
   ["lifestyle/octopus-kettle-1-7l.webp", "lifestyle-kettle.png", 1600],
+  // Indoor Camera: wide for base and md, portrait for the tall vertical card from lg
+  [
+    "lifestyle/octopus-indoor-camera-wide.webp",
+    "lifestyle-indoor-camera-wide.webp",
+    1920,
+  ],
+  [
+    "lifestyle/octopus-indoor-camera-tall.webp",
+    "lifestyle-indoor-camera-tall.webp",
+    1080,
+  ],
 
   // "Find us at" store banner: wide from lg, the taller crop below lg
   [
@@ -216,7 +227,17 @@ for (const [name, filter, posterWidth, bitrate] of HERO_CROPS) {
   ]);
   const frame = execFileSync("ffmpeg", [
     ...["-v", "error", "-sseof", "-0.1", "-i", join(SRC, HERO_VIDEO)],
-    ...["-frames:v", "1", "-vf", filter, "-f", "image2pipe", "-c:v", "png", "-"],
+    ...[
+      "-frames:v",
+      "1",
+      "-vf",
+      filter,
+      "-f",
+      "image2pipe",
+      "-c:v",
+      "png",
+      "-",
+    ],
   ]);
   const poster = await sharp(frame)
     .resize({ width: posterWidth, withoutEnlargement: true })
