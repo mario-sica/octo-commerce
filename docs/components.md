@@ -63,6 +63,7 @@ The mapping from the Figma icon set (`Foundations → Icons`) to lucide-react:
 | Download | `Download` (arrow into a tray) | "User manual" in Downloads |
 | Plus / Minus | `Plus` / `Minus` | — |
 | Checkmark | `Check` | — |
+| — (not in the Figma set) | `Pause` / `Play` | hero video pause button (Assumption 25) |
 | Pin (solid) | `MapPin` + `fill="currentColor"` + `icon-solid` | — |
 | Alert-triangle (solid) | `TriangleAlert` + `fill="currentColor"` + `icon-solid` | — |
 | Alert-circle (solid) | `CircleAlert` + `fill="currentColor"` + `icon-solid` | — |
@@ -90,7 +91,8 @@ This works for `MapPin`, `TriangleAlert` and `CircleAlert`, because in all three
 | `SiteHeader` | server + client leaf | both pages | sticky navbar pill with `Logo` (`mark` below `md`, `full` from `md`); `MobileMenu` (Radix Collapsible) is the client leaf |
 | `SiteFooter` | server | both pages | from `data/navigation.json`; `Logo variant="stacked"` |
 | `ProductImage` | server | everywhere | **always** `next/image` through `getImageProps` (`fill` + `sizes` + `object-cover`) inside a fixed `aspect-*` box. The caller adds `bg-card` and `rounded-card` through `className` where the design has them (cards, PDP), not on the full-bleed hero. Optional `md`/`lg` sources make a `<picture>` for art direction; `<source media>` reads `lib/breakpoints.ts`, which a test keeps in sync with `globals.css`. `priority`, only on the home hero and the first PDP image, means `loading="eager"` + `fetchPriority="high"` (Next 16 deprecates `priority`). |
-| `Hero` | server | home | art-directed media (1:2 / 3:4 / 16:9) with `priority`, under the navbar via `-mt-header`, and centred overlay text on every breakpoint |
+| `Hero` | server | home | art-directed media (1:2 / 3:4 / 16:9) with a `priority` poster, under the navbar via `-mt-header`, and centred overlay text on every breakpoint over a light top gradient |
+| `HeroVideo` | client | home hero | the optional loop over the poster: rendered only on the client and without `prefers-reduced-motion` (`usePrefersReducedMotion` from `lib/`, shared with the carousel), muted, `playsInline`, `aria-hidden`, fades in once it plays; `<source media>` picks the wide or portrait crop, WebM before MP4; a `special` icon button pauses and resumes it (WCAG 2.2.2) |
 | `ProductCard` | server | home and PDP | one component per variant in `components/cards/`: `FeatureProductCard` (home carousel), `LargeProductCard` (`orientation`: `horizontal` / `vertical`), `MediumProductCard` (`vertical` / `horizontal` / `wide`), `SmallProductCard`, `compact` (PDP carousel). "Learn more" uses `getProductHref(product)` and adds the product name for screen readers (`Learn more{" "}<span className="sr-only">about …</span>`, with the space outside the span). |
 | `Carousel` (shadcn + `CarouselDots`, `CarouselControls`) | client | home and PDP | the **shared primitive**: Embla, state read with `useSyncExternalStore`; `CarouselControls` is the row below the slides (dots from `lg` on the left, the arrow pair bottom-right, arrows disabled at the edges); slides are spaced by `gap-cards`; `CarouselContent` takes a `viewportClassName` (e.g. `overflow-visible` for a page-edge peek). Both best-sellers carousels are built on it. |
 | `HomeBestSellers` | server (renders the client `Carousel`) | home | **home carousel:** `FeatureProductCard`s from `getBestSellers()`, one visible plus a peek of the next. The carousel region is named "{title} slides", so it differs from the section landmark. Reference `card-carousel-home.png`. |
@@ -144,7 +146,7 @@ export type Product = {
 };
 
 export type HomeSection =
-  | { type: "hero"; productId: string; subtitle: string; image: string; imageMobile: string }
+  | { type: "hero"; productId: string; subtitle: string; image: string; imageMobile: string; video?: HeroVideo }
   | { type: "best-sellers"; title: string }
   | { type: "categories" }            // one CategorySection per category, categories.json order
   | { type: "explore"; title: string; categoryIds: CategoryId[] }   // tile order
