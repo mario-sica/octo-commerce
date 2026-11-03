@@ -12,8 +12,8 @@ type ProductGalleryProps = {
 
 /**
  * PDP gallery (spec → PDP composition): the first lifestyle image, then `children`, then the
- * remaining images. Each image is a rounded 3:4 box. The images are mood shots and the slots still
- * hold placeholders, so they are decorative (`alt=""`).
+ * remaining images. Each image is a rounded 3:4 box. The images are mood shots that illustrate the
+ * content next to them, so they are decorative (`alt=""`).
  */
 export function ProductGallery({ images, children }: ProductGalleryProps) {
   const [first, ...rest] = images;
