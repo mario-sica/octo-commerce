@@ -52,8 +52,10 @@ export function MobileMenu({ links, cta }: MobileMenuProps) {
         </Button>
       </Collapsible.Trigger>
 
-      {/* overflow-hidden is needed for the height animation, so focus rings inside are drawn inset. */}
-      <Collapsible.Content className="basis-full overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down motion-reduce:animate-none">
+      {/* overflow-hidden is needed for the height animation, so focus rings inside are drawn inset.
+          The animation is gated with motion-safe: a motion-reduce:animate-none override loses to
+          the more specific data-[state] rules. */}
+      <Collapsible.Content className="basis-full overflow-hidden motion-safe:data-[state=closed]:animate-collapsible-up motion-safe:data-[state=open]:animate-collapsible-down">
         <nav aria-label="Main" className="flex flex-col gap-1 pt-3">
           <ul className="flex flex-col">
             {links.map((link) => (
