@@ -1,26 +1,25 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
-/** The computed animation of the panel a disclosure trigger controls (Radix sets aria-controls when open). */
-async function panelAnimation(page: Page, trigger: Locator) {
+/** The panel a disclosure trigger controls (Radix sets aria-controls while it is open). */
+async function panelOf(page: Page, trigger: Locator) {
   const id = await trigger.getAttribute("aria-controls");
-  return page.evaluate(
-    (panelId) => getComputedStyle(document.getElementById(panelId ?? "")!).animationName,
-    id,
-  );
+  expect(id, "an open trigger names its panel").toBeTruthy();
+  // Attribute selector: Radix ids contain colons, which `#id` would need escaped.
+  return page.locator(`[id="${id}"]`);
 }
 
 async function openMenu(page: Page) {
   await page.setViewportSize({ width: 375, height: 800 });
   await page.goto("/");
   await page.getByRole("button", { name: "Open menu" }).click();
-  return page.getByRole("button", { name: "Close menu" });
+  return panelOf(page, page.getByRole("button", { name: "Close menu" }));
 }
 
 async function openDownloads(page: Page) {
   await page.goto("/products/octopus-countertop-blender");
   const downloads = page.getByRole("button", { name: "Downloads" });
   await downloads.click();
-  return downloads;
+  return panelOf(page, downloads);
 }
 
 /**
@@ -32,22 +31,27 @@ test.describe("with reduced motion", () => {
   test.use({ reducedMotion: "reduce" });
 
   test("the menu panel opens without animating", async ({ page }) => {
-    expect(await panelAnimation(page, await openMenu(page))).toBe("none");
+    await expect(await openMenu(page)).toHaveCSS("animation-name", "none");
   });
 
   test("an accordion panel opens without animating", async ({ page }) => {
-    expect(await panelAnimation(page, await openDownloads(page))).toBe("none");
+    await expect(await openDownloads(page)).toHaveCSS("animation-name", "none");
   });
 });
 
 test.describe("without a motion preference", () => {
   test.use({ reducedMotion: "no-preference" });
 
-  test("the menu and accordion panels animate", async ({ page }) => {
-    expect(await panelAnimation(page, await openMenu(page))).toBe(
+  test("the menu panel animates", async ({ page }) => {
+    await expect(await openMenu(page)).toHaveCSS(
+      "animation-name",
       "collapsible-down",
     );
-    expect(await panelAnimation(page, await openDownloads(page))).toBe(
+  });
+
+  test("an accordion panel animates", async ({ page }) => {
+    await expect(await openDownloads(page)).toHaveCSS(
+      "animation-name",
       "accordion-down",
     );
   });
