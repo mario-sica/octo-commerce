@@ -44,6 +44,16 @@ test.describe("scroll reveal", () => {
     await expect(accessories).toHaveCSS("opacity", "1");
   });
 
+  test("a fast scroll past a section never leaves it hidden", async ({ page }) => {
+    await page.goto("/");
+    await expect(revealOf(page, "Kitchen")).toHaveAttribute("data-reveal", "hidden");
+
+    // One jump to the bottom: the sections in between are never inside the viewport.
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+
+    await expect(page.locator('[data-reveal="hidden"]')).toHaveCount(0);
+  });
+
   test("keyboard focus inside a hidden section reveals it", async ({ page }) => {
     await page.goto("/");
     const explore = revealOf(page, "Explore all categories");

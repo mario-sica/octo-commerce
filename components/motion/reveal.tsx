@@ -42,13 +42,15 @@ export function Reveal({ children, variant = "media", className }: RevealProps) 
     // Focus shows the block at once, without the rise: focus comes on mousedown too, and a block
     // that starts moving between mousedown and mouseup would swallow the click.
     const showNow = () => reveal("visible");
-    // A bottom margin instead of a ratio threshold: a block taller than the viewport would never
-    // reach a 15% ratio, while its top always crosses the line.
+    // Margins instead of a ratio threshold: a block taller than the viewport would never reach a
+    // 15% ratio, while its top always crosses the bottom line. The huge top margin counts blocks
+    // already scrolled past as intersecting: a fast scroll can carry a block from below the
+    // viewport to above it between two checks, and it would otherwise stay hidden.
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry?.isIntersecting) reveal("shown");
       },
-      { rootMargin: "0px 0px -15% 0px" },
+      { rootMargin: "100000% 0px -15% 0px" },
     );
     observer.observe(element);
     // Keyboard focus can land in the bottom 15% before the observer fires: never leave focus on an
