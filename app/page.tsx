@@ -1,4 +1,5 @@
 import { CategorySection } from "@/components/home/category-section";
+import { ExploreCategories } from "@/components/home/explore-categories";
 import { Hero } from "@/components/home/hero";
 import { HomeBestSellers } from "@/components/home/home-best-sellers";
 import { getCategories, getHomeSections } from "@/lib/data";
@@ -16,6 +17,14 @@ export default function Home() {
         return getCategories().map((category) => (
           <CategorySection key={category.id} category={category} />
         ));
+      case "explore":
+        return (
+          <ExploreCategories
+            key={key}
+            title={section.title}
+            categoryIds={section.categoryIds}
+          />
+        );
       default:
         return null;
     }
