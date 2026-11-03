@@ -44,6 +44,37 @@ test.describe("scroll reveal", () => {
     await expect(accessories).toHaveCSS("opacity", "1");
   });
 
+  test("a fast scroll past a section never leaves it hidden", async ({ page }) => {
+    await page.goto("/");
+    await expect(revealOf(page, "Kitchen")).toHaveAttribute("data-reveal", "hidden");
+
+    // One jump to the bottom: the sections in between are never inside the viewport.
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+
+    await expect(page.locator('[data-reveal="hidden"]')).toHaveCount(0);
+  });
+
+  test("coming back to the home page leaves no section hidden", async ({ page }) => {
+    // Next keeps the previous page alive and hidden: its unrevealed blocks come back with it.
+    await page.setViewportSize({ width: 1000, height: 800 });
+    await page.goto("/");
+    await page.getByRole("link", { name: /^Learn more about/ }).first().click();
+    await expect(page).toHaveURL(/\/products\//);
+
+    await page
+      .getByRole("navigation", { name: "Main" })
+      .getByRole("link", { name: "Accessories" })
+      .click();
+    await expect(page).toHaveURL("/#accessories");
+
+    const accessories = revealOf(page, "Accessories");
+    await expect(accessories).toBeInViewport();
+    await expect(accessories).toHaveCSS("opacity", "1");
+
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await expect(page.locator('[data-reveal="hidden"]')).toHaveCount(0);
+  });
+
   test("keyboard focus inside a hidden section reveals it", async ({ page }) => {
     await page.goto("/");
     const explore = revealOf(page, "Explore all categories");

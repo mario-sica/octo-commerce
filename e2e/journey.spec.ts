@@ -16,7 +16,7 @@ test("mobile journey: menu, learn more, colour, specs, where to buy", async ({
   await page.setViewportSize({ width: 375, height: 800 });
   await page.goto("/");
 
-  // Below 1200 px the navigation is behind a menu button that closes on Escape.
+  // Below 810 px the navigation is behind a menu button that closes on Escape.
   const menu = page.getByRole("button", { name: "Open menu" });
   await menu.focus();
   await page.keyboard.press("Enter");

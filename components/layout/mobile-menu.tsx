@@ -14,7 +14,7 @@ type MobileMenuProps = {
 };
 
 /**
- * Menu below `lg` (spec, Assumption 1). The compact navbar pill expands downwards to show the
+ * Menu below `md` (spec, Assumption 1). The compact navbar pill expands downwards to show the
  * links: the root uses `display: contents`, so the trigger stays in the pill's top row and the
  * panel wraps onto a full-width row below it. Radix Collapsible gives the trigger
  * `aria-expanded` and `aria-controls`; Escape closes the menu and returns focus to the trigger.
@@ -35,7 +35,7 @@ export function MobileMenu({ links, cta }: MobileMenuProps) {
       open={open}
       onOpenChange={setOpen}
       onKeyDown={handleKeyDown}
-      className="contents lg:hidden"
+      className="contents md:hidden"
     >
       <Collapsible.Trigger asChild>
         <Button
