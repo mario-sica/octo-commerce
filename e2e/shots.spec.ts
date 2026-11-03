@@ -28,15 +28,17 @@ for (const { name, path } of PAGES) {
         `${path} is not built yet (PDP route arrives in feat/pdp-route)`,
       );
 
-      // Scroll through the page so lazy images below the fold load, then return to the top.
+      // Scroll through the page so lazy images below the fold load and every scroll-reveal block
+      // fires (half-screen steps: a block that crosses the whole viewport in one step would not
+      // be seen by its IntersectionObserver), then return to the top.
       await page.evaluate(async () => {
         for (
           let y = 0;
           y < document.body.scrollHeight;
-          y += window.innerHeight
+          y += window.innerHeight / 2
         ) {
           window.scrollTo(0, y);
-          await new Promise((resolve) => setTimeout(resolve, 100));
+          await new Promise((resolve) => setTimeout(resolve, 150));
         }
         window.scrollTo(0, 0);
       });
