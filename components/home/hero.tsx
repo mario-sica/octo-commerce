@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import { HeroVideo } from "@/components/home/hero-video";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
@@ -25,7 +24,8 @@ export function Hero({
   video,
 }: HeroProps) {
   const product = getProductById(productId);
-  if (!product) notFound();
+  // A wrong id in data/home.json is a content error: fail the build instead of hiding the home page.
+  if (!product) throw new Error(`Hero product not found: ${productId}`);
 
   return (
     <Section labelledBy="hero-title" className="relative -mt-header">
