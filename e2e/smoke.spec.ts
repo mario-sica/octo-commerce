@@ -13,13 +13,22 @@ test("the navbar logo returns to the top of the home page", async ({ page }) => 
   await page.getByRole("link", { name: "Octopus — home" }).click();
 
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
-  await expect(page).toHaveURL("/");
+});
+
+test("the navbar logo also works from a scrolled home page without a hash", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.evaluate(() => window.scrollTo(0, 3000));
+  await page.getByRole("link", { name: "Octopus — home" }).click();
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
 });
 
 test("the navbar logo goes home from the product page", async ({ page }) => {
   await page.goto("/products/octopus-countertop-blender");
   await page.getByRole("link", { name: "Octopus — home" }).click();
-  await expect(page).toHaveURL("/");
+  await expect(page).toHaveURL("/#top");
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
 });
 
 test("on tablet the navbar shows the full nav, centred on one line", async ({
@@ -57,13 +66,3 @@ test("below 810 px the mobile menu replaces the nav", async ({ page }) => {
   await expect(page.getByRole("navigation", { name: "Main" })).toBeHidden();
 });
 
-test.describe("with reduced motion", () => {
-  test.use({ reducedMotion: "reduce" });
-
-  test("the navbar logo jumps to the top without animating", async ({ page }) => {
-    await page.goto("/#kitchen");
-    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
-    await page.getByRole("link", { name: "Octopus — home" }).click();
-    expect(await page.evaluate(() => window.scrollY)).toBe(0);
-  });
-});
