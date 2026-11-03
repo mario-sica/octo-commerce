@@ -143,7 +143,6 @@ Lighthouse mobile, production build ([reports and method](docs/lighthouse/README
 ## Next steps
 - Replace the product page's lifestyle and feature placeholders with real photos, and give gallery images an optional `alt` in the data for when they carry information.
 - Run Lighthouse against a deployed URL: the product page's simulated LCP from a localhost trace overstates the real figure.
-- Move `shadcn` to `devDependencies`: it is only used for its stylesheet at build time.
 - Add an `apple-icon` and a `.ico` fallback next to the SVG favicon.
 
 ## How AI tools were used
