@@ -2,6 +2,8 @@
 
 A responsive website for **Octopus**, a consumer-electronics brand: kitchen appliances, home security, hair care and accessories.
 
+**Live:** <https://octo-commerce.vercel.app/>
+
 The project covers two pages:
 
 - **Homepage**: a hero, a best-sellers carousel, a section for each product category, an "Explore all categories" grid, a store banner and the footer.
@@ -133,7 +135,7 @@ Every place where the design and the requirements were unclear or disagreed is r
 - **Motion is optional.** Sections fade and rise once as they scroll into view; with reduced motion they only fade, and the hero media and first product image are never animated.
 
 ## Performance
-Lighthouse mobile, production build ([reports and method](docs/lighthouse/README.md)):
+Lighthouse mobile, on the live deploy ([reports and method](docs/lighthouse/README.md)):
 
 | Page | Performance | Accessibility | Best practices | SEO |
 |---|---|---|---|---|
@@ -142,7 +144,6 @@ Lighthouse mobile, production build ([reports and method](docs/lighthouse/README
 
 ## Next steps
 - Give gallery and feature images an optional `alt` in the data for when they carry information.
-- Run Lighthouse against a deployed URL: the product page's simulated LCP from a localhost trace overstates the real figure.
 - Add an `apple-icon` and a `.ico` fallback next to the SVG favicon.
 
 ## How AI tools were used
