@@ -28,7 +28,7 @@ export default async function ProductPage({
   if (!product?.pdp) notFound();
 
   return (
-    <div className="-mt-header md:px-gutter">
+    <div className="-mt-header pb-section-lg md:px-gutter">
       <div className="mx-auto flex max-w-content flex-col gap-stack-xl md:flex-row md:items-start">
         <div className="flex flex-col gap-stack-xl md:-ml-gutter md:flex-709">
           <ProductImage
