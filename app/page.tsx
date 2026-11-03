@@ -1,6 +1,7 @@
 import { CategorySection } from "@/components/home/category-section";
 import { ExploreCategories } from "@/components/home/explore-categories";
 import { Hero } from "@/components/home/hero";
+import { StoreBanner } from "@/components/home/store-banner";
 import { HomeBestSellers } from "@/components/home/home-best-sellers";
 import { getCategories, getHomeSections } from "@/lib/data";
 
@@ -25,6 +26,8 @@ export default function Home() {
             categoryIds={section.categoryIds}
           />
         );
+      case "store-banner":
+        return <StoreBanner key={key} {...section} />;
       default:
         return null;
     }
