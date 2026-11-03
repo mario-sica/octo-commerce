@@ -282,7 +282,19 @@
   /* Motion — scroll reveal (design-system Motion page) */
   --animate-reveal: reveal 1.2s ease-out 0.1s both;
   --animate-reveal-text: reveal-text 1.2s ease-out 0.1s both;
+  /* Reduced motion: opacity only. A separate animation, picked with motion-reduce: in Reveal.
+     Redefining `reveal` inside a media query does not work: Tailwind emits the theme keyframes
+     later in the CSS, and the last @keyframes with a given name wins. */
+  --animate-reveal-fade: reveal-fade 1.2s ease-out 0.1s both;
 
+  @keyframes reveal-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
   @keyframes reveal {
     from {
       opacity: 0;
@@ -301,25 +313,6 @@
     to {
       opacity: 1;
       transform: translateY(0);
-    }
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  @keyframes reveal {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-  @keyframes reveal-text {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
     }
   }
 }

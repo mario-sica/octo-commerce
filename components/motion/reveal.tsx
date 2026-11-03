@@ -12,8 +12,8 @@ type RevealProps = {
 
 /**
  * One-shot scroll reveal (spec → Motion). Everything inside fires together, once, when the block
- * reaches the lower 15% of the viewport. With reduced motion the keyframes animate opacity only
- * (app/globals.css).
+ * reaches the lower 15% of the viewport. With reduced motion it only fades in (`reveal-fade`,
+ * app/globals.css), picked with `motion-reduce:`.
  *
  * - A block already on screen when the page loads is left alone, so nothing visible flashes out
  *   and back in; only blocks below the fold are hidden, then revealed.
@@ -50,10 +50,10 @@ export function Reveal({ children, variant = "media", className }: RevealProps) 
     <div
       ref={ref}
       className={cn(
-        "data-[reveal=hidden]:opacity-0",
+        "data-[reveal=hidden]:opacity-0 motion-reduce:data-[reveal=shown]:animate-reveal-fade",
         variant === "text"
-          ? "data-[reveal=shown]:animate-reveal-text"
-          : "data-[reveal=shown]:animate-reveal",
+          ? "motion-safe:data-[reveal=shown]:animate-reveal-text"
+          : "motion-safe:data-[reveal=shown]:animate-reveal",
         className,
       )}
     >
