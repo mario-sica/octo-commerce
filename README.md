@@ -123,12 +123,12 @@ Every page reads its content through `lib/data.ts`; components never import JSON
 ## Decisions and trade-offs
 Every place where the design and the requirements were unclear or disagreed is recorded, with its reason, in [`docs/design/spec.md` → Assumptions](docs/design/spec.md). The main ones:
 
-- **Requirements over the design file when they conflict.** The navigation collapses into a menu below 1200 px, the best-sellers carousels have pagination dots on desktop, and two interaction colours from the design (a hover red and a light-blue focus ring) are replaced by existing palette colours because they fail WCAG AA.
+- **Requirements over the design file when they conflict.** The best-sellers carousels have pagination dots on desktop, and two interaction colours from the design (a hover red and a light-blue focus ring) are replaced by existing palette colours because they fail WCAG AA.
 - **Missing design content follows the design system.** Text missing from some tablet and mobile frames, the second product colour and the truncated product dimensions are filled in with the design system's styles and marked as placeholders in the data where relevant.
 - **One product page.** Only the Countertop Blender has a product page. Other products' cards link to it, and any other product URL returns a real 404 (Cache Components rules out `dynamicParams`, so `proxy.ts` handles it before rendering).
 - **Instant navigation to the product page.** The product content reads the URL inside a `<Suspense>` boundary, so the page shell is shared and prefetched once for every product link.
 - **Assets.** Product shots, category tiles, banners and the hero video come from the original files, converted to WebP (and WebM/MP4) by `pnpm assets`. Slots without an asset fall back to neutral WebP placeholders of the right ratio; adding a photo only means converting it and changing a JSON path.
-- **Mobile menu as a disclosure,** not a modal: it expands the navbar pill and closes on Escape, with no focus trap.
+- **Navigation.** The full nav shows from 810 px, with the links centred between logo and button on tablet; below that, the menu is a disclosure, not a modal: it expands the navbar pill and closes on Escape, with no focus trap. The logo scrolls back to the top on the home page.
 - **The "Downloads" box is the last accordion item,** so all product information follows one accessible pattern.
 - **Motion is optional.** Sections fade and rise once as they scroll into view; with reduced motion they only fade, and the hero media and first product image are never animated.
 
@@ -156,7 +156,7 @@ Lighthouse mobile, production build ([reports and method](docs/lighthouse/README
 - Project skills define one loop per branch: start, small gated commits, full verification (gate, unit and e2e tests, screenshots against the references, independent review), then a merge only after explicit human approval.
 
 ### What had to be corrected
-Every time AI output had to be corrected, it was logged with what was wrong and how it was fixed: [`docs/ai-log.md`](docs/ai-log.md) lists 20 corrections. They fall into a few patterns:
+Every time AI output had to be corrected, it was logged with what was wrong and how it was fixed: [`docs/ai-log.md`](docs/ai-log.md) lists 22 corrections. They fall into a few patterns:
 
 - **Following the design file where it fails the requirements.** Interaction colours copied from the design failed WCAG AA; carousel dots were first drawn at about 1.2:1 contrast; the product-page carousel first dropped the pagination dots because the design had none.
 - **Reduced motion that looked handled but wasn't.** Three times a `motion-reduce:` override, or a keyframes redefinition inside a media query, lost to a more specific or later CSS rule, so the animation still played. They were found in review, by measuring the computed animation in a real browser and by a new end-to-end test; each was fixed with `motion-safe:` or a separate animation and is now covered by an end-to-end test.
