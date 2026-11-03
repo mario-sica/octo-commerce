@@ -28,6 +28,8 @@ export function Reveal({ children, variant = "media", className }: RevealProps) 
   useEffect(() => {
     const element = ref.current;
     if (!element || !("IntersectionObserver" in window)) return;
+    // Already revealed: it plays once, also when Next brings a kept page back.
+    if (element.dataset.reveal) return;
 
     // Only blocks below the fold are hidden. Blocks on screen, or already scrolled past (deep link,
     // restored scroll position), stay as they are.
@@ -47,8 +49,8 @@ export function Reveal({ children, variant = "media", className }: RevealProps) 
     // already scrolled past as intersecting: a fast scroll can carry a block from below the
     // viewport to above it between two checks, and it would otherwise stay hidden.
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) reveal("shown");
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) reveal("shown");
       },
       { rootMargin: "100000% 0px -15% 0px" },
     );
@@ -59,6 +61,9 @@ export function Reveal({ children, variant = "media", className }: RevealProps) 
     return () => {
       observer.disconnect();
       element.removeEventListener("focusin", showNow);
+      // Next keeps a left page alive and hidden, and this effect runs again when it comes back,
+      // possibly after a scroll to a hash: a block still hidden must be judged again from scratch.
+      if (element.dataset.reveal === "hidden") delete element.dataset.reveal;
     };
   }, []);
 
