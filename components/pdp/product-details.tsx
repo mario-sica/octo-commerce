@@ -70,7 +70,10 @@ export async function ProductDetails({
           <ProductGallery images={product.pdp.gallery}>
             <FeatureBento features={product.pdp.features} />
           </ProductGallery>
-          <ProductSpecs specs={product.pdp.specs} />
+          <ProductSpecs
+            specs={product.pdp.specs}
+            downloads={product.pdp.downloads}
+          />
         </div>
       }
     />
