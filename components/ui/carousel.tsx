@@ -308,22 +308,18 @@ function CarouselDots({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-/**
- * The row below the slides: dots on the left (from `lg`), the arrow pair bottom-right.
- * `dots={false}` keeps only the arrows (the PDP carousel references show none).
- */
+/** The row below the slides: dots on the left (from `lg`), the arrow pair bottom-right. */
 function CarouselControls({
   className,
-  dots = true,
   ...props
-}: React.ComponentProps<"div"> & { dots?: boolean }) {
+}: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="carousel-controls"
       className={cn("flex items-center justify-between gap-4", className)}
       {...props}
     >
-      {dots && <CarouselDots />}
+      <CarouselDots />
       <div className="ml-auto flex items-center gap-2">
         <CarouselPrevious />
         <CarouselNext />

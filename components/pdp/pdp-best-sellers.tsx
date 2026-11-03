@@ -16,7 +16,8 @@ const HEADING_ID = "pdp-best-sellers-title";
 /**
  * PDP best-sellers carousel (carousel-pdp-*.png), different from the home one: compact cards from
  * `getBestSellers()` on the shared `Carousel` primitive. 2 plus a peek on base, 3 plus a peek on
- * `md`, 5 on `lg`; arrows bottom-right, no dots. As on the home carousel, the peek runs past the
+ * `md`, 5 on `lg`; arrows bottom-right, dots from `lg` when there is more than one snap (brief;
+ * spec, Assumption 2). As on the home carousel, the peek runs past the
  * content column to the page edge: the viewport is unclipped and the section clips (`overflow-x-clip`).
  */
 export function PdpBestSellers() {
@@ -42,7 +43,7 @@ export function PdpBestSellers() {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselControls dots={false} />
+          <CarouselControls />
         </Carousel>
       </Container>
     </Section>
