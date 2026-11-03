@@ -3,6 +3,7 @@ import {
   ProductDetails,
   ProductDetailsPlaceholder,
 } from "@/components/pdp/product-details";
+import { PdpBestSellers } from "@/components/pdp/pdp-best-sellers";
 import { getPdpProducts } from "@/lib/data";
 
 /**
@@ -25,10 +26,14 @@ export function generateStaticParams() {
  */
 export default function ProductPage({ params }: PageProps<"/products/[slug]">) {
   return (
-    <div className="-mt-header pb-section-lg md:px-gutter">
-      <Suspense fallback={<ProductDetailsPlaceholder />}>
-        <ProductDetails params={params} />
-      </Suspense>
-    </div>
+    <>
+      <div className="-mt-header pb-section-lg md:px-gutter">
+        <Suspense fallback={<ProductDetailsPlaceholder />}>
+          <ProductDetails params={params} />
+        </Suspense>
+      </div>
+      {/* Not slug-dependent, so it stays in the static shell, outside the Suspense boundary. */}
+      <PdpBestSellers />
+    </>
   );
 }
