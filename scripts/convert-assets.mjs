@@ -2,7 +2,7 @@
 /**
  * Converts the original design assets into the WebP files the site uses.
  * Input:  docs/Octopus_assets/ (local only, git-ignored — the files as delivered by design).
- * Output: public/images/{products,categories,store}/ (committed).
+ * Output: public/images/{products,categories,lifestyle,store}/ (committed).
  *
  * Every output is listed once in ASSETS below: where it comes from and its maximum width.
  * Images are never upscaled. Product shots are matched to the card colour (see below).
@@ -106,6 +106,9 @@ const ASSETS = [
       BANNER_WIDTH[crop],
     ]),
   ),
+
+  // Large-card lifestyle photos (spec, Assumption 24)
+  ["lifestyle/octopus-kettle-1-7l.webp", "lifestyle-kettle.png", 1600],
 
   // "Find us at" store banner: wide from lg, the taller crop below lg
   [

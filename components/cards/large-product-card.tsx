@@ -43,7 +43,11 @@ export function LargeProductCard({
           ratio="landscape"
           alt=""
           sizes={`${minWidth("lg")} ${vertical ? "50vw" : "90vw"}, 100vw`}
-          className="absolute inset-0 size-full"
+          // Below md the text sits above the photo, which fills the lower half, so it never
+          // covers the subject (as for banners, Assumption 23); the crop keeps the right side,
+          // where the subject sits (the left is left empty for the md+ text).
+          className="absolute inset-x-0 bottom-0 h-1/2 w-full md:inset-0 md:h-full"
+          imageClassName="object-right md:object-center"
         />
       ) : (
         <ProductImage
@@ -55,6 +59,7 @@ export function LargeProductCard({
             "absolute inset-x-0 bottom-0 h-1/2 w-full md:inset-y-0 md:left-1/2 md:h-full md:w-1/2",
             vertical && "lg:top-1/2 lg:left-0 lg:h-1/2 lg:w-full",
           )}
+          imageClassName="object-contain"
         />
       )}
 
