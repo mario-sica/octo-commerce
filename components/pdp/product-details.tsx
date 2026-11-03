@@ -4,6 +4,7 @@ import { ProductImage } from "@/components/media/product-image";
 import { FeatureBento } from "@/components/pdp/feature-bento";
 import { ProductGallery } from "@/components/pdp/product-gallery";
 import { ProductInfo } from "@/components/pdp/product-info";
+import { ProductSpecs } from "@/components/pdp/product-specs";
 import { minWidth } from "@/lib/breakpoints";
 import { getProduct } from "@/lib/data";
 
@@ -65,9 +66,15 @@ export async function ProductDetails({
       }
       info={<ProductInfo product={product} detail={product.pdp} />}
       rest={
-        <ProductGallery images={product.pdp.gallery}>
-          <FeatureBento features={product.pdp.features} />
-        </ProductGallery>
+        <div className="flex flex-col gap-stack-xl">
+          <ProductGallery images={product.pdp.gallery}>
+            <FeatureBento features={product.pdp.features} />
+          </ProductGallery>
+          <ProductSpecs
+            specs={product.pdp.specs}
+            downloads={product.pdp.downloads}
+          />
+        </div>
       }
     />
   );
