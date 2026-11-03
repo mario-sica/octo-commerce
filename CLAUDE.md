@@ -1,6 +1,6 @@
 # Octopus — project rules for Claude Code
 
-A demo of two pages: the **Homepage** and the **Product Detail Page** (`/products/octopus-countertop-blender`). Each page has three breakpoints. Requirements: `docs/private/brief.md` (local only, git-ignored). Plan: `docs/plan.md`.
+A website of two pages: the **Homepage** and the **Product Detail Page** (`/products/octopus-countertop-blender`). Each page has three breakpoints. Requirements: `docs/private/brief.md` (local only, git-ignored). Plan: `docs/plan.md`.
 
 ## Stack
 - Next.js (App Router), React, TypeScript in `strict` mode, pnpm, Node 22.
@@ -78,4 +78,4 @@ Cart, checkout, accounts, search, CMS or backend, other product or category page
 
 ## Docs to keep up to date
 - `docs/ai-log.md`: add a row every time AI output had to be corrected (`/ai-log`).
-- `docs/design/spec.md → Assumptions`: record every decision where the brief or the Figma is unclear or contradictory.
+- `docs/design/spec.md → Assumptions`: record every decision where the requirements or the Figma are unclear or contradictory.
