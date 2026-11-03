@@ -6,9 +6,9 @@ if (!blender?.pdp) throw new Error("the countertop blender has pdp data");
 const firstSpec = blender.pdp.specs[0];
 
 /**
- * One visitor's path on a phone, covering the acceptance criteria end to end:
- * the collapsed menu (2), "Learn more" to the PDP (4), the colour selector (7), the
- * specifications accordion with Downloads (8) and "Where to buy" to the placeholder route.
+ * One visitor's path on a phone, end to end: the collapsed menu, "Learn more" to the PDP, the
+ * colour selector, the specifications accordion with Downloads and "Where to buy" to the
+ * placeholder route.
  */
 test("mobile journey: menu, learn more, colour, specs, where to buy", async ({
   page,

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Converts the original design assets into the WebP files the site uses.
- * Input:  docs/Octopus_assets/ (local only, git-ignored — the files as delivered by design).
+ * Input:  docs/Octopus_assets/ (local only, git-ignored — the original asset files).
  * Output: public/images/{products,categories,lifestyle,store,hero}/ and public/videos/ (committed).
  *
  * Every output is listed once in ASSETS below: where it comes from and its maximum width.

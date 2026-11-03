@@ -35,15 +35,15 @@ The first commit is **the bare create-next-app project, with only the README rep
 
 1. **User:** create the app without its automatic git commit:
    `pnpm create next-app@latest octopus --ts --eslint --tailwind --app --no-src-dir --import-alias "@/*" --use-pnpm --disable-git`
-2. **User:** in the new folder, run `git init -b main`, then unzip the workflow bundle there.
-   - The bundle adds `CLAUDE.md`, `.claude/`, `docs/` and `scripts/`, which stay **untracked** for now.
-   - Its `README.md` replaces the create-next-app one.
+2. **User:** in the new folder, run `git init -b main`, then add the workflow files there.
+   - They are `CLAUDE.md`, `.claude/`, `docs/` and `scripts/`, which stay **untracked** for now.
+   - The project `README.md` replaces the create-next-app one.
    - The requirements summary is kept locally in `docs/private/`. This folder is never committed (see branch 1).
 3. **Claude:**
    1. Review `README.md`. It describes the product only, with no reference to why, how or for whom the project was produced.
    2. Stage only the create-next-app files and the README, as one call:
       `git add . ':!CLAUDE.md' ':!.claude' ':!docs' ':!scripts'`
-   3. Check with `git status --short` that nothing from the bundle is staged.
+   3. Check with `git status --short` that none of the workflow files is staged.
    4. Commit: `chore: initial next.js project`. For this first commit the hook gate runs only `pnpm build`, because the project doesn't have a `gate` script yet.
 4. Run `git switch -c dev`. This creates a branch, not a commit. **From here on, main is frozen.**
 
@@ -251,7 +251,7 @@ This is the first feature branch. It turns the bare app into the gated workflow.
 - Commits:
   1. ~~`test(e2e): home learn more on countertop blender opens pdp`~~: already on `dev` (`e2e/pdp.spec.ts`, since `feat/pdp-route`).
   2. ~~`test(e2e): extend overflow check to pdp`~~: already on `dev` (`e2e/overflow.spec.ts` loops over both pages, since `feat/pdp-route`).
-  3. `test(e2e): walk the home to pdp journey on mobile`. One path at 375 px through acceptance criteria 2, 4, 7 and 8, ending on `/coming-soon`.
+  3. `test(e2e): walk the home to pdp journey on mobile`. One path at 375 px through the menu, "Learn more", the colour selector and the specifications accordion, ending on `/coming-soon`.
   4. `test(e2e): check titles, descriptions and open graph on both pages`. Plus robots and the sitemap.
 
 ## 19 · `feat/motion`
