@@ -1,4 +1,5 @@
 import { ProductImage } from "@/components/media/product-image";
+import { Reveal } from "@/components/motion/reveal";
 import { minWidth } from "@/lib/breakpoints";
 import { cn } from "@/lib/utils";
 import type { ProductFeature } from "@/types/catalog";
@@ -54,8 +55,12 @@ export function FeatureBento({ features }: { features: ProductFeature[] }) {
 
   return (
     <div className="flex flex-col gap-cards">
+      {/* Each row reveals on its own: stacked, the bento is several screens tall. */}
       {bentoRows(features).map((row) => (
-        <div key={row[0].title} className="flex flex-col gap-cards lg:flex-row">
+        <Reveal
+          key={row[0].title}
+          className="flex flex-col gap-cards lg:flex-row"
+        >
           {row.map((feature) => (
             <BentoCard
               key={feature.title}
@@ -63,7 +68,7 @@ export function FeatureBento({ features }: { features: ProductFeature[] }) {
               wide={row.length === 1}
             />
           ))}
-        </div>
+        </Reveal>
       ))}
     </div>
   );

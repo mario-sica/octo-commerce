@@ -4,6 +4,7 @@ import {
   ProductDetails,
   ProductDetailsPlaceholder,
 } from "@/components/pdp/product-details";
+import { Reveal } from "@/components/motion/reveal";
 import { PdpBestSellers } from "@/components/pdp/pdp-best-sellers";
 import { getPdpProducts, getProduct, getProductHref, getSite } from "@/lib/data";
 import { openGraph } from "@/lib/seo";
@@ -56,7 +57,9 @@ export default function ProductPage({ params }: PageProps<"/products/[slug]">) {
         </Suspense>
       </div>
       {/* Not slug-dependent, so it stays in the static shell, outside the Suspense boundary. */}
-      <PdpBestSellers />
+      <Reveal>
+        <PdpBestSellers />
+      </Reveal>
     </>
   );
 }
