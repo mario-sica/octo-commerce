@@ -101,7 +101,8 @@ This works for `MapPin`, `TriangleAlert` and `CircleAlert`, because in all three
 | `ProductBanner` | server | home | the single-product category (today Hair Care), from `category.banner`: text over the 2.4:1 desktop crop from `lg`, text above the image below `lg` (2.4:1 on `md`, 3:4 on base). Spec, Assumption 23. |
 | `StoreBanner` | server | home | "Find us at" + the styled retailer name and a `special` link button (`outline-ring-inverse` on red); mobile photo up to `lg` (3:4 anchored right on base, 16:9 on `md`), 2.4:1 wide photo from `lg`, text over the photo's empty red (Assumption 23) |
 | `ExploreCategories` | server | home | tiles from `getCategories()` in the `categoryIds` order of `home.json`; each tile is one link to `/#<category-id>` (square `bg-card` box, label below) |
-| `ProductInfo` | server + client leaf | PDP | title, description, `ColourSelector` (client), "Where to buy" |
+| `ProductInfo` | server + client leaf | PDP | title (h1), description, `ColourSelector` (client), "Where to buy" (full-width primary link to `/coming-soon`); sticky right column from `md` (`top-header`) |
+| `ColourSelector` | client | PDP | `RadioGroup` labelled by the visible "Colour - {name}" (`aria-labelledby`), one item per colour named by `aria-label`; the swatch colour comes from data through `style` |
 | `FeatureBento` | server | PDP | feature cards from `product.pdp.features` |
 | `ProductSpecs` | client | PDP | Accordion from `product.pdp.specs`, plus "Downloads" as the last item |
 | `Reveal` | client | sections | IntersectionObserver plus `animate-reveal`; plays once; reduced-motion safe; never on LCP elements |

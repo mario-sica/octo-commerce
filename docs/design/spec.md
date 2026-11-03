@@ -180,7 +180,7 @@ A single leftover card in the last row grows to the full row width: a medium car
 ## PDP composition ✅
 - **`md` and `lg`:** two columns in `max-w-content`, `gap-stack-xl`.
   - **Left column** (flex 709/555), `gap-stack-xl pb-section-lg`. In order:
-    1. product image (`aspect-3/4`, `priority`);
+    1. product image (`aspect-3/4`, `priority`): the 1:1 shot contained on `bg-card`, square corners, under the navbar (`-mt-header`) and out to the page edge on the left (`-ml-gutter`), as in the references; full-bleed on base;
     2. lifestyle image;
     3. feature bento (`gap-cards`);
     4. second lifestyle image;
@@ -242,7 +242,7 @@ A single leftover card in the last row grows to the full row width: a medium car
     - **Accepted consequence:** the Octopus Air Fryer is a Kitchen product, so the Kitchen section shows it as an extra card, which the Figma doesn't show. This is deliberate: the data model wins over a hand-picked layout, because the brief asks that adding a product to the data be enough.
 11. **Downloads:** the brief lists it as an accordion section, while the Figma shows a separate box → it is the **last accordion item**, expanding to the "User manual" link.
 12. **Product pages:** the brief puts "other product pages" out of scope and lets other cards link to the same page.
-    - There is one dynamic route, `/products/[slug]`, but static params are generated **only** for products with PDP data (today only the Countertop Blender), and `dynamicParams = false`.
+    - There is one dynamic route, `/products/[slug]`, but static params are generated **only** for products with PDP data (today only the Countertop Blender). The scaffold enables `cacheComponents`, which rules out `dynamicParams = false` and streams the page shell before `notFound()` can set the status, so `proxy.ts` rewrites any other slug to the built-in not-found page before rendering: a real 404, checked by an e2e test.
     - Cards link to their own PDP when it exists, otherwise to the Countertop Blender PDP.
 13. **Second colour:** the Figma has only Black. Silver is added so the selector can switch, as the brief asks.
 14. **Dimensions & weight:** the value is truncated in the Figma → realistic placeholder values, marked in the data.
