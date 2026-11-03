@@ -63,3 +63,13 @@ export type Navigation = {
     legal: NavLink;
   };
 };
+
+export type PageMeta = { title: string; description: string };
+
+/** Site-wide SEO content (`data/site.json`). */
+export type Site = {
+  name: string;
+  /** Open Graph locale, e.g. `en_GB`. */
+  locale: string;
+  home: PageMeta;
+};

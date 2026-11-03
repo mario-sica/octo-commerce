@@ -1,9 +1,24 @@
+import type { Metadata } from "next";
 import { CategorySection } from "@/components/home/category-section";
 import { ExploreCategories } from "@/components/home/explore-categories";
 import { Hero } from "@/components/home/hero";
 import { HomeBestSellers } from "@/components/home/home-best-sellers";
 import { StoreBanner } from "@/components/home/store-banner";
-import { getCategories, getHomeSections } from "@/lib/data";
+import { getCategories, getHomeSections, getSite } from "@/lib/data";
+import { openGraph } from "@/lib/seo";
+
+const { home } = getSite();
+
+export const metadata: Metadata = {
+  title: { absolute: home.title },
+  description: home.description,
+  alternates: { canonical: "/" },
+  openGraph: openGraph({
+    title: home.title,
+    description: home.description,
+    url: "/",
+  }),
+};
 
 /** Home: the sections listed in data/home.json, in order. Section types are added as they are built. */
 export default function Home() {

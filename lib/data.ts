@@ -2,8 +2,9 @@ import categoriesJson from "@/data/categories.json";
 import homeJson from "@/data/home.json";
 import navigationJson from "@/data/navigation.json";
 import productsJson from "@/data/products.json";
+import siteJson from "@/data/site.json";
 import type { Category, CategoryId, Product } from "@/types/catalog";
-import type { HomeSection, Navigation } from "@/types/content";
+import type { HomeSection, Navigation, Site } from "@/types/content";
 
 /**
  * Single access point for site content. Components never import `data/*.json` directly.
@@ -14,6 +15,7 @@ const products = productsJson as readonly Product[];
 const categories = categoriesJson as readonly Category[];
 const homeSections = homeJson as readonly HomeSection[];
 const navigation = navigationJson as Navigation;
+const site = siteJson as Site;
 
 /** Products without their own PDP link here (spec, Assumption 12). */
 export const DEFAULT_PDP_SLUG = "octopus-countertop-blender";
@@ -69,4 +71,8 @@ export function getHomeSections(): readonly HomeSection[] {
 
 export function getNavigation(): Navigation {
   return navigation;
+}
+
+export function getSite(): Site {
+  return site;
 }
