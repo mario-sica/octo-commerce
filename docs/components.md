@@ -4,7 +4,7 @@
 
 Install command: `pnpm dlx shadcn@latest add button carousel accordion radio-group`
 
-| Requirement (brief) | shadcn component | Why it fits | Changes needed |
+| Requirement | shadcn component | Why it fits | Changes needed |
 |---|---|---|---|
 | Buttons: primary, special (white with border), ghost, icon-only | `button` | `cva` variants, `asChild` (Radix Slot) for links | Replace the default variants with `primary`, `special`, `ghost`, `ghostDark`. Sizes `default` (h-10 px-4) and `icon` (size-10). Use `rounded-pill`, `text-cta`, `border`, the hover and pressed tokens, and the global focus outline (`outline-ring-inverse` on brand backgrounds). |
 | Best sellers carousel: arrows, dots, swipe, arrows disabled at the ends | `carousel` (Embla) | Swipe and drag come native. `CarouselPrevious`/`Next` are already `disabled` when `!canScrollPrev`/`!canScrollNext`. Arrow-key navigation is built in. It sets `role="region"` and `aria-roledescription="carousel"` | Add `CarouselDots`, built from `api.scrollSnapList()`, `api.selectedScrollSnap()` and `api.on("select")`. The dots are buttons with `aria-label="Go to slide n"` and `aria-current`, visible from `lg` up. Move the arrows to a bottom-right row. Use `opts={{ align: "start" }}`. |
@@ -112,7 +112,7 @@ This works for `MapPin`, `TriangleAlert` and `CircleAlert`, because in all three
 **Art direction for banners.** Use `ProductImage` with `md` and `lg` sources (`getImageProps()` inside `<picture>`): the category banner has one crop per breakpoint (`banner.base`, `banner.md`, `banner.lg`), the store banner a wide image from `lg` and a taller one below. This keeps responsive `srcset` and lazy loading. Box ratios: see spec, Assumption 23.
 
 ## Data model (`types/`)
-It adapts the brief's sample shape, which the brief allows. `image` stays a required `string`, as in the brief, because placeholders are real files.
+It adapts the sample data shape given in the requirements, which they allow. `image` stays a required `string`, as in that sample, because placeholders are real files.
 
 ```ts
 export type CategoryId = "kitchen" | "home-security" | "hair-care" | "accessories";
