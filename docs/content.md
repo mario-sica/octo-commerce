@@ -7,7 +7,7 @@ The original assets were delivered as files and are kept locally in `docs/Octopu
 |---|---|---|
 | `products/<slug>.webp` (11) | `Product Card/Frame 112*.png`, 1:1 cut-outs | product cards, both carousels, first PDP image |
 | `categories/accessories-tile.webp` | `Frame 112-8.png` (braided cable) | Accessories Explore tile |
-| `categories/<id>-banner-{lg,md,base}.webp` | `Category=<Name>, Breakpoint=…` (≈2.9:1, 2.5:1, 3:4); except `hair-care-banner-lg`, which comes from `Breakpoint=Desktop.png` (1200 × 500, 2.4:1, empty left half for the text; `BANNER_OVERRIDES` in the script, spec Assumption 23) | the category banner, shown when a category has one product (today Hair Care) |
+| `categories/<id>-banner-{lg,md,base}.webp` | `Category=<Name>, Breakpoint=…` (≈2.9:1, 2.5:1, 3:4); except `hair-care-banner-lg`, which comes from `hair-care-banner-desktop-pink.webp`, `Breakpoint=Desktop.png` recoloured to a pink tone (1200 × 500, 2.4:1, empty left half for the text; `BANNER_OVERRIDES` in the script, spec Assumption 23) | the category banner, shown when a category has one product (today Hair Care) |
 | `store/store-banner-lg.webp`, `store/store-banner-mobile.webp` | the two red "Find us at" photos (≈2.3:1, ≈1.55:1) | store banner from `lg` / below `lg` |
 | `lifestyle/octopus-kettle-1-7l.webp` | `lifestyle-kettle.png` (1595 × 890, the kettle pouring) | Kettle large card (spec, Assumption 24) |
 | `lifestyle/octopus-indoor-camera-{wide,tall}.webp` | `lifestyle-indoor-camera-{wide,tall}.webp` (2127 × 1187 and 660 × 1040, the camera on a wooden desk; delivered as WebP) | Indoor Camera large card: wide below `lg`, tall from `lg` (spec, Assumption 24) |

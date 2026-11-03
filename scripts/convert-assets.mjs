@@ -46,11 +46,12 @@ function categoryBanner(category, crop) {
 
 /**
  * Crops that replace the "Category=" file for one breakpoint. The Hair Care desktop banner puts
- * its text over the left half, and only this export leaves that half empty (it is 1200 px wide,
- * so it is not upscaled). Spec, Assumption 23.
+ * its text over the left half, and only the designer's `Breakpoint=Desktop.png` export leaves that
+ * half empty (1200 px wide, so it is not upscaled); the source is a version of it recoloured to a
+ * pink tone. Spec, Assumption 23.
  */
 const BANNER_OVERRIDES = {
-  "hair-care/lg": "Breakpoint=Desktop.png",
+  "hair-care/lg": "hair-care-banner-desktop-pink.webp",
 };
 
 const PRODUCT_WIDTH = 1024;
