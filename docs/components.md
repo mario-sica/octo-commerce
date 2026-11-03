@@ -8,7 +8,7 @@ Install command: `pnpm dlx shadcn@latest add button carousel accordion radio-gro
 |---|---|---|---|
 | Buttons: primary, special (white with border), ghost, icon-only | `button` | `cva` variants, `asChild` (Radix Slot) for links | Replace the default variants with `primary`, `special`, `ghost`, `ghostDark`. Sizes `default` (h-10 px-4) and `icon` (size-10). Use `rounded-pill`, `text-cta`, `border`, the hover and pressed tokens, and the global focus outline (`outline-ring-inverse` on brand backgrounds). |
 | Best sellers carousel: arrows, dots, swipe, arrows disabled at the ends | `carousel` (Embla) | Swipe and drag come native. `CarouselPrevious`/`Next` are already `disabled` when `!canScrollPrev`/`!canScrollNext`. Arrow-key navigation is built in. It sets `role="region"` and `aria-roledescription="carousel"` | Add `CarouselDots`, built from `api.scrollSnapList()`, `api.selectedScrollSnap()` and `api.on("select")`. The dots are buttons with `aria-label="Go to slide n"` and `aria-current`, visible from `lg` up. Move the arrows to a bottom-right row. Use `opts={{ align: "start" }}`. |
-| Menu below 810 px: opens and closes, keyboard, Escape | Radix `Collapsible` (from `radix-ui`, no shadcn file) | `aria-expanded` and `aria-controls` on the trigger; the panel stays inside the navbar, so nothing covers it | The navbar pill expands downwards: the root is `display: contents`, the trigger (Menu ↔ X icon, label "Open menu" / "Close menu") stays in the pill row and the panel wraps onto a full-width row (link list, full-width primary button). Escape closes it and returns focus to the trigger; choosing a link closes it. The header keeps a fixed `h-header`, so the open pill overlaps the page instead of pushing it down. Hidden at `lg`. Replaces the earlier `sheet` overlay. |
+| Menu below 810 px: opens and closes, keyboard, Escape | Radix `Collapsible` (from `radix-ui`, no shadcn file) | `aria-expanded` and `aria-controls` on the trigger; the panel stays inside the navbar, so nothing covers it | The navbar pill expands downwards: the root is `display: contents`, the trigger (Menu ↔ X icon, label "Open menu" / "Close menu") stays in the pill row and the panel wraps onto a full-width row (link list, full-width primary button). Escape closes it and returns focus to the trigger; choosing a link closes it. The header keeps a fixed `h-header`, so the open pill overlaps the page instead of pushing it down. Hidden at `md`. Replaces the earlier `sheet` overlay. |
 | Specification sections, Downloads included: accessible accordion | `accordion` | `button` trigger with `aria-expanded`/`aria-controls`, Radix keyboard support | `type="multiple"`, first item open by default. Card container `rounded-card bg-card px-5 py-1`. Items separated by a `border-b border-border-light`. Chevron down when closed, up when open. "Downloads" is the last item. Restyled: trigger `py-4 text-body font-bold` with the global focus outline (the generated `outline-none` + ring removed), content `text-body font-book text-muted-foreground gap-2`, no animation under reduced motion. |
 | Colour selector: selected state | `radio-group` | `role="radiogroup"`, arrow keys, one item selected at a time | **Rewrite the root from `grid` to `flex`.** Each item is the 44 px ring with the 30 px swatch inside; the selected item has `border-primary`. The label "Colour - {name}" updates when the selection changes. |
 
@@ -23,8 +23,8 @@ The three official variants are in `docs/design/assets/`. They come from the des
 
 | File | Variant | Shape (ratio w:h) | Where |
 |---|---|---|---|
-| `logo-full.svg` | `full` | mark + "Octopus" wordmark + ™, horizontal (≈ 4.46:1) | navbar and mobile menu panel, `md` and up |
-| `logo-mark.svg` | `mark` | mark + ™ only (≈ 1.39:1) | navbar and mobile menu panel, below `md` |
+| `logo-full.svg` | `full` | mark + "Octopus" wordmark + ™, horizontal (≈ 4.46:1) | navbar, `md` and up |
+| `logo-mark.svg` | `mark` | mark + ™ only (≈ 1.39:1) | navbar, below `md` |
 | `logo-stacked.svg` | `stacked` | mark above the wordmark (≈ 0.96:1) | footer, every breakpoint |
 
 **Implementation.** One server component, `Logo`, with `variant: "full" | "mark" | "stacked"` and `className`.
@@ -40,7 +40,7 @@ The three official variants are in `docs/design/assets/`. They come from the des
 - The navbar shows both variants and hides one per breakpoint: `mark` with `md:hidden`, `full` with `hidden md:block`.
 
 **Accessibility.**
-- In the navbar and the menu panel, the logo is wrapped in a link to `/` with `aria-label="Octopus — home"` (`HomeLink`: on the home page it scrolls to the top instead). The SVG gets `aria-hidden="true" focusable="false"`.
+- In the navbar, the logo is wrapped in a link to `/` with `aria-label="Octopus — home"` (`HomeLink`: on the home page it scrolls to the top instead). The SVG gets `aria-hidden="true" focusable="false"`.
 - In the footer, the logo is not a link. The SVG gets `role="img"` and `aria-label="Octopus"`.
 
 **Favicon.** `app/icon.svg` is the `logo-mark.svg` path in white on a brand-red square (the mark spans 75% of the width; centred horizontally, and vertically by its centre of mass rather than its bounding box, because the tentacles make it bottom-heavy), since a favicon can't inherit `currentColor`. It is the only place where the hex value appears outside the token file, and `check-tokens` doesn't scan `.svg` files.
@@ -87,8 +87,8 @@ This works for `MapPin`, `TriangleAlert` and `CircleAlert`, because in all three
 | `Container` | server | everywhere | outer `px-gutter`, inner `mx-auto w-full max-w-content`: the gutter sits outside the content cap, so content lines up with the navbar pill |
 | `Section` | server | everywhere | `<section aria-labelledby>`. Padding is chosen **only** through the props `top` and `bottom` (`"sm" \| "md" \| "lg" \| "none"`), which map to `*-section-*` tokens. |
 | `SectionHeader` | server | home category sections, "Best sellers" (home and PDP), "Explore" | Props: `title`, `subtitle?`, `cta?`, `align: "center" \| "start"`, `level`. Typography follows the spec. |
-| `Logo` | server | header, mobile menu, footer | variants `full`, `mark`, `stacked`; see the Logo section |
-| `SiteHeader` | server + client leaf | both pages | sticky navbar pill with `Logo` (`mark` below `md`, `full` from `md`); `MobileMenu` (Radix Collapsible) is the client leaf |
+| `Logo` | server | header, footer | variants `full`, `mark`, `stacked`; see the Logo section |
+| `SiteHeader` | server + client leaf | both pages | sticky navbar pill with `Logo` (`mark` below `md`, `full` from `md`); `HomeLink` (logo link: scrolls to the top on the home page) and `MobileMenu` (Radix Collapsible) are the client leaves |
 | `SiteFooter` | server | both pages | from `data/navigation.json`; `Logo variant="stacked"` |
 | `ProductImage` | server | everywhere | **always** `next/image` through `getImageProps` (`fill` + `sizes` + `object-cover`) inside a fixed `aspect-*` box. The caller adds `bg-card` and `rounded-card` through `className` where the design has them (cards, PDP), not on the full-bleed hero. Optional `md`/`lg` sources make a `<picture>` for art direction; `<source media>` reads `lib/breakpoints.ts`, which a test keeps in sync with `globals.css`. `priority`, only on the home hero and the first PDP image, means `loading="eager"` + `fetchPriority="high"` (Next 16 deprecates `priority`). |
 | `Hero` | server | home | art-directed media (1:2 / 3:4 / 16:9) with a `priority` poster, under the navbar via `-mt-header`, and centred overlay text on every breakpoint over a light top gradient |

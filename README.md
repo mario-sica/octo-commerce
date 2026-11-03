@@ -96,7 +96,7 @@ Every page reads its content through `lib/data.ts`; components never import JSON
 - **Breakpoints:** mobile-first with two breakpoints, `md` (810 px) and `lg` (1200 px).
 - **Layout:** flexbox only. `pnpm check:tokens` rejects `grid`, arbitrary values, hex colours and inline styles in `app/`, `components/` and `lib/`; the only inline style is a swatch colour that comes from data.
 - **Images:** always Next's image optimisation (`next/image` props via `getImageProps`) inside a fixed-ratio box, with `sizes`, lazy below the fold and `priority` only on the LCP candidates (home hero, first PDP image). Banners use art direction (`<picture>` with a crop per breakpoint).
-- **Server first:** components are Server Components; only interactive leaves are client components (mobile menu, carousel, colour selector, accordion, hero video, scroll reveal).
+- **Server first:** components are Server Components; only interactive leaves are client components (logo link, mobile menu, carousel, colour selector, accordion, hero video, scroll reveal).
 
 ### Accessibility
 - Landmarks and headings in order on both pages, a skip link, and a visible focus outline everywhere (white on red backgrounds).
