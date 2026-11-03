@@ -19,28 +19,40 @@ export function bentoRows<T>(items: T[]): T[][] {
   return rows;
 }
 
+/**
+ * A bento card. Its photo is shot for its slot: a half card's 3:4 photo leaves the top empty, a
+ * wide card's ≈2.26:1 photo leaves the left half empty (spec, Assumption 26).
+ * - Half card: 3:4 on every breakpoint, the text over the top of the photo (centred below `lg`,
+ *   top-left from `lg`).
+ * - Wide card: from `lg` the text sits over the empty left half of a 2.4:1 photo. Below `lg` a 3:4
+ *   crop would put the subject under the text, so the text stacks above the whole 2.4:1 photo.
+ */
 function BentoCard({ feature, wide }: { feature: ProductFeature; wide: boolean }) {
+  const text = (
+    <div
+      className={cn(
+        "flex flex-col items-center gap-stack-xs p-card-sm text-center lg:items-start lg:text-left",
+        wide
+          ? "relative lg:absolute lg:inset-y-0 lg:left-0 lg:z-10 lg:w-1/2 lg:justify-center"
+          : "absolute inset-0 lg:p-card-xs",
+      )}
+    >
+      <h2 className="text-title font-bold text-balance">{feature.title}</h2>
+      <p className="text-body font-book">{feature.description}</p>
+    </div>
+  );
+
   return (
-    <div className="relative min-w-0 flex-1 overflow-hidden rounded-card bg-card">
+    <div className="relative flex min-w-0 flex-1 flex-col overflow-hidden rounded-card bg-card">
+      {wide && text}
       <ProductImage
         src={feature.image}
-        ratio="portrait"
-        lg={wide ? { src: feature.image, ratio: "banner" } : undefined}
-        // Illustrates the text beside it, and the slots still hold placeholders.
+        ratio={wide ? "banner" : "portrait"}
+        // Illustrates the text beside it.
         alt=""
         sizes={`${minWidth("lg")} ${wide ? "55vw" : "28vw"}, ${minWidth("md")} 55vw, 100vw`}
       />
-      {/* Text on top, centred below `lg` (pdp-tablet.png); from `lg` top-left, or the left
-          half and vertically centred on a wide card (pdp-desktop.png). */}
-      <div
-        className={cn(
-          "absolute inset-0 flex flex-col items-center gap-stack-xs p-card-sm text-center lg:items-start lg:text-left",
-          wide && "lg:w-1/2 lg:justify-center",
-        )}
-      >
-        <h2 className="text-title font-bold text-balance">{feature.title}</h2>
-        <p className="text-body font-book">{feature.description}</p>
-      </div>
+      {!wide && text}
     </div>
   );
 }

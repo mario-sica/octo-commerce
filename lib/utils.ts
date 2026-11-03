@@ -19,6 +19,7 @@ export const OCTOPUS_TOKENS = {
     "stack-lg",
     "stack-xl",
     "cards",
+    "card-xs",
     "card-sm",
     "card-md",
     "card-lg",
