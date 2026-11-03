@@ -26,9 +26,9 @@ export function ProductBanner({ category, product }: ProductBannerProps) {
       labelledBy={headingId}
       className="relative flex scroll-mt-header flex-col bg-card"
     >
-      <div className="relative z-10 lg:absolute lg:inset-0 lg:flex lg:items-center">
+      <div className="relative z-10 lg:absolute lg:inset-0 lg:flex lg:flex-col lg:justify-center">
         <Container>
-          <div className="flex flex-col items-center gap-stack-sm py-stack-xl text-center lg:w-2/5 lg:items-start lg:py-0 lg:text-left">
+          <div className="flex flex-col items-center gap-stack-sm py-stack-xl text-center lg:w-1/2 lg:items-start lg:py-0 lg:text-left">
             <div className="flex flex-col gap-2">
               <h2
                 id={headingId}
