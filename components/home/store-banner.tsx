@@ -12,9 +12,9 @@ type StoreBannerProps = Omit<
 
 /**
  * "Find us at" store banner (spec, Assumption 23). Both photos leave plain red where the text
- * goes, so the text sits on the photo at every breakpoint: centred over the empty top of the 3:4
- * mobile crop (anchored right, where the products are) and on the left of the 2.4:1 wide photo
- * from `md`. The retailer name is styled text, as there is no logo asset.
+ * goes, so the text sits on the photo at every breakpoint: centred over the empty top of a 3:4
+ * crop of the mobile photo (anchored right, where the products are) on base; on its left at 16:9
+ * on `md`; on the left of the 2.4:1 wide photo from `lg`. The retailer name is styled text, as there is no logo asset.
  */
 export function StoreBanner({
   title,
@@ -33,11 +33,11 @@ export function StoreBanner({
       <ProductImage
         src={imageMobile}
         ratio="portrait"
-        md={{ src: image, ratio: "banner" }}
+        md={{ src: imageMobile, ratio: "landscape" }}
         lg={{ src: image, ratio: "banner" }}
         alt=""
         sizes="100vw"
-        imageClassName="object-right md:object-center"
+        imageClassName="object-right lg:object-center"
       />
 
       {/* A column, so the Container spans the banner width. */}
