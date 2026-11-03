@@ -13,7 +13,7 @@ Both pages are designed for three breakpoints (desktop ≥ 1200 px, tablet 810�
 
 - **Design fidelity:** layout, typography and spacing follow the design system. Design tokens are defined once.
 - **Content from data:** products, categories and page sections come from local JSON. Adding a product to the data is enough for it to appear in the right places.
-- **Reusable components:** product card, carousel, section header, accordion and button are shared by both pages.
+- **Reusable components:** product card variants, carousel, section header, accordion and button are reused across sections and pages.
 - **Performance and accessibility:**
   - Lighthouse (mobile) Performance and Accessibility of at least 90;
   - semantic HTML, full keyboard navigation, visible focus and WCAG AA contrast;
@@ -95,7 +95,7 @@ Every page reads its content through `lib/data.ts`; components never import JSON
 - **Tokens:** colours, type scale, spacing, radii and motion are defined once in `app/globals.css`. Spacing is semantic (`section-*`, `stack-*`, `card-*`, `cards`, `gutter`) and changes per breakpoint inside the token, so components use one class.
 - **Breakpoints:** mobile-first with two breakpoints, `md` (810 px) and `lg` (1200 px).
 - **Layout:** flexbox only. `pnpm check:tokens` rejects `grid`, arbitrary values, hex colours and inline styles in `app/`, `components/` and `lib/`; the only inline style is a swatch colour that comes from data.
-- **Images:** always `next/image` inside a fixed-ratio box, with `sizes`, lazy below the fold and `priority` only on the LCP candidates (home hero, first PDP image). Banners use art direction (`<picture>` with a crop per breakpoint).
+- **Images:** always Next's image optimisation (`next/image` props via `getImageProps`) inside a fixed-ratio box, with `sizes`, lazy below the fold and `priority` only on the LCP candidates (home hero, first PDP image). Banners use art direction (`<picture>` with a crop per breakpoint).
 - **Server first:** components are Server Components; only interactive leaves are client components (mobile menu, carousel, colour selector, accordion, hero video, scroll reveal).
 
 ### Accessibility
@@ -114,7 +114,7 @@ Every page reads its content through `lib/data.ts`; components never import JSON
 - **End-to-end (Playwright, production build):**
   - home → PDP through "Learn more", and a full mobile journey (menu, colour, accordion, "Where to buy");
   - no horizontal overflow on both pages at 375, 809, 810, 1000, 1199, 1200 and 1440 px;
-  - both carousels: arrows disabled at the edges, dots, keyboard, reduced motion;
+  - the home carousel: arrows disabled at the edges, dots, keyboard and reduced motion; the product-page carousel: compact cards from data, arrows disabled at the edges, dots only when there is more than one position;
   - 404 for product slugs without a page;
   - titles, descriptions, Open Graph, canonical URLs, robots and sitemap;
   - reduced motion for the menu, the accordion and the scroll reveal;
@@ -143,7 +143,7 @@ Lighthouse mobile, production build ([reports and method](docs/lighthouse/README
 ## Next steps
 - Replace the product page's lifestyle and feature placeholders with real photos, and give gallery images an optional `alt` in the data for when they carry information.
 - Run Lighthouse against a deployed URL: the product page's simulated LCP from a localhost trace overstates the real figure.
-- Remove the unused `cn` dependency, which came with the shadcn setup, and move `shadcn` to `devDependencies`.
+- Move `shadcn` to `devDependencies`: it is only used for its stylesheet at build time.
 - Add an `apple-icon` and a `.ico` fallback next to the SVG favicon.
 
 ## How AI tools were used
@@ -152,7 +152,7 @@ Lighthouse mobile, production build ([reports and method](docs/lighthouse/README
 - **Independent review:** a read-only `reviewer` subagent checked every finished branch against the requirements, the design spec and the project rules, without being told how the code was written. Its must-fix findings were fixed before merging.
 
 ### Guardrails
-- A git hook (`.claude/hooks/guard-git.mjs`) runs `pnpm gate` before every commit, enforces Conventional Commits, blocks pushes, rebases, amends and AI attribution, and allows merges only into `dev` with `--no-ff`.
+- A Claude Code pre-tool hook (`.claude/hooks/guard-git.mjs`) checks every git command the agent runs: it runs `pnpm gate` before every commit, enforces Conventional Commits, blocks pushes, rebases, amends and AI attribution, and allows merges only into `dev` with `--no-ff`.
 - `pnpm check:tokens` keeps hand-written values out of the code, so generated code cannot drift from the design system.
 - Project skills define one loop per branch: start, small gated commits, full verification (gate, unit and e2e tests, screenshots against the references, independent review), then a merge only after explicit human approval.
 
@@ -160,7 +160,8 @@ Lighthouse mobile, production build ([reports and method](docs/lighthouse/README
 Every time AI output had to be corrected, it was logged with what was wrong and how it was fixed: [`docs/ai-log.md`](docs/ai-log.md) lists 20 corrections. They fall into a few patterns:
 
 - **Following the design file where it fails the requirements.** Interaction colours copied from the design failed WCAG AA; carousel dots were first drawn at about 1.2:1 contrast; the product-page carousel first dropped the pagination dots because the design had none.
-- **Reduced motion that looked handled but wasn't.** Three times a `motion-reduce:` override, or a keyframes redefinition inside a media query, lost to a more specific or later CSS rule, so the animation still played. Each was found by measuring the computed animation in a real browser, fixed with `motion-safe:` or a separate animation, and is now covered by an end-to-end test.
+- **Reduced motion that looked handled but wasn't.** Three times a `motion-reduce:` override, or a keyframes redefinition inside a media query, lost to a more specific or later CSS rule, so the animation still played. They were found in review, by measuring the computed animation in a real browser and by a new end-to-end test; each was fixed with `motion-safe:` or a separate animation and is now covered by an end-to-end test.
+- **Design-system plumbing.** Colour tokens first sampled from anti-aliased screenshots came out too light; the default shadcn `cn` read the custom `text-cta` size as a colour and dropped it.
 - **Framework behaviour.** With Cache Components, `dynamicParams` is unavailable and `notFound()` after streaming gave a 404 page with status 200; reading the URL outside `<Suspense>` blocked instant navigation (flagged by a Next.js dev insight).
 - **Layout details found in screenshots.** A flex row that shrank a banner's text column, a container one gutter narrower than the navbar, a product shot rendered at half the reference size.
 - **Data and interaction design.** Hand-picked product lists instead of data-driven sections; a mobile menu first built as a modal overlay; a reveal-on-focus that started moving the element between mousedown and mouseup and swallowed clicks.
