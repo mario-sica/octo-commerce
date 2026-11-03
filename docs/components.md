@@ -43,7 +43,7 @@ The three official variants are in `docs/design/assets/`. They come from the des
 - In the navbar and the menu panel, the logo is wrapped in a link to `/` with `aria-label="Octopus — home"`. The SVG gets `aria-hidden="true" focusable="false"`.
 - In the footer, the logo is not a link. The SVG gets `role="img"` and `aria-label="Octopus"`.
 
-**Favicon.** `app/icon.svg` is the `logo-mark.svg` path in white on a brand-red square (the mark spans 75% of the width, centred), since a favicon can't inherit `currentColor`. It is the only place where the hex value appears outside the token file, and `check-tokens` doesn't scan `.svg` files.
+**Favicon.** `app/icon.svg` is the `logo-mark.svg` path in white on a brand-red square (the mark spans 75% of the width; centred horizontally, and vertically by its centre of mass rather than its bounding box, because the tentacles make it bottom-heavy), since a favicon can't inherit `currentColor`. It is the only place where the hex value appears outside the token file, and `check-tokens` doesn't scan `.svg` files.
 
 ## Icons (`lucide-react`)
 The mapping from the Figma icon set (`Foundations → Icons`) to lucide-react:
