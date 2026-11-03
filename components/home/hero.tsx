@@ -45,7 +45,7 @@ export function Hero({
       />
 
       <div className="absolute inset-x-0 top-0 z-20 pt-header">
-        <Container className="flex flex-col items-center gap-stack-sm pt-stack-md text-center">
+        <Container className="flex flex-col items-center gap-stack-sm pt-stack-xl text-center">
           <div className="flex flex-col gap-2">
             <h1 id="hero-title" className="text-h2-s md:text-h2-m lg:text-h2-l">
               {product.name}
