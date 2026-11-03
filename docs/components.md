@@ -54,7 +54,7 @@ The mapping from the Figma icon set (`Foundations → Icons`) to lucide-react:
 | Filters | `ListFilter` (three decreasing lines; not `Filter`, which is a funnel) | — |
 | Search | `Search` | — (search is out of scope) |
 | Chevron Left / Right | `ChevronLeft` / `ChevronRight` | carousel arrows |
-| Chevron Down / Up | `ChevronDown` / `ChevronUp` | accordion trigger (rotated when open) |
+| Chevron Down / Up | `ChevronDown` / `ChevronUp` | accordion trigger: down when closed, up when open |
 | Hamburger | `Menu` | mobile menu trigger |
 | Close | `X` | mobile menu close |
 | Pin (outline) | `MapPin` | — |
