@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { ColourSelector } from "@/components/pdp/colour-selector";
+import { Button } from "@/components/ui/button";
 import type { Product, ProductDetail } from "@/types/catalog";
 
 type ProductInfoProps = {
@@ -7,8 +9,8 @@ type ProductInfoProps = {
 };
 
 /**
- * PDP info column (pdp-info.png, spec → PDP composition): title and description; the colour
- * selector and "Where to buy" follow. Below `md` it follows the product image; from `md` it is the
+ * PDP info column (pdp-info.png, spec → PDP composition): title, description, colour selector and
+ * "Where to buy". Below `md` it follows the product image; from `md` it is the
  * right column and stays in view (sticky below the navbar) while the gallery scrolls.
  */
 export function ProductInfo({ product, detail }: ProductInfoProps) {
@@ -21,6 +23,10 @@ export function ProductInfo({ product, detail }: ProductInfoProps) {
         {detail.description}
       </p>
       <ColourSelector colours={detail.colours} />
+      {/* On every breakpoint, with no fixed mobile bar (spec, Assumption 8). */}
+      <Button asChild className="w-full">
+        <Link href="/coming-soon">Where to buy</Link>
+      </Button>
     </div>
   );
 }
