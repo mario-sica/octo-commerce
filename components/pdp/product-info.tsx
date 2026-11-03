@@ -1,3 +1,4 @@
+import { ColourSelector } from "@/components/pdp/colour-selector";
 import type { Product, ProductDetail } from "@/types/catalog";
 
 type ProductInfoProps = {
@@ -19,6 +20,7 @@ export function ProductInfo({ product, detail }: ProductInfoProps) {
       <p className="text-body font-book text-muted-foreground">
         {detail.description}
       </p>
+      <ColourSelector colours={detail.colours} />
     </div>
   );
 }
