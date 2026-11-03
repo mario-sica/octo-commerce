@@ -39,9 +39,9 @@ export type HomeSection =
       /** Retailer name, rendered as styled text. */
       wordmark: string;
       cta: NavLink;
-      /** Wide image (from `md`). */
+      /** Wide image (from `lg`). */
       image: string;
-      /** Portrait image (below `md`). */
+      /** Taller image (below `lg`: 3:4 on base, 16:9 on `md`). */
       imageMobile: string;
     };
 

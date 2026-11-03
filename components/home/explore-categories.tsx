@@ -43,8 +43,9 @@ function CategoryTile({ category }: { category: Category }) {
  * containers, so every tile has the same width without `basis` arithmetic against the gap.
  */
 export function ExploreCategories({ title, categoryIds }: ExploreCategoriesProps) {
+  const all = getCategories();
   const categories = categoryIds
-    .map((id) => getCategories().find((category) => category.id === id))
+    .map((id) => all.find((category) => category.id === id))
     .filter((category): category is Category => category !== undefined);
   const pairs = [categories.slice(0, 2), categories.slice(2)].filter(
     (pair) => pair.length > 0,
