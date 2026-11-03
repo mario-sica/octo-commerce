@@ -10,7 +10,8 @@ import { cn } from "@/lib/utils";
  * - items are separated by a `border-b`; the trigger is `py-4 text-body font-bold`;
  * - focus uses the global outline instead of the default ring (CLAUDE.md → focus);
  * - content is `text-body font-book text-muted-foreground`, `gap-2`;
- * - the open/close animation is off under `prefers-reduced-motion`.
+ * - the open/close animation runs only under `motion-safe` (a `motion-reduce:animate-none`
+ *   override loses to the later `data-open` rule of equal specificity).
  * Radix provides the `button` trigger with `aria-expanded`/`aria-controls`, an `h3` around each
  * trigger, and keyboard support (Enter/Space toggle; arrows, Home and End move between triggers).
  */
@@ -78,7 +79,7 @@ function AccordionContent({
   return (
     <AccordionPrimitive.Content
       data-slot="accordion-content"
-      className="overflow-hidden data-open:animate-accordion-down data-closed:animate-accordion-up motion-reduce:animate-none"
+      className="overflow-hidden motion-safe:data-open:animate-accordion-down motion-safe:data-closed:animate-accordion-up"
       {...props}
     >
       <div
