@@ -249,8 +249,10 @@ This is the first feature branch. It turns the bare app into the gated workflow.
 
 ## 18 · `test/e2e-flow`
 - Commits:
-  1. `test(e2e): home learn more on countertop blender opens pdp`
-  2. `test(e2e): extend overflow check to pdp`
+  1. ~~`test(e2e): home learn more on countertop blender opens pdp`~~: already on `dev` (`e2e/pdp.spec.ts`, since `feat/pdp-route`).
+  2. ~~`test(e2e): extend overflow check to pdp`~~: already on `dev` (`e2e/overflow.spec.ts` loops over both pages, since `feat/pdp-route`).
+  3. `test(e2e): walk the home to pdp journey on mobile`. One path at 375 px through acceptance criteria 2, 4, 7 and 8, ending on `/coming-soon`.
+  4. `test(e2e): check titles, descriptions and open graph on both pages`. Plus robots and the sitemap.
 
 ## 19 · `feat/motion`
 This branch is a bonus: only do it if branches 1–18 are done.
