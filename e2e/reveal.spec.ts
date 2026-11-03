@@ -78,6 +78,30 @@ test.describe("scroll reveal", () => {
     ).toHaveCount(0);
     await expect(productImage).toHaveCSS("opacity", "1");
   });
+
+  test("the store banner above the footer is never revealed", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const banner = page.getByRole("heading", { level: 2, name: /^Find us at/ });
+    await expect(banner.locator("xpath=ancestor::*[@data-reveal]")).toHaveCount(0);
+  });
+});
+
+test.describe("pdp product image", () => {
+  for (const width of [375, 810, 1200]) {
+    test(`starts below the navbar at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(PDP);
+      const header = await page.locator("header").first().boundingBox();
+      const image = await page
+        .getByRole("img", { name: "Octopus Countertop Blender" })
+        .boundingBox();
+      expect(header).not.toBeNull();
+      expect(image).not.toBeNull();
+      expect(image!.y).toBeGreaterThanOrEqual(header!.y + header!.height - 0.5);
+    });
+  }
 });
 
 test.describe("scroll reveal with reduced motion", () => {

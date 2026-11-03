@@ -113,7 +113,9 @@ const ASSETS = [
   ["lifestyle/octopus-kettle-1-7l.webp", "lifestyle-kettle.png", 1600],
   // Indoor Camera: wide for base and md, portrait for the tall vertical card from lg
   [
-    "lifestyle/octopus-indoor-camera-wide.webp",
+    // New output name: an earlier file under the old name carried a white band at the bottom,
+    // and Next caches optimized images by URL (docs/content.md → Replacing an image).
+    "lifestyle/octopus-indoor-camera-landscape.webp",
     "lifestyle-indoor-camera-wide.webp",
     1920,
   ],

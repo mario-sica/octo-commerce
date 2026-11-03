@@ -41,9 +41,9 @@ export async function generateMetadata({
 
 /**
  * Product detail page (spec → PDP composition). One column on base; from `md`, two columns
- * (709/555) inside the page gutter. The product image slides under the navbar (`-mt-header`) and
- * runs to the page edge on the left, as in the references (Assumption 21); it is the LCP element,
- * so it gets `priority`.
+ * (709/555) inside the page gutter. The product image starts below the navbar (unlike the
+ * references, where it slides under it; Assumption 21) and runs to the page edge on the left; it
+ * is the LCP element, so it gets `priority`.
  *
  * `params` is passed down unawaited: the URL-specific content renders inside `<Suspense>`, and
  * the frame around it stays in the shared App Shell, so navigating here is instant.
@@ -51,7 +51,7 @@ export async function generateMetadata({
 export default function ProductPage({ params }: PageProps<"/products/[slug]">) {
   return (
     <>
-      <div className="-mt-header pb-section-lg md:px-gutter">
+      <div className="pb-section-lg md:px-gutter">
         <Suspense fallback={<ProductDetailsPlaceholder />}>
           <ProductDetails params={params} />
         </Suspense>

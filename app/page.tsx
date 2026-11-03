@@ -50,12 +50,9 @@ export default function Home() {
             />
           </Reveal>
         );
+      // The store banner sits on the footer and reads as part of it, so it is not revealed.
       case "store-banner":
-        return (
-          <Reveal key={key}>
-            <StoreBanner {...section} />
-          </Reveal>
-        );
+        return <StoreBanner key={key} {...section} />;
       default:
         return null;
     }
