@@ -29,9 +29,8 @@ function Columns({ media, info, rest }: ColumnsProps) {
       {info}
       {rest && (
         <div className="flex gap-stack-xl md:basis-full">
-          {/* Same box as the image (out to the page edge), inset back to the page gutter. */}
-          <div className="min-w-0 flex-1 md:flex-709">
-            <div className="px-gutter md:-ml-gutter md:pr-0">{rest}</div>
+          <div className="min-w-0 flex-1 px-gutter md:flex-709 md:px-0">
+            {rest}
           </div>
           <div aria-hidden="true" className="hidden md:block md:flex-555" />
         </div>
