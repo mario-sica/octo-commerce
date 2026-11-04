@@ -24,7 +24,7 @@ function Columns({ media, info, rest }: ColumnsProps) {
       {/* The run to the page edge sits on an inner div: a negative margin on the flex item would
           add the gutter to the free space and change both columns' share. */}
       <div className="md:flex-709">
-        <div className="md:-ml-gutter">{media}</div>
+        <div className="md:-ml-page-bleed">{media}</div>
       </div>
       {info}
       {rest && (
