@@ -17,6 +17,17 @@ const homeSections = homeJson as readonly HomeSection[];
 const navigation = navigationJson as Navigation;
 const site = siteJson as Site;
 
+// The casts above check no values, and a wrong category would silently drop the product from its
+// section: fail the build instead.
+const categoryIds = new Set<string>(categories.map((category) => category.id));
+for (const product of products) {
+  if (!categoryIds.has(product.category)) {
+    throw new Error(
+      `Unknown category "${product.category}" on product "${product.id}"`,
+    );
+  }
+}
+
 /** Products without their own PDP link here (spec, Assumption 12). */
 export const DEFAULT_PDP_SLUG = "octopus-countertop-blender";
 
