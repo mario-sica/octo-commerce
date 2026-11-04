@@ -30,6 +30,19 @@ afterEach(() => {
   vi.resetModules();
 });
 
+describe("product categories", () => {
+  it("rejects a product whose category is not in categories.json", async () => {
+    const product = makeProduct({
+      slug: "wrong-category",
+      category: "kitchn" as Product["category"],
+    });
+
+    await expect(loadWithExtraProducts(product)).rejects.toThrow(
+      'Unknown category "kitchn" on product "wrong-category"',
+    );
+  });
+});
+
 describe("adding a product to products.json is enough to show it", () => {
   it("a new kitchen product joins the kitchen section, after the existing ones", async () => {
     const data = await loadWithExtraProducts(
