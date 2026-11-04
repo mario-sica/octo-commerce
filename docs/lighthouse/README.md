@@ -5,7 +5,9 @@ Lighthouse 13.6.0, mobile form factor, default simulated throttling (slow 4G, 4�
 | Page | Report | Performance | Accessibility | Best practices | SEO | FCP | LCP | TBT | CLS |
 |---|---|---|---|---|---|---|---|---|---|
 | Home | [home-mobile.report.html](home-mobile.report.html) | 100 | 100 | 100 | 100 | 1.0 s | 1.0 s | 10 ms | 0 |
-| PDP | [pdp-mobile.report.html](pdp-mobile.report.html) | 99 | 100 | 100 | 100 | 1.0 s | 2.1 s | 30 ms | 0 |
+| PDP | [pdp-mobile.report.html](pdp-mobile.report.html) | 99 | 100 | 100 | 100 | 0.9 s | 2.1 s | 10 ms | 0 |
+
+PDP CLS checked over 5 runs, all 0. The report is the run closest to the median LCP.
 
 Targets: Performance ≥ 90 on the home page, Accessibility ≥ 90.
 
