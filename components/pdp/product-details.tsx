@@ -41,7 +41,7 @@ function Columns({ media, info, rest }: ColumnsProps) {
  * Everything on the PDP that depends on the URL. It reads `params` itself, inside the page's
  * `<Suspense>`, so the shared App Shell stays independent of the slug and a navigation to the page
  * is instant (Next's "URL data outside of Suspense" insight). Prerendered slugs still ship this
- * content in the static HTML.
+ * content in the static HTML, after the fallback.
  */
 export async function ProductDetails({
   params,
@@ -84,12 +84,14 @@ export async function ProductDetails({
 }
 
 /**
- * Shown for the moment the product streams in after a client navigation: the empty 3:4 image box
- * in the same place, so nothing shifts when the content arrives.
+ * Shown until the product streams in, on a client navigation and on a first load too: React puts
+ * this fallback ahead of the large boundary in the HTML, so a paint can catch it. The empty 3:4
+ * image box stays in the same place, and the viewport height keeps what follows the boundary below
+ * the fold, where its move when the content arrives is not a layout shift.
  */
 export function ProductDetailsPlaceholder() {
   return (
-    <div aria-hidden="true">
+    <div aria-hidden="true" className="min-h-screen">
       <Columns
         media={<div className="aspect-3/4 w-full bg-card" />}
         info={<div className="md:flex-555" />}
