@@ -21,14 +21,16 @@ type ColumnsProps = { media: ReactNode; info: ReactNode; rest?: ReactNode };
 function Columns({ media, info, rest }: ColumnsProps) {
   return (
     <div className="mx-auto flex max-w-content flex-col gap-stack-xl md:flex-row md:flex-wrap md:items-start">
-      <div className="md:-ml-gutter md:flex-709">{media}</div>
+      {/* The run to the page edge sits on an inner div: a negative margin on the flex item would
+          add the gutter to the free space and change both columns' share. */}
+      <div className="md:flex-709">
+        <div className="md:-ml-page-bleed">{media}</div>
+      </div>
       {info}
       {rest && (
         <div className="flex gap-stack-xl md:basis-full">
-          {/* Same box as the image (out to the page edge), inset back to the page gutter. The
-              inset sits on an inner div: padding on the flex item would change its share. */}
-          <div className="min-w-0 flex-1 md:-ml-gutter md:flex-709">
-            <div className="px-gutter md:pr-0">{rest}</div>
+          <div className="min-w-0 flex-1 px-gutter md:flex-709 md:px-0">
+            {rest}
           </div>
           <div aria-hidden="true" className="hidden md:block md:flex-555" />
         </div>

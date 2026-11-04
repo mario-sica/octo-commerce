@@ -9,6 +9,7 @@ import { createCn } from "cn/config";
 export const OCTOPUS_TOKENS = {
   spacing: [
     "gutter",
+    "page-bleed",
     "header",
     "section-sm",
     "section-md",
